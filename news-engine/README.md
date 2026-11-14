@@ -1,12 +1,13 @@
-# News Engine
+# Photo Post Content
 
-Target output: one technology-news image post for 09:00 Asia/Kolkata.
+Prepare up to three daily Instagram photo posts covering technology updates, interesting facts, temples, palaces, and related educational topics. Telugu and English are both allowed.
 
-Each story must include:
-- Original source URL and publisher.
-- Publication date/time and verification timestamp.
-- Telugu headline and concise explanation.
-- Caption and relevant hashtags.
-- Image-card content and attribution/licensing notes.
+Each post package contains:
+- Finished image file.
+- Topic and language.
+- Headline and short explanation.
+- Instagram caption and hashtags.
+- Source URL and publication date for factual/news claims.
+- Asset source/licensing note where applicable.
 
-Reject stale, duplicate, unsupported, or unverified claims. Preserve source links in the job record.
+Check facts, dates, Telugu spelling, image readability, and duplicates. Do not invent sources or use unlicensed imagery. The initial workflow is photo posts only; no video scripts or Reel production.
