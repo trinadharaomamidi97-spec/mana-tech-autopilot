@@ -1,0 +1,47 @@
+name: Mana Tech Telugu — Daily Instagram Photos
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+      timezone: "Asia/Kolkata"
+  workflow_dispatch:
+    inputs:
+      post_date:
+        description: "Date of the post manifest (YYYY-MM-DD); leave blank for today in India"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mana-tech-instagram-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish up to 3 queued photo posts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Publish queued Instagram photos
+        env:
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          POST_DATE: ${{ inputs.post_date || '' }}
+        run: |
+          DATE_TO_PUBLISH="$POST_DATE"
+          if [ -z "$DATE_TO_PUBLISH" ]; then
+            DATE_TO_PUBLISH="$(TZ=Asia/Kolkata date +%F)"
+          fi
+          python instagram-publisher/publish.py --date "$DATE_TO_PUBLISH"
