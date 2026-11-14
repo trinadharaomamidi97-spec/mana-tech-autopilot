@@ -101,6 +101,8 @@ def build_caption(post: dict) -> str:
     if not isinstance(hashtags, list) or any(not isinstance(tag, str) for tag in hashtags):
         raise ValueError(f"Post {post.get('id')} has an invalid hashtags list.")
     cleaned_tags = [tag.strip() for tag in hashtags if tag.strip()]
+    if not cleaned_tags:
+        raise ValueError(f"Post {post.get('id')} needs at least one relevant hashtag.")
     if any(not re.fullmatch(r"#[\w]+", tag, flags=re.UNICODE) for tag in cleaned_tags):
         raise ValueError(f"Post {post.get('id')} has a hashtag with spaces or invalid characters.")
     if cleaned_tags:
@@ -287,7 +289,7 @@ def main() -> int:
     for post in posts:
         validate_post(post)
 
-    queued = [p for p in posts if p.get("status") in {"queued", "container_ready"}]
+    queued = [p for p in posts if p.get("status") in {"queued", "container_ready", "publishing"}]
     if not queued:
         print("No queued posts to publish for this date.")
         return 0
