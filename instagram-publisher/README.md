@@ -1,12 +1,17 @@
-# Instagram Publisher
+# Instagram Photo Publisher
 
-Use the official Meta Instagram Graph API only.
+Use the official Meta Instagram publishing API only. The first release publishes photo posts from the daily GitHub queue.
 
-Before implementation, verify:
-- The Instagram account is eligible for API publishing.
-- The linked Facebook Page and Meta app configuration are correct.
-- Required content publishing permissions have been granted.
-- Access-token storage, expiry, and renewal are handled securely.
-- The media URL and format meet current API requirements.
+Before live publishing, verify:
+- The Instagram Creator/professional account and linked Facebook Page are eligible.
+- The Meta app has the required content-publishing permissions.
+- Access tokens are stored as GitHub Actions secrets and refreshed/monitored securely.
+- Meta can fetch each image from a publicly accessible URL. A private GitHub repository's file URL is not publicly fetchable; repository visibility must not be changed without explicit owner approval.
 
-Implement an explicit publishing state machine and idempotency protection. Do not claim a post is published until Meta confirms success. Keep publishing disabled until permissions and a controlled test are verified.
+Implementation requirements:
+- Read up to three queued photo posts and their captions/hashtags.
+- Validate media and metadata before creating a post.
+- Track stable post IDs and Meta media IDs to prevent duplicates.
+- Use bounded retries for transient failures only.
+- Keep publishing disabled until one controlled test post succeeds.
+- Never report success until Meta confirms publication.
