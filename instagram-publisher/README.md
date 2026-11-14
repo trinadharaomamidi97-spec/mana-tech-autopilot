@@ -1,17 +1,32 @@
 # Instagram Photo Publisher
 
-Use the official Meta Instagram publishing API only. The first release publishes photo posts from the daily GitHub queue.
+This folder contains the photo-only publisher for the official Meta Instagram publishing API.
 
-Before live publishing, verify:
-- The Instagram Creator/professional account and linked Facebook Page are eligible.
-- The Meta app has the required content-publishing permissions.
-- Access tokens are stored as GitHub Actions secrets and refreshed/monitored securely.
-- Meta can fetch each image from a publicly accessible URL. A private GitHub repository's file URL is not publicly fetchable; repository visibility must not be changed without explicit owner approval.
+## Caption format
 
-Implementation requirements:
-- Read up to three queued photo posts and their captions/hashtags.
-- Validate media and metadata before creating a post.
-- Track stable post IDs and Meta media IDs to prevent duplicates.
-- Use bounded retries for transient failures only.
-- Keep publishing disabled until one controlled test post succeeds.
-- Never report success until Meta confirms publication.
+Every queued post must contain:
+- `title`: an attractive headline/hook.
+- `description`: the explanation or useful context.
+- `call_to_action`: optional question or follow prompt.
+- `hashtags`: relevant tags.
+
+The script combines those fields into the single Instagram caption. The metadata guide and draft example are in `posts/`.
+
+## Required GitHub Actions secrets
+
+In the repository, open **Settings → Secrets and variables → Actions → New repository secret** and add:
+
+- `META_IG_USER_ID` = the Instagram account ID: `17841442678144954`.
+- `META_ACCESS_TOKEN` = the tested Page Access Token. Never put the token in a file, commit, issue, or chat.
+
+The Facebook Page ID is not the Instagram User ID. The test account lookup and manual photo publishing have succeeded with the current Meta setup.
+
+## Workflow
+
+`.github/workflows/instagram-publish.yml` is scheduled for 11:00 AM Asia/Kolkata and can also be started manually from the Actions tab. It reads `posts/YYYY-MM-DD.json` and publishes at most three posts marked `queued`.
+
+The workflow does not generate images or write copy. Those must be added to the dated manifest and public image files before publishing. It skips drafts and already-published posts. A manifest item left in `publishing` must be checked manually before any retry to avoid duplicates.
+
+## Security
+
+The repository is public to allow Meta to fetch raw image URLs. All committed files are public. Do not add real credentials, private data, or unlicensed assets. Never print or expose the token in workflow logs.
