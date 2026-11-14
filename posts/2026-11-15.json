@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-15-autopilot-test-01",
-      "status": "publishing",
+      "status": "published",
       "topic": "automation-test",
       "language": "en",
       "title": "Mana Tech Telugu — AutoPilot Test 🚀",
@@ -21,7 +21,9 @@
       "sources": [],
       "creation_id": "18102333659422605",
       "container_created_at": "2026-11-14T18:58:47+00:00",
-      "publish_started_at": "2026-11-14T18:58:48+00:00"
+      "publish_started_at": "2026-11-14T18:58:48+00:00",
+      "instagram_media_id": "18050506859820558",
+      "published_at": "2026-11-14T18:58:52+00:00"
     }
   ]
 }
