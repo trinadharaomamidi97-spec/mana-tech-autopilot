@@ -1,34 +1,30 @@
-# Implementation Roadmap
+# Photo-First Implementation Roadmap
 
-## Stage 1 — Foundation
+## Stage 1 — Scope and queue
 - [x] Create a separate private repository.
-- [x] Add module boundaries and security placeholders.
-- [ ] Choose hosting, database, and object storage after checking free-tier limits.
-- [ ] Define job and content metadata schemas.
+- [x] Confirm photo-only daily publishing as the first release.
+- [ ] Define the dated post folder and metadata format.
+- [ ] Decide how Meta will fetch images while the repository remains private.
 
-## Stage 2 — First Reel prototype
-- [ ] Generate one Telugu technology script and scene plan.
-- [ ] Integrate a Telugu TTS provider.
-- [ ] Select licensed stock footage and record asset provenance.
-- [ ] Render one 9:16 Reel with FFmpeg.
-- [ ] Run automated media and subtitle checks.
+## Stage 2 — Instagram publishing
+- [ ] Verify the existing Meta app, Creator account, linked Page, and content-publishing permissions.
+- [ ] Confirm secure token storage and renewal.
+- [ ] Implement one-image publishing through the official Meta API.
+- [ ] Test a controlled post and confirm its Instagram media ID.
 
-## Stage 3 — News image post
-- [ ] Implement source discovery and freshness checks.
-- [ ] Generate Telugu headline, explanation, caption, and source attribution.
-- [ ] Render and validate one image post.
+## Stage 3 — Daily batch publishing
+- [ ] Support up to 3 image posts from one daily metadata file.
+- [ ] Validate images, captions, hashtags, and source details.
+- [ ] Add duplicate prevention, bounded retries, and publishing logs.
+- [ ] Add the 11:00 AM Asia/Kolkata GitHub Actions schedule.
 
-## Stage 4 — Instagram integration
-- [ ] Verify the existing Meta app and Instagram Creator account eligibility.
-- [ ] Confirm required Instagram content publishing permissions.
-- [ ] Implement secure token storage and renewal monitoring.
-- [ ] Test publishing with a controlled test post before enabling automation.
+## Stage 4 — Daily content handoff
+- [ ] Establish a reliable way to place ChatGPT-prepared images and metadata into this repository by 10:00 AM.
+- [ ] Test the complete 10:00 AM handoff → 11:00 AM publishing flow.
 
-## Stage 5 — Cloud scheduling and monitoring
-- [ ] Add 09:00 and 18:00 Asia/Kolkata schedules.
-- [ ] Add duplicate prevention, retries, and failure alerts.
-- [ ] Add a dashboard for job history and operational status.
-- [ ] Enable unattended publishing only after end-to-end tests pass.
+## Explicitly out of scope
+- Video generation, video rendering, Reel automation, and dashboard development.
+- Changes to Thiru Study Circle or any other repository/project.
 
-## Cost principle
-Prefer a low-cost, usage-limited architecture. Do not assume free services provide unlimited AI generation, storage, or video rendering. Measure the cost of a complete sample Reel before scaling.
+## Cost and reliability
+Check current free-tier limits before selecting any image delivery or generation service. GitHub Actions scheduling can be delayed, so provide a manual workflow-dispatch fallback. Do not promise exact-minute execution or unlimited free image generation.
