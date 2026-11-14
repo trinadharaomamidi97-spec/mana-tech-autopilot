@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-15-autopilot-test-01",
-      "status": "queued",
+      "status": "container_ready",
       "topic": "automation-test",
       "language": "en",
       "title": "Mana Tech Telugu — AutoPilot Test 🚀",
@@ -18,7 +18,9 @@
       "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/instagram-url-test.jpg",
       "alt_text": "The test image used to verify the Mana Tech Telugu Instagram publishing workflow.",
       "is_factual": false,
-      "sources": []
+      "sources": [],
+      "creation_id": "18102333659422605",
+      "container_created_at": "2026-11-14T18:58:47+00:00"
     }
   ]
 }
