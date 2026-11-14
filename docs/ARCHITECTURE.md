@@ -1,48 +1,39 @@
-# Mana Tech AutoPilot — Architecture
+# Mana Tech AutoPilot — Photo Publishing Architecture
 
 ## Product goal
-A cloud-first system for the Mana Tech Telugu Instagram Creator account:
-- 09:00 IST: technology-news image post.
-- 18:00 IST: cinematic Telugu technology Reel.
+A simple, cloud-first photo-post workflow for the Mana Tech Telugu Instagram Creator account. All times use Asia/Kolkata.
 
-The intended end state is automatic publishing, with no daily phone or laptop interaction.
+- **10:00 AM:** Prepare 3 photo posts about technology updates, interesting facts, Indian temples, palaces, and related educational topics. Posts may be Telugu or English.
+- **11:00 AM:** GitHub Actions publishes the queued posts to Instagram.
+- Video creation and publishing are out of scope; videos continue to be uploaded manually.
 
-## High-level flow
+## Simple workflow
+1. Prepare three finished image files and matching post metadata.
+2. Commit the images and metadata into the daily queue in this repository.
+3. At 11:00 AM, GitHub Actions checks the queue, validates each image and caption, and sends posts through the official Meta Instagram publishing API.
+4. Record success/failure and the returned Instagram media ID so retries cannot create duplicates.
 
-1. Scheduler creates a uniquely identified content job.
-2. News engine gathers candidate stories and verifies source, date, and relevance.
-3. Gemini creates Telugu copy, narration, and scene plans.
-4. Reel engine obtains rights-cleared footage, generates Telugu narration, and assembles a vertical video.
-5. Quality checks validate media, audio, subtitles, metadata, and duplicate status.
-6. Publisher submits approved-format media through the official Instagram Graph API.
-7. Job status, source URLs, output metadata, and errors are recorded for audit and retry.
+## Daily content package
+Each post must include an image, language, topic, caption, hashtags, and (for factual/news claims) source URL and source date. Do not invent sources or present unverified claims as facts. Use readable text, correct Telugu spelling, and rights-cleared visuals.
 
-## Proposed modules
-- frontend/: future monitoring and configuration dashboard.
-- backend/: API, job orchestration, persistence, and scheduling.
-- news-engine/: discovery, verification, Telugu news copy, and image-card content.
-- reel-engine/: scene planning, TTS integration, FFmpeg rendering, and quality checks.
-- instagram-publisher/: official Meta API integration and publishing state machine.
-- shared/: shared schemas, validation, and utilities.
-- docs/: architecture, setup, security, and operational notes.
+## Repository boundaries
+- `posts/`: dated image files and matching metadata JSON.
+- `instagram-publisher/`: official Meta API publishing logic.
+- `.github/workflows/`: scheduled 11:00 Asia/Kolkata publisher workflow.
+- `docs/`: setup and operating instructions.
+- `reel-engine/`: paused; no video work in this phase.
 
-## Initial technical direction
-Keep rendering on a suitable worker/container; do not assume Cloudflare Workers can render long FFmpeg videos. Keep orchestration separate from media rendering. Select hosting and storage only after validating current free-tier limits and expected usage.
+## Important media-delivery constraint
+Meta must be able to fetch each image from a publicly accessible URL. This repository is currently private, so a private GitHub file URL will not work as Meta's image URL. Do not change repository visibility without the owner's explicit approval. Before live publishing, choose an approved public delivery method (for example, a public GitHub-hosted image path or another host) and test it. Keep API secrets out of Git.
 
 ## Publishing safety
-- Do not publish until the Meta app, Instagram account type, required permissions, token lifecycle, and media URL requirements are verified.
-- Never bypass Meta platform restrictions.
-- Never commit API keys, access tokens, cookies, or private media URLs.
-- Use idempotency keys to prevent duplicate posts.
-- Retry transient failures with limits; do not retry permanent permission or validation errors blindly.
-- Keep source links and license/attribution metadata for every external asset.
-- Fail closed when verification or quality checks fail.
+- Verify the Instagram professional account, linked Page, Meta app, publishing permissions, token lifecycle, and image requirements before enabling the schedule.
+- Use the official Meta API only; never bypass platform restrictions.
+- Never commit API keys, access tokens, cookies, or secrets.
+- Validate image type, dimensions, file size, caption, and source metadata before publishing.
+- Prevent duplicates with a stable post ID and persist Meta's returned media ID.
+- Retry only transient errors with a bounded retry policy. Stop on permission or validation errors.
+- Keep publishing disabled until a controlled test post succeeds.
 
-## Content and media rules
-- Target Reel format: 9:16, 1080×1920, approximately 30–45 seconds.
-- Telugu narration and readable, synchronized Telugu subtitles.
-- Use only media whose license permits the intended use; retain asset source and license details.
-- Reject silent, corrupt, incomplete, watermarked, or incorrectly formatted outputs.
-
-## Important separation
+## Project separation
 This repository is independent. It must not connect to, modify, or reuse the Firebase project, credentials, rules, or code from Thiru Study Circle.
