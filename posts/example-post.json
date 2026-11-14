@@ -1,0 +1,30 @@
+{
+  "date": "YYYY-MM-DD",
+  "posts": [
+    {
+      "id": "YYYY-MM-DD-01",
+      "status": "draft",
+      "topic": "temple-history",
+      "language": "te",
+      "title": "మీకు ఈ అద్భుతమైన విషయం తెలుసా?",
+      "description": "ఇక్కడ నిజ నిర్ధారణ చేసిన ఆసక్తికరమైన విషయాన్ని 2–4 చిన్న వాక్యాల్లో వివరించండి. చదివేవారికి కొత్త విషయం తెలిసేలా సులభమైన తెలుగులో రాయండి.",
+      "call_to_action": "ఇలాంటి మరిన్ని ఆసక్తికరమైన విషయాల కోసం Mana Tech Telugu ను Follow చేయండి!",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#TeluguFacts",
+        "#IndianHistory",
+        "#TempleFacts"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/YYYY-MM-DD/post-01.jpg",
+      "alt_text": "ఈ చిత్రంలో కనిపించే అంశాన్ని స్పష్టంగా వివరించండి.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Official or trustworthy source title",
+          "url": "https://example.com/source",
+          "checked_at": "YYYY-MM-DD"
+        }
+      ]
+    }
+  ]
+}
