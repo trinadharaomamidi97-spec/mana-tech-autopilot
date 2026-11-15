@@ -24,6 +24,105 @@
       "publish_started_at": "2026-11-14T18:58:48+00:00",
       "instagram_media_id": "18050506859820558",
       "published_at": "2026-11-14T18:58:52+00:00"
+    },
+    {
+      "id": "2026-11-15-01",
+      "status": "draft",
+      "topic": "ai-technology-news",
+      "language": "te",
+      "title": "AI కోసం Google కొత్త TPUలు!",
+      "description": "2026 నవంబర్ 9న Google తన 8వ తరం TPU కుటుంబంలో TPU 8tx, TPU 8i Max అనే రెండు కొత్త systems‌ను ప్రకటించింది. Google ప్రకారం, 8tx సున్నితమైన డేటాతో AI inference‌ను hardware-level protection‌తో నడపడానికి రూపొందించబడింది; 8i Max మాత్రం TPU 8iతో పోలిస్తే compute, SRAM, HBM bandwidth‌ను రెండింతలు అందిస్తుంది.",
+      "call_to_action": "AI పనుల్లో డేటా భద్రత ఎంత ముఖ్యమని మీరు భావిస్తున్నారు? మీ అభిప్రాయం చెప్పండి.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#AI",
+        "#GoogleTPU",
+        "#TPU8tx",
+        "#TPU8iMax",
+        "#TechTelugu",
+        "#ArtificialIntelligence"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-15/post-01.jpg",
+      "alt_text": "AI రూపొందించిన కళాత్మక చిత్రణలో డేటా సెంటర్ నేపథ్యంపై రెండు మెరుస్తున్న ప్రాసెసర్ చిప్‌లు కనిపిస్తున్నాయి; పైభాగంలో Google TPU 8tx, TPU 8i Max గురించి తెలుగు శీర్షిక ఉంది.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Our newest TPUs: 8tx and 8i Max, built for the agentic era — Google",
+          "url": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/tpu-8i-max-and-8tx/",
+          "checked_at": "2026-11-15"
+        },
+        {
+          "title": "Google unveils new AI chip variants as cloud demand surges — Reuters",
+          "url": "https://www.reuters.com/business/google-to-introduce-two-variants-its-in-house-chips-bloomberg-news-reports-2026-11-09/",
+          "checked_at": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-15-02",
+      "status": "draft",
+      "topic": "hampi-heritage",
+      "language": "te",
+      "title": "హంపి ఎందుకు ప్రత్యేకం?",
+      "description": "కర్ణాటకలోని హంపి, విజయనగర సామ్రాజ్యపు పూర్వ రాజధాని అవశేషాలను కలిగిన UNESCO ప్రపంచ వారసత్వ ప్రదేశం. UNESCO నమోదు ప్రకారం, 14వ–16వ శతాబ్దాల నగరానికి చెందిన 1,600కుపైగా అవశేషాలు—కోటలు, దేవాలయాలు, మండపాలు, గేట్లు, నీటి నిర్మాణాలు—ఇప్పటికీ అక్కడ కనిపిస్తాయి.",
+      "call_to_action": "హంపిలో మీకు అత్యంత ఆసక్తికరంగా అనిపించే నిర్మాణం ఏది? కామెంట్ చేయండి.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#Hampi",
+        "#IndianHeritage",
+        "#UNESCOWorldHeritage",
+        "#VijayanagaraEmpire",
+        "#TeluguHistory",
+        "#TravelIndia"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-15/post-02.jpg",
+      "alt_text": "AI రూపొందించిన కళాత్మక దృశ్యంలో హంపి రాతి రథం, ఆలయ నిర్మాణాలు, శిలా శిథిలాలు కనిపిస్తున్నాయి; హంపి ప్రత్యేకతపై తెలుగు శీర్షిక, UNESCO 1986 గుర్తింపు ఉన్నాయి.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Group of Monuments at Hampi — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/241/",
+          "checked_at": "2026-11-15"
+        },
+        {
+          "title": "Group of Monuments at Hampi — Ministry of Culture, Government of India",
+          "url": "https://culture.gov.in/group-monuments-hampi",
+          "checked_at": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-15-03",
+      "status": "draft",
+      "topic": "chola-history",
+      "language": "te",
+      "title": "చోళుల వైభవానికి సజీవ సాక్ష్యం!",
+      "description": "తంజావూరులోని బృహదీశ్వర ఆలయం, గంగైకొండచోళపురంలోని బృహదీశ్వర ఆలయం, దారాసురంలోని ఐరావతేశ్వర ఆలయం కలిసి UNESCO గుర్తించిన Great Living Chola Temples సముదాయాన్ని ఏర్పరుస్తాయి. UNESCO ప్రకారం, ఈ మూడు ఆలయాలు 11వ–12వ శతాబ్దాల చోళుల వాస్తుశిల్పం, శిల్పకళ, చిత్రకళ, కంచు కళా నైపుణ్యాన్ని ప్రతిబింబిస్తాయి; ఈ వారసత్వ ప్రదేశం 1987లో UNESCO జాబితాలో చేరింది.",
+      "call_to_action": "చోళుల కాలం గురించి మరిన్ని విషయాలు తెలుసుకోవాలంటే @mana_tech_telugu ను Follow చేయండి. ఈ మూడు ఆలయాల్లో ఏది చూడాలనుకుంటారు?",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#CholaDynasty",
+        "#BrihadisvaraTemple",
+        "#Thanjavur",
+        "#UNESCOWorldHeritage",
+        "#IndianArchitecture",
+        "#TeluguHistory"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-15/post-03.jpg",
+      "alt_text": "AI రూపొందించిన కళాత్మక చిత్రణలో తంజావూరు బృహదీశ్వర ఆలయాన్ని సూచించే నిర్మాణం, చోళ శిల్పకళ కనిపిస్తున్నాయి; మూడు Great Living Chola Temples గురించి తెలుగు శీర్షిక ఉంది.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Great Living Chola Temples — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/250/",
+          "checked_at": "2026-11-15"
+        },
+        {
+          "title": "Great Living Chola Temples — Ministry of Culture, Government of India",
+          "url": "https://culture.gov.in/great-living-chola-temples",
+          "checked_at": "2026-11-15"
+        }
+      ]
     }
   ]
 }
