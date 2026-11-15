@@ -31,7 +31,7 @@
       "topic": "ai-technology-news",
       "language": "te",
       "title": "AI కోసం Google కొత్త TPUలు!",
-      "description": "2026 నవంబర్ 9న Google తన 8వ తరం TPU కుటుంబంలో TPU 8tx, TPU 8i Max అనే రెండు కొత్త systems‌ను ప్రకటించింది. Google ప్రకారం, 8tx సున్నితమైన డేటాతో AI inference‌ను hardware-level protection‌తో నడపడానికి రూపొందించబడింది; 8i Max మాత్రం TPU 8iతో పోలిస్తే compute, SRAM, HBM bandwidth‌ను రెండింతలు అందిస్తుంది.",
+      "description": "2026 నవంబర్ 9న Google తన 8వ తరం TPU కుటుంబంలో TPU 8tx, TPU 8i Max అనే రెండు కొత్త సిస్టమ్‌లను ప్రకటించింది. Google ప్రకారం, 8tx AI inference సమయంలో సున్నితమైన డేటాను హార్డ్‌వేర్ స్థాయిలో రక్షించేందుకు రూపొందించబడింది; 8i Max మాత్రం TPU 8iతో పోలిస్తే compute, SRAM, HBM bandwidth‌ను రెండింతలు అందిస్తుంది.",
       "call_to_action": "AI పనుల్లో డేటా భద్రత ఎంత ముఖ్యమని మీరు భావిస్తున్నారు? మీ అభిప్రాయం చెప్పండి.",
       "hashtags": [
         "#ManaTechTelugu",
