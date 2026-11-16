@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   publish:
-    name: Publish up to 3 queued photo posts
+    name: Restore and publish queued Instagram photos
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -29,19 +29,192 @@ jobs:
         with:
           ref: main
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Publish queued Instagram photos
+      - name: Resolve publishing date
+        id: date
         env:
-          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
-          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           POST_DATE: ${{ inputs.post_date || '' }}
         run: |
           DATE_TO_PUBLISH="$POST_DATE"
           if [ -z "$DATE_TO_PUBLISH" ]; then
             DATE_TO_PUBLISH="$(TZ=Asia/Kolkata date +%F)"
           fi
-          python instagram-publisher/publish.py --date "$DATE_TO_PUBLISH"
+          echo "post_date=$DATE_TO_PUBLISH" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebuild staged JPEGs from small text chunks
+        env:
+          POST_DATE: ${{ steps.date.outputs.post_date }}
+        run: |
+          python - <<'PY'
+          import base64
+          import json
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          root = Path.cwd()
+          date = os.environ["POST_DATE"]
+          manifest_path = root / "posts" / f"{date}.json"
+          if not manifest_path.is_file():
+              print(f"No manifest for {date}; nothing to restore.")
+              raise SystemExit(0)
+
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          if manifest.get("date") != date:
+              raise SystemExit("Manifest date does not match its filename.")
+
+          repo_prefix = (
+              "https://raw.githubusercontent.com/"
+              "trinadharaomamidi97-spec/mana-tech-autopilot/main/"
+              f"posts/images/{date}/"
+          )
+          restored = []
+          active = {"staged", "queued", "container_ready", "publishing"}
+
+          for post in manifest.get("posts", []):
+              if post.get("status") not in active:
+                  continue
+              image_url = str(post.get("image_url", "")).strip()
+              if not image_url.startswith(repo_prefix):
+                  raise SystemExit(f"Unsafe or unexpected image URL for {post.get('id')}.")
+
+              filename = Path(urlparse(image_url).path).name
+              if not re.fullmatch(r"post-\d{2}\.jpg", filename):
+                  raise SystemExit(f"Unexpected image filename for {post.get('id')}.")
+              image_path = root / "posts" / "images" / date / filename
+
+              if not image_path.is_file():
+                  if post.get("status") != "staged":
+                      raise SystemExit(f"Committed image is missing for {post.get('id')}.")
+                  chunks_dir = root / "incoming" / date / filename[:-4]
+                  chunk_files = sorted(chunks_dir.glob("part-*.txt"))
+                  if not chunk_files:
+                      raise SystemExit(f"No Base64 chunks found for {post.get('id')}.")
+                  encoded = "".join(p.read_text(encoding="ascii").strip() for p in chunk_files)
+                  try:
+                      data = base64.b64decode(encoded, validate=True)
+                  except Exception:
+                      raise SystemExit(f"Base64 chunks are incomplete or invalid for {post.get('id')}.")
+                  if len(data) < 1000 or len(data) > 8 * 1024 * 1024:
+                      raise SystemExit(f"Image size is outside the allowed range for {post.get('id')}.")
+                  if not (data.startswith(b"\xff\xd8\xff") and data.endswith(b"\xff\xd9")):
+                      raise SystemExit(f"Reconstructed file is not a complete JPEG for {post.get('id')}.")
+                  image_path.parent.mkdir(parents=True, exist_ok=True)
+                  image_path.write_bytes(data)
+                  restored.append(image_path)
+                  print(f"Restored {image_path.relative_to(root)} ({len(data)} bytes)")
+              else:
+                  data = image_path.read_bytes()
+                  if not (data.startswith(b"\xff\xd8\xff") and data.endswith(b"\xff\xd9")):
+                      raise SystemExit(f"Existing image is not a complete JPEG for {post.get('id')}.")
+
+          if restored:
+              subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
+              subprocess.run(
+                  ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
+                  check=True,
+              )
+              for path in restored:
+                  subprocess.run(["git", "add", str(path.relative_to(root))], check=True)
+              subprocess.run(["git", "commit", "-m", f"Restore staged Instagram images for {date}"], check=True)
+              subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
+          else:
+              print("No staged JPEGs needed rebuilding.")
+          PY
+
+      - name: Verify public image URLs and promote staged posts
+        env:
+          POST_DATE: ${{ steps.date.outputs.post_date }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          import time
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+
+          root = Path.cwd()
+          date = os.environ["POST_DATE"]
+          manifest_path = root / "posts" / f"{date}.json"
+          if not manifest_path.is_file():
+              print(f"No manifest for {date}; no image URLs to verify.")
+              raise SystemExit(0)
+
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          active = {"staged", "queued", "container_ready", "publishing"}
+          staged_ids = []
+          for post in manifest.get("posts", []):
+              if post.get("status") not in active:
+                  continue
+              url = str(post.get("image_url", "")).strip()
+              last_error = None
+              remote = None
+              for attempt in range(8):
+                  try:
+                      request = Request(url, headers={"User-Agent": "ManaTechAutoPilot/1.0"})
+                      with urlopen(request, timeout=30) as response:
+                          remote = response.read()
+                      break
+                  except Exception as exc:
+                      last_error = exc
+                      time.sleep(5)
+              if remote is None:
+                  raise SystemExit(f"Public raw image URL is not reachable for {post.get('id')}: {last_error}")
+              if not (remote.startswith(b"\xff\xd8\xff") and remote.endswith(b"\xff\xd9")):
+                  raise SystemExit(f"Public raw URL did not return a complete JPEG for {post.get('id')}.")
+              filename = url.rsplit("/", 1)[-1]
+              local_path = root / "posts" / "images" / date / filename
+              if local_path.is_file() and local_path.read_bytes() != remote:
+                  raise SystemExit(f"Public image bytes do not match the committed file for {post.get('id')}.")
+              print(f"Verified public JPEG: {url}")
+              if post.get("status") == "staged":
+                  post["status"] = "queued"
+                  staged_ids.append(filename[:-4])
+
+          if staged_ids:
+              manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+              incoming = root / "incoming" / date
+              for post_id in staged_ids:
+                  folder = incoming / post_id
+                  if folder.exists():
+                      for part in folder.glob("part-*.txt"):
+                          part.unlink()
+                      try:
+                          folder.rmdir()
+                      except OSError:
+                          pass
+              try:
+                  incoming.rmdir()
+              except OSError:
+                  pass
+
+              subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
+              subprocess.run(
+                  ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
+                  check=True,
+              )
+              subprocess.run(["git", "add", "-A", f"posts/{date}.json", f"posts/images/{date}", f"incoming/{date}"], check=True)
+              diff = subprocess.run(["git", "diff", "--cached", "--quiet"], check=False)
+              if diff.returncode == 1:
+                  subprocess.run(["git", "commit", "-m", f"Verify images and queue Instagram posts for {date}"], check=True)
+                  subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
+              elif diff.returncode != 0:
+                  raise SystemExit("Could not inspect staged changes.")
+              print(f"Promoted {len(staged_ids)} verified image(s) to queued.")
+          else:
+              print("All active image URLs verified; no staged posts to promote.")
+          PY
+
+      - name: Publish queued Instagram photos
+        env:
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          POST_DATE: ${{ steps.date.outputs.post_date }}
+        run: python instagram-publisher/publish.py --date "$POST_DATE"
