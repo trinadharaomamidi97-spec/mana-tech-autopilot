@@ -41,7 +41,7 @@ TOPICS = [
             "ఇది UNESCO గుర్తించిన Great Living Chola Temples సమూహంలో భాగం; ఈ వారసత్వ ప్రదేశం 1987లో జాబితాలో చేరింది."
         ),
         "cta": "చోళుల శిల్పకళలో మీకు నచ్చిన అంశం ఏది? కామెంట్ చేయండి.",
-        "alt_text": "తంజావూరులోని బృహదీశ్వర ఆలయ గోపురం మరియు రాతి నిర్మాణాల ఫోటోపై తెలుగు చరిత్ర శీర్షికతో రూపొందించిన పోస్టర్.",
+        "alt_text": "తంజావూరులోని బృహదీశ్వర ఆలయ రాతి నిర్మాణాల ఫోటోపై తెలుగు చరిత్ర శీర్షిక, వివరణ ప్యానెల్ మరియు Mana Tech Telugu గుర్తుతో రూపొందించిన పోస్టర్.",
         "source_title": "Great Living Chola Temples — UNESCO World Heritage Centre",
         "source_url": "https://whc.unesco.org/en/list/250/",
         "hashtags": ["#ManaTechTelugu", "#CholaHistory", "#BrihadisvaraTemple", "#Thanjavur", "#UNESCO", "#IndianHeritage", "#TeluguHistory"],
