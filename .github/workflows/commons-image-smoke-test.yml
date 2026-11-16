@@ -1,4 +1,4 @@
-name: Commons Telugu poster smoke test
+name: Commons Telugu poster end-to-end image handoff test
 
 on:
   push:
@@ -9,12 +9,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build-preview:
+  build-and-verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,30 +29,77 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --no-binary=Pillow Pillow
           python -c "from PIL import features; assert features.check('raqm'), 'libraqm support is required'"
-      - name: Build tomorrow's preview without publishing
+      - name: Generate tomorrow's actual Instagram photo post
         run: |
-          python instagram-publisher/commons_poster.py --date 2026-11-17 --output-root /tmp/mana-tech-preview --dry-run
+          python instagram-publisher/commons_poster.py --date 2026-11-17
           python - <<'PY'
           import json
           from pathlib import Path
           from PIL import Image
-          root = Path("/tmp/mana-tech-preview")
-          image = root / "posts/images/2026-11-17/post-01.jpg"
-          manifest = root / "posts/2026-11-17.json"
+          image = Path("posts/images/2026-11-17/post-01.jpg")
+          manifest = Path("posts/2026-11-17.json")
           assert image.is_file() and image.stat().st_size > 10000
           with Image.open(image) as im:
               assert im.format == "JPEG" and im.size == (1080, 1080)
               im.verify()
           data = json.loads(manifest.read_text(encoding="utf-8"))
-          assert data["posts"][0]["status"] == "staged"
-          assert data["posts"][0]["photo_attribution"]["artist"]
-          assert data["posts"][0]["photo_attribution"]["license_url"]
-          assert data["posts"][0]["image_url"].startswith("https://raw.githubusercontent.com/")
-          print("PASS: JPEG created, Telugu content prepared, licence attribution recorded, staged manifest valid.")
+          post = data["posts"][0]
+          assert post["status"] == "staged"
+          assert post["photo_attribution"]["artist"]
+          assert post["photo_attribution"]["license_url"]
+          assert post["image_url"].endswith("/posts/images/2026-11-17/post-01.jpg")
+          print("PASS: the real JPEG and its staged, attributed manifest are ready.")
           PY
-      - name: Save preview artifact
+      - name: Commit JPEG and staged manifest to GitHub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/2026-11-17.json posts/images/2026-11-17/post-01.jpg
+          git commit -m "Prepare licensed Telugu photo post for 2026-11-17"
+          git push origin HEAD:main
+      - name: Verify public raw image URL and queue post
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+
+          manifest_path = Path("posts/2026-11-17.json")
+          image_path = Path("posts/images/2026-11-17/post-01.jpg")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          post = manifest["posts"][0]
+          url = post["image_url"]
+          remote = None
+          last_error = None
+          for attempt in range(12):
+              try:
+                  request = Request(url, headers={"User-Agent": "ManaTechAutoPilot/1.0"})
+                  with urlopen(request, timeout=30) as response:
+                      remote = response.read()
+                  break
+              except Exception as exc:
+                  last_error = exc
+                  time.sleep(5)
+          if remote is None:
+              raise SystemExit(f"GitHub raw URL did not become reachable: {last_error}")
+          if not (remote.startswith(b"\xff\xd8\xff") and remote.endswith(b"\xff\xd9")):
+              raise SystemExit("Public raw URL did not return a complete JPEG.")
+          if remote != image_path.read_bytes():
+              raise SystemExit("Downloaded raw JPEG does not match the generated file.")
+          if post["status"] != "staged":
+              raise SystemExit("Unexpected post state before URL verification.")
+          post["status"] = "queued"
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(f"PASS: public image URL verified ({len(remote)} bytes): {url}")
+          print("PASS: staged post promoted to queued only after byte-for-byte URL verification.")
+          PY
+          git add posts/2026-11-17.json
+          git commit -m "Queue verified Commons photo post for 2026-11-17"
+          git push origin HEAD:main
+      - name: Save generated poster preview
         uses: actions/upload-artifact@v4
         with:
-          name: mana-tech-commons-poster-preview
-          path: /tmp/mana-tech-preview/posts/images/2026-11-17/post-01.jpg
-          retention-days: 3
+          name: mana-tech-commons-poster-2026-11-17
+          path: posts/images/2026-11-17/post-01.jpg
+          retention-days: 7
