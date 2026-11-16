@@ -29,6 +29,7 @@ It validates the completed caption before sending it to Meta. Keep the entire ca
 ## Status handling
 
 - `draft`: never published.
+- `staged`: image is stored as Base64 text chunks; the noon workflow reconstructs the JPEG, verifies the public raw URL, and only then promotes it to `queued`.
 - `queued`: ready for publishing.
 - `container_ready`: Meta accepted the image and the container ID is saved; safe to resume processing.
 - `publishing`: publishing request was started. The workflow will not submit it again automatically, to avoid duplicates; check Instagram/Meta before manually changing this status.
