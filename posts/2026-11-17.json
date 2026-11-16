@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-17-01",
-      "status": "container_ready",
+      "status": "publishing",
       "topic": "brihadisvara",
       "language": "te",
       "title": "చోళుల వైభవానికి సజీవ సాక్ష్యం!",
@@ -38,7 +38,8 @@
         "adapted_poster_license": "CC BY-SA 3.0"
       },
       "creation_id": "18102840419422605",
-      "container_created_at": "2026-11-16T22:33:31+00:00"
+      "container_created_at": "2026-11-16T22:33:31+00:00",
+      "publish_started_at": "2026-11-16T22:33:34+00:00"
     }
   ]
 }
