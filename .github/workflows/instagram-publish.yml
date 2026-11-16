@@ -45,6 +45,40 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install Telugu poster image dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libraqm-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libjpeg-dev zlib1g-dev
+          python -m pip install --upgrade pip
+          python -m pip install --no-binary=Pillow Pillow
+          python -c "from PIL import features; assert features.check('raqm'), 'Pillow needs libraqm for Telugu text shaping'"
+
+      - name: Prepare today's licensed-photo poster inside GitHub Actions
+        env:
+          POST_DATE: ${{ steps.date.outputs.post_date }}
+        run: |
+          python instagram-publisher/commons_poster.py --date "$POST_DATE"
+
+      - name: Commit generated image and staged metadata
+        env:
+          POST_DATE: ${{ steps.date.outputs.post_date }}
+        run: |
+          MANIFEST="posts/$POST_DATE.json"
+          IMAGE="posts/images/$POST_DATE/post-01.jpg"
+          if [ ! -f "$MANIFEST" ] || [ ! -f "$IMAGE" ]; then
+            echo "No newly generated Commons post to commit; continuing with any existing queue."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$MANIFEST" "$IMAGE"
+          if git diff --cached --quiet; then
+            echo "No new Commons files to commit."
+          else
+            git commit -m "Prepare licensed Telugu photo post for $POST_DATE"
+            git push origin HEAD:main
+          fi
+
       - name: Rebuild staged JPEGs from small text chunks
         env:
           POST_DATE: ${{ steps.date.outputs.post_date }}
