@@ -11,7 +11,7 @@ import argparse
 import html
 import json
 import re
-import textwrap
+import tempfile
 import time
 from datetime import date, datetime
 from pathlib import Path
@@ -148,7 +148,7 @@ TOPICS = [
         "cta": "మహాబలిపురం శిల్పాల్లో మీకు నచ్చింది ఏది?",
         "alt_text": "తమిళనాడులోని మహాబలిపురం సముద్రతీర ఆలయ లేదా రాతి స్మారక కట్టడం ఫోటోతో రూపొందించిన తెలుగు పోస్టర్.",
         "source_title": "Group of Monuments at Mahabalipuram — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/ной",
+        "source_url": "https://whc.unesco.org/en/list/249",
         "hashtags": ["#ManaTechTelugu", "#Mahabalipuram", "#PallavaHistory", "#TamilNadu", "#UNESCO", "#IndianHeritage"],
     },
 ]
@@ -363,7 +363,7 @@ def main() -> int:
     else:
         poster_license = "CC0 1.0 / Public Domain"
 
-    cache = root / ".cache"
+    cache = Path(tempfile.gettempdir()) / "mana-tech-font-cache"
     cache.mkdir(parents=True, exist_ok=True)
     font_path = cache / "NotoSansTelugu-variable.ttf"
     if not font_path.exists():
