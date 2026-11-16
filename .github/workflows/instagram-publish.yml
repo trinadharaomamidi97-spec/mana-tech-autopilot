@@ -200,7 +200,7 @@ jobs:
                   ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
                   check=True,
               )
-              subprocess.run(["git", "add", "-A", f"posts/{date}.json", f"posts/images/{date}", f"incoming/{date}"], check=True)
+              subprocess.run(["git", "add", "-A"], check=True)
               diff = subprocess.run(["git", "diff", "--cached", "--quiet"], check=False)
               if diff.returncode == 1:
                   subprocess.run(["git", "commit", "-m", f"Verify images and queue Instagram posts for {date}"], check=True)
