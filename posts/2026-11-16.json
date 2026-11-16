@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-16",
+  "posts": [
+    {
+      "id": "2026-11-16-01",
+      "status": "staged",
+      "topic": "mahabalipuram",
+      "language": "te",
+      "title": "సముద్ర తీరాన పల్లవుల శిల్ప వైభవం!",
+      "description": "తమిళనాడులోని మహాబలిపురం పల్లవుల కాలానికి చెందిన రాతి ఆలయాలు, శిల్పాలకు ప్రసిద్ధి. ఇక్కడి స్మారక కట్టడాల సమూహం 1984లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరింది.",
+      "call_to_action": "మహాబలిపురం శిల్పాల్లో మీకు నచ్చింది ఏది?\n\n📷 Photo: Rainer Halama / Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Mahabalipuram-Shore_Temple-WUS01963.jpg. License: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0. Modified: Telugu title and graphic design added. The adapted poster is shared under CC BY-SA 4.0.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#Mahabalipuram",
+        "#PallavaHistory",
+        "#TamilNadu",
+        "#UNESCO",
+        "#IndianHeritage"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-16/post-01.jpg",
+      "alt_text": "తమిళనాడులోని మహాబలిపురం సముద్రతీర ఆలయ లేదా రాతి స్మారక కట్టడం ఫోటోతో రూపొందించిన తెలుగు పోస్టర్.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Group of Monuments at Mahabalipuram — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/249",
+          "checked_at": "2026-11-16"
+        }
+      ],
+      "photo_attribution": {
+        "artist": "Rainer Halama",
+        "commons_file": "File:Mahabalipuram-Shore Temple-WUS01963.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Mahabalipuram-Shore_Temple-WUS01963.jpg",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "modification": "Telugu title, text panel, crop and visual design added.",
+        "adapted_poster_license": "CC BY-SA 4.0"
+      }
+    }
+  ]
+}
