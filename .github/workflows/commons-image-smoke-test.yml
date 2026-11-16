@@ -1,0 +1,58 @@
+name: Commons Telugu poster smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "instagram-publisher/commons_poster.py"
+      - ".github/workflows/commons-image-smoke-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image dependencies with Telugu shaping
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libraqm-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libjpeg-dev zlib1g-dev
+          python -m pip install --upgrade pip
+          python -m pip install --no-binary=Pillow Pillow
+          python -c "from PIL import features; assert features.check('raqm'), 'libraqm support is required'"
+      - name: Build tomorrow's preview without publishing
+        run: |
+          python instagram-publisher/commons_poster.py --date 2026-11-17 --output-root /tmp/mana-tech-preview --dry-run
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from PIL import Image
+          root = Path("/tmp/mana-tech-preview")
+          image = root / "posts/images/2026-11-17/post-01.jpg"
+          manifest = root / "posts/2026-11-17.json"
+          assert image.is_file() and image.stat().st_size > 10000
+          with Image.open(image) as im:
+              assert im.format == "JPEG" and im.size == (1080, 1080)
+              im.verify()
+          data = json.loads(manifest.read_text(encoding="utf-8"))
+          assert data["posts"][0]["status"] == "staged"
+          assert data["posts"][0]["photo_attribution"]["artist"]
+          assert data["posts"][0]["photo_attribution"]["license_url"]
+          assert data["posts"][0]["image_url"].startswith("https://raw.githubusercontent.com/")
+          print("PASS: JPEG created, Telugu content prepared, licence attribution recorded, staged manifest valid.")
+          PY
+      - name: Save preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mana-tech-commons-poster-preview
+          path: /tmp/mana-tech-preview/posts/images/2026-11-17/post-01.jpg
+          retention-days: 3
