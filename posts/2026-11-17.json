@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-17",
+  "posts": [
+    {
+      "id": "2026-11-17-01",
+      "status": "staged",
+      "topic": "brihadisvara",
+      "language": "te",
+      "title": "చోళుల వైభవానికి సజీవ సాక్ష్యం!",
+      "description": "తంజావూరులోని బృహదీశ్వర ఆలయం రాజరాజ చోళుడు నిర్మించిన ప్రసిద్ధ చోళ దేవాలయం. ఇది UNESCO గుర్తించిన Great Living Chola Temples సమూహంలో భాగం; ఈ వారసత్వ ప్రదేశం 1987లో జాబితాలో చేరింది.",
+      "call_to_action": "చోళుల శిల్పకళలో మీకు నచ్చిన అంశం ఏది? కామెంట్ చేయండి.\n\n📷 Photo: Vinayaraj / Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Thanjavur_-_Brihadisvara_Temple_(73).jpg. License: CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0. Modified: Telugu title and graphic design added. The adapted poster is shared under CC BY-SA 3.0.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#CholaHistory",
+        "#BrihadisvaraTemple",
+        "#Thanjavur",
+        "#UNESCO",
+        "#IndianHeritage",
+        "#TeluguHistory"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-17/post-01.jpg",
+      "alt_text": "తంజావూరులోని బృహదీశ్వర ఆలయ గోపురం మరియు రాతి నిర్మాణాల ఫోటోపై తెలుగు చరిత్ర శీర్షికతో రూపొందించిన పోస్టర్.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Great Living Chola Temples — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/250/",
+          "checked_at": "2026-11-17"
+        }
+      ],
+      "photo_attribution": {
+        "artist": "Vinayaraj",
+        "commons_file": "File:Thanjavur - Brihadisvara Temple (73).jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Thanjavur_-_Brihadisvara_Temple_(73).jpg",
+        "license": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+        "modification": "Telugu title, text panel, crop and visual design added.",
+        "adapted_poster_license": "CC BY-SA 3.0"
+      }
+    }
+  ]
+}
