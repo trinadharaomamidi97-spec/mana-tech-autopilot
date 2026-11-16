@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-16-01",
-      "status": "container_ready",
+      "status": "publishing",
       "topic": "mahabalipuram",
       "language": "te",
       "title": "సముద్ర తీరాన పల్లవుల శిల్ప వైభవం!",
@@ -37,7 +37,8 @@
         "adapted_poster_license": "CC BY-SA 4.0"
       },
       "creation_id": "18102723812422605",
-      "container_created_at": "2026-11-16T12:10:23+00:00"
+      "container_created_at": "2026-11-16T12:10:23+00:00",
+      "publish_started_at": "2026-11-16T12:10:24+00:00"
     }
   ]
 }
