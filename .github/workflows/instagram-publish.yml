@@ -2,7 +2,7 @@ name: Mana Tech Telugu — Daily Instagram Photos
 
 on:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "30 17 * * *"
       timezone: "Asia/Kolkata"
   workflow_dispatch:
     inputs:
