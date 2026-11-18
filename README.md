@@ -4,10 +4,10 @@ Photo-first, cloud-based Instagram publishing for **Mana Tech Telugu**.
 
 ## Target daily workflow (Asia/Kolkata)
 
-- **Image standard:** Every automated photo is a clean 1080 × 1350 (4:5) portrait photograph. No text, logos, borders, poster panels, or watermarks are added to the image.
-- **Caption:** Telugu title, description, call to action, source attribution, and relevant hashtags are placed in the Instagram caption.
-- **11:00 AM:** GitHub Actions reads the dated queue and publishes posts marked `queued` to Instagram through the official Meta API.
-- Videos remain manual uploads by the account owner. Video generation and Reel automation are out of scope.
+- **Image standard:** Every automated photo is a clean 1080 × 1920 (9:16) JPEG for Instagram Stories. No text, logos, borders, poster panels, or watermarks are added to the image.
+- **Caption:** Telugu title, description, call to action, source attribution, and hashtags are kept as editorial metadata; Instagram Stories do not display a normal feed caption.
+- **12:00 PM:** GitHub Actions reads the dated queue and publishes queued 9:16 photo Stories to Instagram through the official Meta API.
+- Stories are ephemeral and normally disappear after 24 hours. These image Stories do not appear as permanent feed posts or accumulate feed likes. Videos remain manual uploads by the account owner.
 
 ## Current implementation status
 
