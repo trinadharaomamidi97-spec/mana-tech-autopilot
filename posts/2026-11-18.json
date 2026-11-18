@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-18-01",
-      "status": "container_ready",
+      "status": "publishing",
       "topic": "hampi",
       "language": "te",
       "title": "హంపి రాతి రథం వెనుక అద్భుత కథ!",
@@ -37,7 +37,8 @@
         "adapted_poster_license": "CC BY 2.0"
       },
       "creation_id": "18103191440422605",
-      "container_created_at": "2026-11-18T15:54:58+00:00"
+      "container_created_at": "2026-11-18T15:54:58+00:00",
+      "publish_started_at": "2026-11-18T15:54:59+00:00"
     }
   ]
 }
