@@ -15,21 +15,14 @@ Create one JSON file per publishing date: `posts/YYYY-MM-DD.json`. Put the image
 - `alt_text`: short accessibility description.
 - `is_factual` and `sources`: factual claims/news must have at least one source URL and a `checked_at` date.
 
-## How the Instagram caption is assembled
+## Story metadata
 
-Instagram photo publishing has one caption field, not separate title and description fields. The publisher assembles:
-
-1. Title
-2. Description
-3. Optional call to action
-4. Hashtags
-
-It validates the completed caption before sending it to Meta. Keep the entire caption within Instagram's current limit.
+Instagram Stories do not have a normal feed caption. The title, description, call to action, and hashtags are retained in the JSON manifest for editorial records, but are not sent to Meta and are not visible on the published Story. The image itself remains text-free.
 
 ## Status handling
 
 - `draft`: never published.
-- `staged`: the image has been generated but its public raw URL has not yet been verified. The noon workflow checks the committed JPEG byte-for-byte and only then promotes it to `queued`.
+- `staged`: the image has been generated but its public raw URL has not yet been verified. The scheduled Story workflow checks the committed JPEG byte-for-byte and only then promotes it to `queued`.
 - `queued`: ready for publishing.
 - `container_ready`: Meta accepted the image and the container ID is saved; safe to resume processing.
 - `publishing`: publishing request was started. The workflow will not submit it again automatically, to avoid duplicates; check Instagram/Meta before manually changing this status.
