@@ -6,6 +6,7 @@ The custom-time publishing worker uses the existing webpage Firestore structure:
 
 - Settings: `users/{uid}/settings/automation`
 - Posts: `users/{uid}/posts/{postId}`
+- Firestore database ID: `ai-studio-manatechautopilo-22439fc5-b3f5-486b-aa04-e698e36833f9` (matches the web client configuration).
 - Server-only daily lock: `users/{uid}/automationRuns/{YYYY-MM-DD}`
 
 Every five minutes, GitHub Actions runs `backend/firestore_scheduler.py`. The worker reads the saved `postTime`, `timeZone`, `startDate`, `autoPostEnabled`, and `instagramEnabled` fields from Firestore. It does not use a fixed 9 AM or 11 AM time.
