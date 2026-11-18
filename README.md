@@ -6,6 +6,7 @@ Photo-first, cloud-based Instagram publishing for **Mana Tech Telugu**.
 
 - The Firestore custom-time worker checks the existing Firebase settings every five minutes.
 - It reads `postTime`, `timeZone`, `startDate`, `autoPostEnabled`, and `instagramEnabled` from `users/{uid}/settings/automation`.
+- It connects to the same named Firestore database configured in `firebase-applet-config.json` (`ai-studio-manatechautopilo-22439fc5-b3f5-486b-aa04-e698e36833f9`), not the default database.
 - When due, it publishes the oldest scheduled Instagram post from `users/{uid}/posts`, at most once per local calendar day.
 - The worker does not generate a post when the queue is empty. The webpage must have a scheduled post in Firestore.
 - Videos remain manual uploads by the account owner. Video generation and Reel automation are out of scope.
