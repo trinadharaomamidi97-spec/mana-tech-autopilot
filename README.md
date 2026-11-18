@@ -4,7 +4,8 @@ Photo-first, cloud-based Instagram publishing for **Mana Tech Telugu**.
 
 ## Target daily workflow (Asia/Kolkata)
 
-- **10:00 AM:** Prepare exactly 3 image posts about technology updates, interesting facts, Indian temples, palaces, history, and related topics. Every post must have an attractive title, a clear description, an engaging call to action, and relevant hashtags.
+- **Image standard:** Every automated photo is a clean 1080 × 1920 (9:16) portrait photograph. No text, logos, borders, poster panels, or watermarks are added to the image.
+- **Caption:** Telugu title, description, call to action, source attribution, and relevant hashtags are placed in the Instagram caption.
 - **11:00 AM:** GitHub Actions reads the dated queue and publishes posts marked `queued` to Instagram through the official Meta API.
 - Videos remain manual uploads by the account owner. Video generation and Reel automation are out of scope.
 
@@ -12,7 +13,7 @@ Photo-first, cloud-based Instagram publishing for **Mana Tech Telugu**.
 
 - A real GitHub-hosted image was fetched and processed by Meta, and a test photo was manually published and verified on `@mana_tech_telugu`.
 - The daily publisher script and 11:00 AM workflow are now in the repository.
-- The 10:00 AM image/content generation and handoff is **not automated yet**. A dated manifest and matching image files must exist in `posts/` before the publisher can publish them.
+- The workflow can prepare one licensed-photo post automatically when no dated manifest exists; it verifies the public image URL before publishing.
 - Add `META_IG_USER_ID` and `META_ACCESS_TOKEN` to GitHub Actions Secrets before enabling scheduled publishing. Never commit tokens or other credentials.
 
 ## Public repository notice
