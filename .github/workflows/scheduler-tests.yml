@@ -23,6 +23,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install Firebase Admin SDK
+        run: python -m pip install -r backend/requirements.txt
+      - name: Verify named database API is supported
+        run: python -c "import inspect; from firebase_admin import firestore; assert 'database_id' in inspect.signature(firestore.client).parameters"
       - name: Compile scheduler
         run: python -m py_compile backend/firestore_scheduler.py backend/test_firestore_scheduler.py
       - name: Run scheduler unit tests
