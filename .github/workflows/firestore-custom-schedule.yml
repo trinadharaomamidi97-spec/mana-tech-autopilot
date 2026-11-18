@@ -27,6 +27,7 @@ jobs:
     timeout-minutes: 8
     env:
       FIREBASE_PROJECT_ID: mana-tech-autopilot
+      FIRESTORE_DATABASE_ID: ai-studio-manatechautopilo-22439fc5-b3f5-486b-aa04-e698e36833f9
       FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
       FIREBASE_OWNER_UID: ${{ secrets.FIREBASE_OWNER_UID }}
       META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
