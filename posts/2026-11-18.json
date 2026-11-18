@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-18",
+  "posts": [
+    {
+      "id": "2026-11-18-01",
+      "status": "staged",
+      "topic": "hampi",
+      "language": "te",
+      "title": "హంపి రాతి రథం వెనుక అద్భుత కథ!",
+      "description": "కర్ణాటకలోని హంపి విజయనగర సామ్రాజ్య రాజధాని అవశేషాలకు ప్రసిద్ధి. విఠ్ఠల ఆలయ సముదాయంలోని రాతి రథం హంపి శిల్పకళకు గుర్తుగా నిలిచింది; హంపి 1986లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరింది.",
+      "call_to_action": "హంపిలో మీరు చూడాలనుకునే నిర్మాణం ఏది?\n\n📷 Photo: Arian Zwegers from Brussels, Belgium / Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Hampi,_Vittala_Temple,_eastern_gopuram_(9881785004).jpg. License: CC BY 2.0 https://creativecommons.org/licenses/by/2.0. Modified: Telugu title and graphic design added. The adapted poster is shared under CC BY 2.0.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#Hampi",
+        "#Vijayanagara",
+        "#IndianHistory",
+        "#UNESCOWorldHeritage",
+        "#TeluguFacts"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-18/post-01.jpg",
+      "alt_text": "హంపిలోని విఠ్ఠల ఆలయ రాతి రథం ఫోటోతో రూపొందించిన తెలుగు వారసత్వ పోస్టర్.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Group of Monuments at Hampi — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/241/",
+          "checked_at": "2026-11-18"
+        }
+      ],
+      "photo_attribution": {
+        "artist": "Arian Zwegers from Brussels, Belgium",
+        "commons_file": "File:Hampi, Vittala Temple, eastern gopuram (9881785004).jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Hampi,_Vittala_Temple,_eastern_gopuram_(9881785004).jpg",
+        "license": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0",
+        "modification": "Telugu title, text panel, crop and visual design added.",
+        "adapted_poster_license": "CC BY 2.0"
+      }
+    }
+  ]
+}
