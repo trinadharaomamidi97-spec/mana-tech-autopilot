@@ -50,5 +50,9 @@ jobs:
       - name: Validate code without exposing credentials
         run: python -m py_compile backend/firestore_scheduler.py
 
+      - name: Run timezone and caption unit tests
+        working-directory: backend
+        run: python -m unittest -v test_firestore_scheduler.py
+
       - name: Check saved time and publish eligible Firestore post
         run: python backend/firestore_scheduler.py
