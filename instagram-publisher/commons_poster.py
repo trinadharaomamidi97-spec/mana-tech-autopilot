@@ -224,19 +224,19 @@ def search_commons(topic: dict) -> dict:
     if not candidates:
         raise RuntimeError(f"No sufficiently large, explicitly licensed Commons photo found for: {topic['commons_query']}")
     # Prefer source photos closest to a portrait 9:16 frame, with high resolution.
-    target_ratio = 9 / 16
+    target_ratio = 4 / 5
     candidates.sort(key=lambda item: (abs(item["width"] / item["height"] - target_ratio), -(item["width"] * item["height"])))
     return candidates[0]
 
 def make_photo(photo_bytes: bytes, output_path: Path) -> None:
-    """Create a clean 1080x1920 portrait crop; never draw text or graphics."""
+    """Create a clean 1080x1350 feed-safe portrait crop; never draw text or graphics."""
     from io import BytesIO
 
     with Image.open(BytesIO(photo_bytes)) as source:
         source = ImageOps.exif_transpose(source).convert("RGB")
         image = ImageOps.fit(
             source,
-            (1080, 1920),
+            (1080, 1350),
             method=Image.Resampling.LANCZOS,
             centering=(0.5, 0.42),
         )
@@ -246,7 +246,7 @@ def make_photo(photo_bytes: bytes, output_path: Path) -> None:
         image.save(output_path, format="JPEG", quality=88, optimize=True, progressive=True)
     with Image.open(output_path) as check:
         if check.size != (1080, 1920):
-            raise RuntimeError(f"Expected 1080x1920 portrait image, got {check.size}.")
+            raise RuntimeError(f"Expected 1080x1350 feed portrait image, got {check.size}.")
         check.verify()
 
 def main() -> int:
@@ -288,7 +288,7 @@ def main() -> int:
     attribution = (
         f"📷 Photo: {photo['artist']} / Wikimedia Commons. "
         f"Source: {photo['page_url']}. License: {photo['license']} "
-        f"{photo['license_url']}. Modified: cropped to a 9:16 portrait frame only; no text or graphics added. "
+        f"{photo['license_url']}. Modified: cropped to a 4:5 feed portrait frame only; no text or graphics added. "
         f"The adapted image is shared under {poster_license}."
     )
     manifest = {
@@ -303,7 +303,7 @@ def main() -> int:
             "call_to_action": topic["cta"] + "\n\n" + attribution,
             "hashtags": topic["hashtags"],
             "image_url": RAW_PREFIX + f"posts/images/{args.date}/post-01.jpg",
-            "alt_text": f"Clean, photorealistic vertical 9:16 photograph of {topic['slug'].replace('-', ' ')}; no text or graphic overlay.",
+            "alt_text": f"Clean, photorealistic vertical 4:5 photograph of {topic['slug'].replace('-', ' ')}; no text or graphic overlay.",
             "is_factual": True,
             "sources": [{
                 "title": topic["source_title"],
@@ -316,7 +316,7 @@ def main() -> int:
                 "source_url": photo["page_url"],
                 "license": photo["license"],
                 "license_url": photo["license_url"],
-                "modification": "Cropped to a 9:16 portrait frame only; no text or graphic overlay added.",
+                "modification": "Cropped to a 4:5 feed portrait frame only; no text or graphic overlay added.",
                 "adapted_poster_license": poster_license,
             },
         }],
@@ -327,7 +327,7 @@ def main() -> int:
     size_kb = image_path.stat().st_size / 1024
     print(f"Created {image_path} ({size_kb:.1f} KB)")
     print(f"Created staged manifest {manifest_path}")
-    print("Created clean 1080x1920 photo-only JPEG. The workflow must verify its public URL before publishing.")
+    print("Created clean 1080x1350 photo-only JPEG. The workflow must verify its public URL before publishing.")
     return 0
 
 if __name__ == "__main__":
