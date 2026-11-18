@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Prepare one clean, photorealistic 9:16 image from a freely licensed Commons photo.
+"""Prepare one clean 1080x1920 photo-only Instagram Story image.
 
-No titles, logos, borders, text panels, or watermarks are added to the image.
-All Telugu copy and attribution stay in the Instagram caption.
+No titles, logos, borders, text panels, or watermarks are added. Story text
+metadata stays in the manifest; only public-domain/CC0 sources are accepted.
 """
 from __future__ import annotations
 
