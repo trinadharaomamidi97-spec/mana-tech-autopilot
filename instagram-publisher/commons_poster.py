@@ -202,11 +202,11 @@ def search_commons(topic: dict) -> dict:
         mime = info.get("mime", "")
         if mime not in {"image/jpeg", "image/png", "image/webp"}:
             continue
-        thumb = info.get("thumburl") or info.get("url")
+        thumb = info.get("url") or info.get("thumburl")
         if not thumb:
             continue
-        width = int(info.get("thumbwidth") or info.get("width") or 0)
-        height = int(info.get("thumbheight") or info.get("height") or 0)
+        width = int(info.get("width") or info.get("thumbwidth") or 0)
+        height = int(info.get("height") or info.get("thumbheight") or 0)
         if min(width, height) < 900:
             continue
         page_url = "https://commons.wikimedia.org/wiki/" + quote(page["title"].replace(" ", "_"), safe=":_(),'")
