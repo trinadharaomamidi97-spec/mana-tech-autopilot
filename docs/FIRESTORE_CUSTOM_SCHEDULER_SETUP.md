@@ -9,6 +9,10 @@ When the saved time has arrived, it publishes the oldest Firestore post whose st
 Posts are updated in the existing path `users/{uid}/posts/{postId}`. A server-only lock is stored at `users/{uid}/automationRuns/{YYYY-MM-DD}` so retries do not blindly republish. If the Meta publish request has an uncertain result, the worker stops automatic retries and marks the post for manual verification.
 
 ## Required GitHub Actions secrets
+## Firestore database selection
+
+The worker is configured for the named Firestore database used by the webpage: `ai-studio-manatechautopilo-22439fc5-b3f5-486b-aa04-e698e36833f9`. The workflow passes this as `FIRESTORE_DATABASE_ID`; it does not use the default `(default)` database. The value is a database identifier, not a credential.
+
 
 In the GitHub repository, open **Settings → Secrets and variables → Actions → New repository secret** and add:
 
