@@ -12,9 +12,9 @@ Photo-first, cloud-based Instagram publishing for **Mana Tech Telugu**.
 ## Current implementation status
 
 - A real GitHub-hosted image was fetched and processed by Meta, and a test photo was manually published and verified on `@mana_tech_telugu`.
-- The daily publisher script and 11:00 AM workflow are now in the repository.
+- The daily Story publisher and 12:00 PM workflow are now in the repository.
 - The workflow can prepare one licensed-photo post automatically when no dated manifest exists; it verifies the public image URL before publishing.
-- Add `META_IG_USER_ID` and `META_ACCESS_TOKEN` to GitHub Actions Secrets before enabling scheduled publishing. Never commit tokens or other credentials.
+- The workflow requires the existing `META_IG_USER_ID` and `META_ACCESS_TOKEN` GitHub Actions secrets. Never commit tokens or other credentials.
 
 ## Public repository notice
 
