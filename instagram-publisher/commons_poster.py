@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Build one branded Telugu poster from a freely licensed Wikimedia Commons photo.
+"""Prepare one clean, photorealistic 9:16 image from a freely licensed Commons photo.
 
-The script runs inside GitHub Actions, so no ChatGPT/Gmail/Drive binary handoff
-is needed. It creates a staged manifest; the workflow commits the JPEG, checks
-the public raw URL, and only then promotes the post to queued.
+No titles, logos, borders, text panels, or watermarks are added to the image.
+All Telugu copy and attribution stay in the Instagram caption.
 """
 from __future__ import annotations
 
@@ -18,14 +17,10 @@ from pathlib import Path
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps, features
+from PIL import Image, ImageOps
 
 REPO = "trinadharaomamidi97-spec/mana-tech-autopilot"
 RAW_PREFIX = f"https://raw.githubusercontent.com/{REPO}/main/"
-FONT_URL = (
-    "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanstelugu/"
-    "NotoSansTelugu%5Bwdth%2Cwght%5D.ttf"
-)
 USER_AGENT = "ManaTechTeluguAutoPilot/1.0 (Wikimedia Commons image reuse with attribution)"
 
 # Facts are evergreen and point to their primary institutional source.
@@ -228,106 +223,31 @@ def search_commons(topic: dict) -> dict:
         })
     if not candidates:
         raise RuntimeError(f"No sufficiently large, explicitly licensed Commons photo found for: {topic['commons_query']}")
-    # Prefer wide or near-square photos with enough resolution for a poster.
-    candidates.sort(key=lambda item: (item["width"] * item["height"], -abs(item["width"] / item["height"] - 1.0)), reverse=True)
+    # Prefer source photos closest to a portrait 9:16 frame, with high resolution.
+    target_ratio = 9 / 16
+    candidates.sort(key=lambda item: (abs(item["width"] / item["height"] - target_ratio), -(item["width"] * item["height"])))
     return candidates[0]
 
-def load_font(font_path: Path, size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
-    font = ImageFont.truetype(str(font_path), size, layout_engine=ImageFont.Layout.RAQM)
-    if bold:
-        try:
-            axes = font.get_variation_axes()
-            values = [axis.get("default", 0) for axis in axes]
-            for index, axis in enumerate(axes):
-                if "weight" in str(axis.get("name", "")).casefold():
-                    values[index] = 800
-            if axes:
-                font.set_variation_by_axes(values)
-        except (AttributeError, OSError, ValueError):
-            pass
-    return font
-
-def wrap_by_width(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
-    lines: list[str] = []
-    current = ""
-    for word in text.split():
-        candidate = f"{current} {word}".strip()
-        box = draw.textbbox((0, 0), candidate, font=font, stroke_width=1)
-        if current and box[2] - box[0] > max_width:
-            lines.append(current)
-            current = word
-        else:
-            current = candidate
-    if current:
-        lines.append(current)
-    return lines
-
-def draw_text_block(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, font: ImageFont.FreeTypeFont,
-                    fill: str, max_width: int, spacing: int, stroke_width: int = 0) -> int:
-    lines = wrap_by_width(draw, text, font, max_width)
-    draw.multiline_text(
-        xy, "\n".join(lines), font=font, fill=fill, spacing=spacing,
-        stroke_width=stroke_width, stroke_fill="#071226", align="left",
-        direction="ltr", language="te",
-    )
-    return len(lines)
-
-def make_poster(photo_bytes: bytes, topic: dict, photo: dict, font_path: Path, output_path: Path) -> None:
+def make_photo(photo_bytes: bytes, output_path: Path) -> None:
+    """Create a clean 1080x1920 portrait crop; never draw text or graphics."""
     from io import BytesIO
 
     with Image.open(BytesIO(photo_bytes)) as source:
         source = ImageOps.exif_transpose(source).convert("RGB")
-        poster = ImageOps.fit(source, (1080, 1080), method=Image.Resampling.LANCZOS, centering=(0.5, 0.42))
-
-    # Dark translucent title and information panels preserve the photo while keeping Telugu readable.
-    overlay = Image.new("RGBA", poster.size, (0, 0, 0, 0))
-    od = ImageDraw.Draw(overlay)
-    od.rounded_rectangle((38, 42, 1042, 620), radius=40, fill=(5, 16, 43, 222), outline=(255, 197, 53, 255), width=5)
-    od.rounded_rectangle((40, 700, 1040, 1038), radius=34, fill=(5, 16, 43, 225), outline=(255, 197, 53, 255), width=4)
-    poster = Image.alpha_composite(poster.convert("RGBA"), overlay)
-    draw = ImageDraw.Draw(poster)
-
-    small = load_font(font_path, 30, bold=True)
-    title_font = load_font(font_path, 76, bold=True)
-    body_font = load_font(font_path, 36, bold=True)
-    credit_font = load_font(font_path, 18)
-
-    draw.rounded_rectangle((76, 78, 470, 140), radius=24, fill="#FFC52F")
-    draw.text((100, 87), topic["category"], font=small, fill="#09152D", stroke_width=0)
-
-    draw.rounded_rectangle((842, 68, 1000, 150), radius=24, fill="#0A1A3A", outline="#FFC52F", width=3)
-    draw.text((865, 80), "MT", font=load_font(font_path, 42, bold=True), fill="#FFC52F")
-    draw.text((676, 157), "MANA TECH TELUGU", font=load_font(font_path, 18, bold=True), fill="#FFFFFF")
-
-    size = 76
-    while size >= 48:
-        title_font = load_font(font_path, size, bold=True)
-        lines = wrap_by_width(draw, topic["title"], title_font, 890)
-        height = len(lines) * (size + 20)
-        if len(lines) <= 3 and height <= 360:
-            break
-        size -= 4
-    draw_text_block(draw, (82, 225), topic["title"], title_font, "#FFFFFF", 890, 18, stroke_width=2)
-
-    # One short supporting line at the bottom gives context without crowding the image.
-    body_lines = wrap_by_width(draw, topic["cta"], body_font, 880)
-    draw.multiline_text((82, 770), "\n".join(body_lines[:2]), font=body_font, fill="#FFD54D",
-                        spacing=16, stroke_width=1, stroke_fill="#071226", direction="ltr", language="te")
-
-    attribution = f"PHOTO: {photo['artist']}  •  WIKIMEDIA COMMONS  •  {photo['license']}"
-    # Keep the on-image credit concise; complete links/terms are also in the Instagram caption.
-    credit = attribution[:105]
-    draw.text((82, 980), credit, font=credit_font, fill="#F2F4F8", stroke_width=0)
-
-    poster = poster.convert("RGB")
+        image = ImageOps.fit(
+            source,
+            (1080, 1920),
+            method=Image.Resampling.LANCZOS,
+            centering=(0.5, 0.42),
+        )
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    poster.save(output_path, format="JPEG", quality=90, optimize=True, progressive=True)
-    if output_path.stat().st_size > 5 * 1024 * 1024:
-        poster.save(output_path, format="JPEG", quality=84, optimize=True, progressive=True)
+    image.save(output_path, format="JPEG", quality=93, optimize=True, progressive=True)
+    if output_path.stat().st_size > 8 * 1024 * 1024:
+        image.save(output_path, format="JPEG", quality=88, optimize=True, progressive=True)
     with Image.open(output_path) as check:
+        if check.size != (1080, 1920):
+            raise RuntimeError(f"Expected 1080x1920 portrait image, got {check.size}.")
         check.verify()
-    if not any("\u0c00" <= ch <= "\u0c7f" for ch in topic["title"]):
-        raise RuntimeError("The selected title does not contain Telugu text.")
 
 def main() -> int:
     parser = argparse.ArgumentParser()
@@ -347,9 +267,6 @@ def main() -> int:
             print(f"Manifest already exists for {args.date}; refusing to overwrite it.")
             return 0
 
-    if not features.check("raqm"):
-        raise RuntimeError("Pillow was built without libraqm; Telugu text shaping is unavailable.")
-
     base = date(2026, 11, 17)
     topic = TOPICS[(post_date - base).days % len(TOPICS)]
     print(f"Selected topic: {topic['slug']} — {topic['title']}")
@@ -363,22 +280,16 @@ def main() -> int:
     else:
         poster_license = "CC0 1.0 / Public Domain"
 
-    cache = Path(tempfile.gettempdir()) / "mana-tech-font-cache"
-    cache.mkdir(parents=True, exist_ok=True)
-    font_path = cache / "NotoSansTelugu-variable.ttf"
-    if not font_path.exists():
-        font_path.write_bytes(http_get(FONT_URL))
-
     photo_bytes = http_get(photo["image_url"])
     if len(photo_bytes) < 10000:
         raise RuntimeError("Commons returned an unexpectedly small image file.")
-    make_poster(photo_bytes, topic, photo, font_path, image_path)
+    make_photo(photo_bytes, image_path)
 
     attribution = (
         f"📷 Photo: {photo['artist']} / Wikimedia Commons. "
         f"Source: {photo['page_url']}. License: {photo['license']} "
-        f"{photo['license_url']}. Modified: Telugu title and graphic design added. "
-        f"The adapted poster is shared under {poster_license}."
+        f"{photo['license_url']}. Modified: cropped to a 9:16 portrait frame only; no text or graphics added. "
+        f"The adapted image is shared under {poster_license}."
     )
     manifest = {
         "date": args.date,
@@ -392,7 +303,7 @@ def main() -> int:
             "call_to_action": topic["cta"] + "\n\n" + attribution,
             "hashtags": topic["hashtags"],
             "image_url": RAW_PREFIX + f"posts/images/{args.date}/post-01.jpg",
-            "alt_text": topic["alt_text"],
+            "alt_text": f"Clean, photorealistic vertical 9:16 photograph of {topic['slug'].replace('-', ' ')}; no text or graphic overlay.",
             "is_factual": True,
             "sources": [{
                 "title": topic["source_title"],
@@ -405,7 +316,7 @@ def main() -> int:
                 "source_url": photo["page_url"],
                 "license": photo["license"],
                 "license_url": photo["license_url"],
-                "modification": "Telugu title, text panel, crop and visual design added.",
+                "modification": "Cropped to a 9:16 portrait frame only; no text or graphic overlay added.",
                 "adapted_poster_license": poster_license,
             },
         }],
@@ -416,7 +327,7 @@ def main() -> int:
     size_kb = image_path.stat().st_size / 1024
     print(f"Created {image_path} ({size_kb:.1f} KB)")
     print(f"Created staged manifest {manifest_path}")
-    print("The workflow must commit the JPEG, verify its public raw URL, and promote staged -> queued before publishing.")
+    print("Created clean 1080x1920 photo-only JPEG. The workflow must verify its public URL before publishing.")
     return 0
 
 if __name__ == "__main__":
