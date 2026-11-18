@@ -41,6 +41,6 @@ The workflow processes a maximum of three posts per date and saves progress to t
 
 ## Automatic licensed-photo Story generation
 
-The scheduled workflow prepares one daily photo Story when no manifest exists. It searches Wikimedia Commons for a photograph with an accepted reusable licence (CC0, Public Domain, CC BY, or CC BY-SA), rejecting unclear, non-commercial, and no-derivatives licences. It records the photographer, source page, and licence in the manifest and Story metadata.
+The scheduled workflow prepares one daily photo Story when no manifest exists. It searches Wikimedia Commons for a photograph with an Public Domain or CC0 status only. Other Creative Commons licences are excluded because a Story has no normal caption field in which to display required attribution. It records available photographer, source page, and licence details in the manifest for audit purposes.
 
 The image is cropped to exactly 1080 × 1920 pixels (9:16), saved as a high-quality JPEG, and kept below Meta's 8 MB image limit. No text, logos, borders, watermarks, title panels, or graphic overlays are drawn. The publisher creates a container with `media_type=STORIES`, waits for Meta to finish processing, and then publishes it. Instagram Stories do not have a normal feed caption, so the title, description, call to action, and hashtags remain in the manifest only; they are not displayed on the photo. Stories normally disappear after 24 hours and do not appear as permanent feed posts.
