@@ -14,7 +14,10 @@ In the GitHub repository, open **Settings → Secrets and variables → Actions 
 
 1. `FIREBASE_SERVICE_ACCOUNT_JSON` — the complete JSON key for a dedicated service account in the Firebase project `mana-tech-autopilot`. Create a dedicated service account with only the Firestore access role it needs (for example, Cloud Datastore User); do not use a personal Google account credential. Keep the JSON private and never commit it to the repository.
 2. `META_ACCESS_TOKEN` — the known-good Meta Page access token. The existing photo workflow already uses this secret; retain/renew it securely as needed.
-\nThe local webpage currently also writes `pageAccessToken` into its owner-only Firestore settings document. This worker deliberately ignores that Firestore field and uses only the GitHub secret. The local webpage source is not in this repository yet, so this integration does not remove that existing field or change the settings form; that frontend migration remains a separate follow-up.\n\n3. `META_IG_USER_ID` — optional if `instagramAccountId` is already populated in `users/{uid}/settings/automation`. If used, it must be the Instagram professional account ID, not the Facebook Page ID.
+
+The local webpage currently also writes `pageAccessToken` into its owner-only Firestore settings document. This worker deliberately ignores that Firestore field and uses only the GitHub secret. The local webpage source is not in this repository yet, so this integration does not remove that existing field or change the settings form; that frontend migration remains a separate follow-up.
+
+3. `META_IG_USER_ID` — optional if `instagramAccountId` is already populated in `users/{uid}/settings/automation`. If used, it must be the Instagram professional account ID, not the Facebook Page ID.
 4. `FIREBASE_OWNER_UID` — optional if there is exactly one active Instagram automation settings document. Set it to the Firebase Authentication UID if more than one user has automation enabled.
 
 The Firebase service-account key has broad server-side access to the Firestore documents allowed by its IAM role. Protect it like a password. GitHub Actions secrets are not placed in repository files or workflow logs by this worker.
