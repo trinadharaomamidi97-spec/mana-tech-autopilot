@@ -1,0 +1,30 @@
+name: Firestore scheduler unit tests
+
+on:
+  push:
+    branches:
+      - firebase-custom-time-worker
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/scheduler-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile scheduler
+        run: python -m py_compile backend/firestore_scheduler.py backend/test_firestore_scheduler.py
+      - name: Run scheduler unit tests
+        working-directory: backend
+        run: python -m unittest -v test_firestore_scheduler.py
