@@ -1,9 +1,8 @@
 name: Mana Tech Telugu — Daily Instagram Photos
 
 on:
-  schedule:
-    - cron: "0 12 * * *"
-      timezone: "Asia/Kolkata"
+  # The Firestore custom-time publisher is the only automatic schedule.
+  # Keep this manifest-based workflow manual-only as a legacy fallback.
   workflow_dispatch:
     inputs:
       post_date:

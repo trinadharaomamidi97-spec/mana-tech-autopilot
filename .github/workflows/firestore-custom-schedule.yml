@@ -1,0 +1,59 @@
+name: Mana Tech Telugu — Firestore Custom-Time Publisher
+
+on:
+  schedule:
+    # GitHub's minimum scheduled-workflow interval is five minutes.
+    # The worker reads postTime and timeZone from Firestore on every run.
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Check the saved schedule and queue without publishing"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mana-tech-firestore-custom-publisher
+  cancel-in-progress: false
+
+jobs:
+  check-and-publish:
+    name: Read Firestore schedule and publish at most one post per local day
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      FIREBASE_PROJECT_ID: mana-tech-autopilot
+      FIRESTORE_DATABASE_ID: ai-studio-manatechautopilo-22439fc5-b3f5-486b-aa04-e698e36833f9
+      FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+      FIREBASE_OWNER_UID: ${{ secrets.FIREBASE_OWNER_UID }}
+      META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+      META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+      META_API_VERSION: v27.0
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install Firebase Admin SDK
+        run: python -m pip install -r backend/requirements.txt
+
+      - name: Validate code without exposing credentials
+        run: python -m py_compile backend/firestore_scheduler.py
+
+      - name: Run timezone and caption unit tests
+        working-directory: backend
+        run: python -m unittest -v test_firestore_scheduler.py
+
+      - name: Check saved time and publish eligible Firestore post
+        run: python backend/firestore_scheduler.py
