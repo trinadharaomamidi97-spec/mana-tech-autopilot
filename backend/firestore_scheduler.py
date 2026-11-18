@@ -26,6 +26,8 @@ from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 DEFAULT_PROJECT_ID = "mana-tech-autopilot"
+# Must match firebase-applet-config.json's firestoreDatabaseId in the webpage.
+DEFAULT_DATABASE_ID = "ai-studio-manatechautopilo-22439fc5-b3f5-486b-aa04-e698e36833f9"
 DEFAULT_API_VERSION = "v27.0"
 CAPTION_LIMIT = 2200
 MAX_CONTAINER_POLLS = 12
@@ -434,13 +436,18 @@ def initialize_firestore() -> tuple[Any, Any]:
     except json.JSONDecodeError as exc:
         raise SchedulerError("FIREBASE_SERVICE_ACCOUNT_JSON is not valid JSON.") from exc
     project_id = os.getenv("FIREBASE_PROJECT_ID", DEFAULT_PROJECT_ID).strip()
+    database_id = os.getenv("FIRESTORE_DATABASE_ID", DEFAULT_DATABASE_ID).strip()
+    if not database_id:
+        raise SchedulerError("FIRESTORE_DATABASE_ID must not be empty.")
     credential = credentials.Certificate(service_account_info)
     app_name = "mana-tech-firestore-scheduler"
     try:
         app = firebase_admin.get_app(app_name)
     except ValueError:
         app = firebase_admin.initialize_app(credential, {"projectId": project_id}, name=app_name)
-    return firestore.client(app=app), firestore
+    # The web client explicitly selects this named database. Do not silently use
+    # Firestore's (default) database, or the worker would see an empty queue.
+    return firestore.client(app=app, database_id=database_id), firestore
 
 
 def main() -> int:
