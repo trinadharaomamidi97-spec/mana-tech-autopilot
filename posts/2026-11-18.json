@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-18-01",
-      "status": "queued",
+      "status": "container_ready",
       "topic": "hampi",
       "language": "te",
       "title": "హంపి రాతి రథం వెనుక అద్భుత కథ!",
@@ -35,7 +35,9 @@
         "license_url": "https://creativecommons.org/licenses/by/2.0",
         "modification": "Telugu title, text panel, crop and visual design added.",
         "adapted_poster_license": "CC BY 2.0"
-      }
+      },
+      "creation_id": "18103191440422605",
+      "container_created_at": "2026-11-18T15:54:58+00:00"
     }
   ]
 }
