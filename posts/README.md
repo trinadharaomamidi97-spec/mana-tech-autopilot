@@ -39,8 +39,8 @@ It validates the completed caption before sending it to Meta. Keep the entire ca
 The workflow processes a maximum of three posts per date and saves progress to this manifest after each state change. Never put access tokens or other secrets in this folder.
 
 
-## Automatic licensed-photo poster generation
+## Automatic licensed-photo image generation
 
-The 12:00 PM Asia/Kolkata publisher workflow can prepare one daily post itself when no manifest exists. It runs `instagram-publisher/commons_poster.py`, searches Wikimedia Commons for a photograph whose file metadata declares an accepted reusable licence (CC0, Public Domain, CC BY, or CC BY-SA), and rejects unclear, non-commercial, or no-derivatives licences. It reads the author, source file page, licence name and licence URL from Commons metadata.
+The scheduled publisher workflow can prepare one daily photo post when no manifest exists. It searches Wikimedia Commons for an image with an accepted reusable licence (CC0, Public Domain, CC BY, or CC BY-SA), rejecting unclear, non-commercial, and no-derivatives licences. The author, source page, licence name, and licence URL are read from Commons metadata.
 
-The workflow downloads the selected photograph and the SIL Open Font Licensed Noto Sans Telugu font, then creates a branded 1080 × 1080 JPEG inside GitHub Actions. The post manifest records factual source links and complete photo attribution. When the source is CC BY-SA, the adapted poster is identified under the same ShareAlike licence. The workflow commits the JPEG and staged manifest, verifies the public raw URL returns the identical JPEG bytes, and promotes the post to `queued` only after that check succeeds. If no suitable photograph or valid licence metadata can be found, it stops without publishing.
+The image is cropped to exactly 1080 × 1920 pixels (9:16) and saved as a high-quality JPEG. No text, logos, borders, watermarks, title panels, or graphic overlays are drawn on the photograph. Telugu title, description, call to action, source attribution, and hashtags are included in the Instagram caption. The workflow commits the JPEG and staged manifest, verifies the public raw URL returns the identical JPEG bytes, and promotes the post to `queued` only after that check succeeds. If no suitable photograph or valid licence metadata can be found, it stops without publishing.
