@@ -162,9 +162,9 @@ def license_allowed(name: str) -> bool:
         return False
     if "no derivatives" in value or "nd" in value.split():
         return False
-    if value in {"public domain", "cc0", "cc0 1.0", "public domain mark"}:
-        return True
-    return bool(re.fullmatch(r"cc by(?:-sa)? (?:1\.0|2\.0|2\.5|3\.0|4\.0)", value))
+    # Story media has no normal caption field. To avoid silently omitting
+    # legally required visible attribution, use only public-domain/CC0 files.
+    return value in {"public domain", "public domain mark", "cc0", "cc0 1.0"}
 
 def search_commons(topic: dict) -> dict:
     params = {
