@@ -1,8 +1,8 @@
-name: Mana Tech Telugu — Instagram Story Test
+name: Mana Tech Telugu — Instagram Story
 
 on:
   schedule:
-    - cron: "30 3 * * *"
+    - cron: "30 3 * * *" # 9:00 AM IST
   workflow_dispatch:
     inputs:
       post_date:
@@ -13,15 +13,17 @@ on:
 permissions:
   contents: write
 
+# Feed and Story both update manifests on main. Serialize them to prevent
+# non-fast-forward pushes and conflicting publishing-state commits.
 concurrency:
-  group: mana-tech-instagram-story
+  group: mana-tech-instagram-publisher
   cancel-in-progress: false
 
 jobs:
   story:
     name: Prepare and publish independent 9:16 Instagram Story
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Resolve Story date
         id: date
@@ -44,42 +46,84 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Pillow
-        run: python -m pip install Pillow
+      - name: Install image processing dependency
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install Pillow
 
-      - name: Prepare source photo if today's Feed manifest is absent
+      - name: Prepare both daily images before Story publishing
         env:
           POST_DATE: ${{ steps.date.outputs.post_date }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          if [ ! -f "posts/$POST_DATE.json" ] || [ ! -f "posts/images/$POST_DATE/post-01.jpg" ]; then
-            python instagram-publisher/commons_poster.py --date "$POST_DATE"
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add "posts/$POST_DATE.json" "posts/images/$POST_DATE/post-01.jpg"
-            git commit -m "Prepare source photo for Instagram Story $POST_DATE"
-            git push origin HEAD:main
-          else
-            echo "Using existing Feed source photo for $POST_DATE."
-          fi
+          FEED_MANIFEST="posts/$POST_DATE.json"
+          FEED_IMAGE="posts/images/$POST_DATE/post-01.jpg"
+          STORY_MANIFEST="stories/$POST_DATE.json"
+          STORY_IMAGE="stories/images/$POST_DATE/story-01.jpg"
 
-      - name: Create or reuse separate 9:16 Story asset and manifest
-        env:
-          POST_DATE: ${{ steps.date.outputs.post_date }}
-        run: |
-          if [ -f "stories/$POST_DATE.json" ] && [ -f "stories/images/$POST_DATE/story-01.jpg" ]; then
-            echo "Using the separately generated Story image and manifest for $POST_DATE."
-            exit 0
-          fi
-          if [ -f "stories/$POST_DATE.json" ] || [ -f "stories/images/$POST_DATE/story-01.jpg" ]; then
-            echo "An incomplete Story asset already exists; refusing to overwrite it."
+          has_feed=0
+          has_story=0
+          [ -f "$FEED_MANIFEST" ] && [ -f "$FEED_IMAGE" ] && has_feed=1
+          [ -f "$STORY_MANIFEST" ] && [ -f "$STORY_IMAGE" ] && has_story=1
+
+          if { [ -f "$FEED_MANIFEST" ] || [ -f "$FEED_IMAGE" ]; } && [ "$has_feed" -eq 0 ]; then
+            echo "::error::The Feed asset pair is incomplete for $POST_DATE; refusing to overwrite it."
             exit 1
           fi
-          python instagram-publisher/prepare_story.py --date "$POST_DATE"
+          if { [ -f "$STORY_MANIFEST" ] || [ -f "$STORY_IMAGE" ]; } && [ "$has_story" -eq 0 ]; then
+            echo "::error::The Story asset pair is incomplete for $POST_DATE; refusing to overwrite it."
+            exit 1
+          fi
+
+          if [ "$has_feed" -eq 1 ] && [ "$has_story" -eq 1 ]; then
+            echo "Both daily assets already exist; reusing them without regeneration."
+          elif [ "$has_feed" -eq 1 ]; then
+            echo "Feed exists; preparing the missing Story from its available source."
+            python instagram-publisher/prepare_story.py --date "$POST_DATE"
+          elif [ "$has_story" -eq 1 ]; then
+            echo "::error::Story exists but Feed source is missing; refusing to regenerate either asset."
+            exit 1
+          else
+            generated=0
+            if [ -n "$CLOUDFLARE_ACCOUNT_ID" ] && [ -n "$CLOUDFLARE_API_TOKEN" ]; then
+              if python instagram-publisher/prepare_cloudflare_post.py --date "$POST_DATE"; then
+                generated=1
+                echo "Cloudflare created separate Feed (4:5) and Story (9:16) images."
+              else
+                echo "::warning::Cloudflare image generation failed; checking for partial output before fallback."
+              fi
+            else
+              echo "::warning::Cloudflare credentials are unavailable; using Wikimedia Commons fallback."
+            fi
+
+            if [ "$generated" -eq 0 ]; then
+              if [ -f "$FEED_MANIFEST" ] || [ -f "$FEED_IMAGE" ] || [ -f "$STORY_MANIFEST" ] || [ -f "$STORY_IMAGE" ]; then
+                echo "::error::Image generation left partial files; refusing to overwrite them."
+                exit 1
+              fi
+              python instagram-publisher/commons_poster.py --date "$POST_DATE"
+              python instagram-publisher/prepare_story.py --date "$POST_DATE"
+              echo "Wikimedia Commons fallback prepared the Feed source and a compatible Story frame."
+            fi
+          fi
+
+          for asset in "$FEED_MANIFEST" "$FEED_IMAGE" "$STORY_MANIFEST" "$STORY_IMAGE"; do
+            if [ ! -s "$asset" ]; then
+              echo "::error::Required daily asset is missing or empty: $asset"
+              exit 1
+            fi
+          done
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "stories/$POST_DATE.json" "stories/images/$POST_DATE/story-01.jpg"
-          git commit -m "Prepare independent Instagram Story image for $POST_DATE"
-          git push origin HEAD:main
+          git add "$FEED_MANIFEST" "$FEED_IMAGE" "$STORY_MANIFEST" "$STORY_IMAGE"
+          if git diff --cached --quiet; then
+            echo "Daily assets were already committed; no repository write needed."
+          else
+            git commit -m "Prepare daily Instagram Feed and Story assets for $POST_DATE"
+            git push origin HEAD:main
+          fi
 
       - name: Verify public Story image
         env:
@@ -87,13 +131,29 @@ jobs:
         run: |
           python - <<'PY'
           import os
+          import time
           from urllib.request import Request, urlopen
-          url=f"https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/{os.environ['POST_DATE']}/story-01.jpg"
-          req=Request(url,headers={"User-Agent":"ManaTechTeluguAutoPilot/1.0"})
-          with urlopen(req,timeout=30) as r: data=r.read()
-          if not (data.startswith(b"\xff\xd8\xff") and data.endswith(b"\xff\xd9")):
-              raise SystemExit("Public Story image is not a valid JPEG.")
-          print(f"Verified public Story JPEG ({len(data)} bytes).")
+
+          url = (
+              "https://raw.githubusercontent.com/trinadharaomamidi97-spec/"
+              "mana-tech-autopilot/main/stories/images/"
+              + os.environ["POST_DATE"] + "/story-01.jpg"
+          )
+          last_error = None
+          for attempt in range(6):
+              try:
+                  request = Request(url, headers={"User-Agent": "ManaTechTeluguAutoPilot/1.0"})
+                  with urlopen(request, timeout=30) as response:
+                      data = response.read()
+                  if not (data.startswith(b"\xff\xd8\xff") and data.endswith(b"\xff\xd9")):
+                      raise RuntimeError("Public Story URL did not return a complete JPEG.")
+                  print(f"Verified public Story JPEG ({len(data)} bytes): {url}")
+                  break
+              except Exception as exc:
+                  last_error = exc
+                  if attempt == 5:
+                      raise SystemExit(f"Public Story image verification failed: {last_error}")
+                  time.sleep(5)
           PY
 
       - name: Publish Instagram Story only
