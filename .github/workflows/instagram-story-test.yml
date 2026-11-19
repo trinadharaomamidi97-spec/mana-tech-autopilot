@@ -49,12 +49,16 @@ jobs:
             echo "Using existing Feed source photo for $POST_DATE."
           fi
 
-      - name: Create separate 9:16 Story asset and manifest
+      - name: Create or reuse separate 9:16 Story asset and manifest
         env:
           POST_DATE: ${{ inputs.post_date }}
         run: |
-          if [ -f "stories/$POST_DATE.json" ]; then
-            echo "Story manifest already exists; refusing to overwrite or duplicate it."
+          if [ -f "stories/$POST_DATE.json" ] && [ -f "stories/images/$POST_DATE/story-01.jpg" ]; then
+            echo "Using the separately generated Story image and manifest for $POST_DATE."
+            exit 0
+          fi
+          if [ -f "stories/$POST_DATE.json" ] || [ -f "stories/images/$POST_DATE/story-01.jpg" ]; then
+            echo "An incomplete Story asset already exists; refusing to overwrite it."
             exit 1
           fi
           python instagram-publisher/prepare_story.py --date "$POST_DATE"
