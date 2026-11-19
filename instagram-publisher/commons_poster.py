@@ -16,6 +16,7 @@ from datetime import date, datetime
 from pathlib import Path
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
 
 from PIL import Image, ImageOps
 
@@ -148,10 +149,33 @@ TOPICS = [
     },
 ]
 
-def http_get(url: str, timeout: int = 45) -> bytes:
-    request = Request(url, headers={"User-Agent": USER_AGENT})
-    with urlopen(request, timeout=timeout) as response:
-        return response.read()
+def http_get(url: str, timeout: int = 45, attempts: int = 5) -> bytes:
+    """Fetch Wikimedia API/media with bounded retries for temporary throttling."""
+    last_error = None
+    for attempt in range(attempts):
+        request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "image/*,*/*;q=0.8"})
+        try:
+            with urlopen(request, timeout=timeout) as response:
+                return response.read()
+        except HTTPError as exc:
+            last_error = exc
+            if exc.code not in (429, 500, 502, 503, 504) or attempt == attempts - 1:
+                raise
+            retry_after = exc.headers.get("Retry-After")
+            try:
+                delay = min(45, max(2, int(retry_after))) if retry_after else min(30, 3 * (2 ** attempt))
+            except ValueError:
+                delay = min(30, 3 * (2 ** attempt))
+            print(f"Temporary HTTP {exc.code}; retry {attempt + 1}/{attempts} in {delay}s.")
+            time.sleep(delay)
+        except URLError as exc:
+            last_error = exc
+            if attempt == attempts - 1:
+                raise
+            delay = min(20, 2 * (2 ** attempt))
+            print(f"Temporary image network error; retry {attempt + 1}/{attempts} in {delay}s.")
+            time.sleep(delay)
+    raise RuntimeError(f"Image download failed after retries: {last_error}")
 
 def strip_html(value: str) -> str:
     return html.unescape(re.sub(r"<[^>]*>", "", value or "")).strip()
@@ -202,7 +226,9 @@ def search_commons(topic: dict) -> dict:
         mime = info.get("mime", "")
         if mime not in {"image/jpeg", "image/png", "image/webp"}:
             continue
-        thumb = info.get("url") or info.get("thumburl")
+        # Prefer Wikimedia's resized upload CDN thumbnail; retain original as fallback.
+        thumb = info.get("thumburl") or info.get("url")
+        original = info.get("url")
         if not thumb:
             continue
         width = int(info.get("width") or info.get("thumbwidth") or 0)
@@ -213,6 +239,7 @@ def search_commons(topic: dict) -> dict:
         candidates.append({
             "title": page["title"],
             "image_url": thumb,
+            "original_image_url": original,
             "page_url": page_url,
             "artist": artist or "Unknown (public-domain/CC0 file)",
             "license": license_name,
@@ -282,9 +309,24 @@ def main() -> int:
     else:
         poster_license = "CC0 1.0 / Public Domain"
 
-    photo_bytes = http_get(photo["image_url"])
-    if len(photo_bytes) < 10000:
-        raise RuntimeError("Commons returned an unexpectedly small image file.")
+    download_urls = [photo.get("image_url"), photo.get("original_image_url")]
+    photo_bytes = None
+    download_errors = []
+    for download_url in dict.fromkeys(url for url in download_urls if url):
+        try:
+            candidate_bytes = http_get(download_url)
+            if len(candidate_bytes) < 10000:
+                raise RuntimeError("Image source returned an unexpectedly small file.")
+            from io import BytesIO
+            with Image.open(BytesIO(candidate_bytes)) as check:
+                check.verify()
+            photo_bytes = candidate_bytes
+            break
+        except Exception as exc:
+            download_errors.append(f"{download_url}: {exc}")
+            print(f"Image URL failed; trying next available source: {exc}")
+    if photo_bytes is None:
+        raise RuntimeError("All Commons image URLs failed after retries. " + " | ".join(download_errors))
     make_photo(photo_bytes, image_path)
 
     attribution = (
