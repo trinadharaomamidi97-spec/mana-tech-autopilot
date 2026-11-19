@@ -15,23 +15,32 @@ from datetime import date
 from pathlib import Path
 
 from commons_poster import RAW_PREFIX, TOPICS
-from cloudflare_image import DEFAULT_PROMPT, cloudflare_generate, save_variants
+from cloudflare_image import cloudflare_generate, save_variants
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_DATE = date(2026, 11, 17)
 REPO = "trinadharaomamidi97-spec/mana-tech-autopilot"
 
 
-def make_prompt(topic: dict) -> str:
+def make_prompt(topic: dict, surface: str) -> str:
     subject = topic["slug"].replace("-", " ")
+    if surface == "feed":
+        framing = (
+            "Create a distinct editorial Feed photograph with a strong central subject, a balanced medium-wide "
+            "composition, and important details kept inside the central 4:5 crop area."
+        )
+    else:
+        framing = (
+            "Create a different Story photograph, not a crop or duplicate of the Feed image. Use a fresh viewpoint, "
+            "more immersive full-height vertical framing, and a striking foreground-to-background depth."
+        )
     return (
         f"Create a premium cinematic, photorealistic artistic reconstruction inspired by {subject} in India. "
-        f"Context: {topic['description']} Show a visually compelling, plausible view of the place and its "
-        "architecture, materials and natural setting, with realistic documentary photography, rich but natural "
-        "light, high detail and atmospheric depth. It must be an AI-created artistic reconstruction, not an "
-        "authentic archival photograph. Vertical 9:16 composition, main subject centered with safe space near "
-        "top and bottom. No text, letters, captions, logos, watermarks, borders, collage, poster design, "
-        "graphic overlays or UI. Avoid inventing readable inscriptions."
+        f"Context: {topic['description']} {framing} Show plausible architecture, materials and natural setting, "
+        "with realistic documentary photography, rich but natural light, high detail and atmospheric depth. "
+        "It must be an AI-created artistic reconstruction, not an authentic archival photograph. Vertical 9:16 "
+        "composition with the main subject clearly readable. No text, letters, captions, logos, watermarks, "
+        "borders, collage, poster design, graphic overlays or UI. Avoid inventing readable inscriptions."
     )
 
 
@@ -63,12 +72,18 @@ def main() -> int:
 
     with tempfile.TemporaryDirectory(prefix="mana-tech-ai-") as tmp:
         temp_dir = Path(tmp)
-        image_bytes = cloudflare_generate(make_prompt(topic), account_id, token)
-        save_variants(image_bytes, temp_dir)
+        feed_dir = temp_dir / "feed"
+        story_dir = temp_dir / "story"
+        print("Generating a dedicated Feed composition...")
+        feed_bytes = cloudflare_generate(make_prompt(topic, "feed"), account_id, token)
+        save_variants(feed_bytes, feed_dir)
+        print("Generating a separate Story composition...")
+        story_bytes = cloudflare_generate(make_prompt(topic, "story"), account_id, token)
+        save_variants(story_bytes, story_dir)
         feed_image.parent.mkdir(parents=True, exist_ok=True)
         story_image.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(temp_dir / "feed-4x5.jpg", feed_image)
-        shutil.copyfile(temp_dir / "story-9x16.jpg", story_image)
+        shutil.copyfile(feed_dir / "feed-4x5.jpg", feed_image)
+        shutil.copyfile(story_dir / "story-9x16.jpg", story_image)
 
     raw_feed = RAW_PREFIX + f"posts/images/{date_text}/post-01.jpg"
     raw_story = f"https://raw.githubusercontent.com/{REPO}/main/stories/images/{date_text}/story-01.jpg"
