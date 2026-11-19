@@ -2,8 +2,7 @@ name: Mana Tech Telugu — Instagram Story Test
 
 on:
   schedule:
-    - cron: "0 18 * * *"
-      timezone: "Asia/Kolkata"
+    - cron: "30 12 * * *"
   workflow_dispatch:
     inputs:
       post_date:
