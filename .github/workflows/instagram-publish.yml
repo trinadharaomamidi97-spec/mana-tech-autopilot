@@ -1,4 +1,4 @@
-name: Mana Tech Telugu — Daily Instagram Stories
+name: Mana Tech Telugu — Daily Instagram Feed Posts
 
 on:
   schedule:
@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   publish:
-    name: Restore and publish queued 9:16 Instagram Stories
+    name: Prepare and publish queued 4:5 Instagram Feed photo posts
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -50,7 +50,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install Pillow
 
-      - name: Prepare today's licensed 9:16 Story image inside GitHub Actions
+      - name: Prepare today's licensed 4:5 Feed photo inside GitHub Actions
         env:
           POST_DATE: ${{ steps.date.outputs.post_date }}
         run: |
@@ -243,7 +243,7 @@ jobs:
               print("All active image URLs verified; no staged posts to promote.")
           PY
 
-      - name: Publish queued Instagram Stories
+      - name: Publish queued Instagram Feed photo posts
         env:
           META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
