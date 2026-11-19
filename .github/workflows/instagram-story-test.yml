@@ -1,0 +1,87 @@
+name: Mana Tech Telugu — Instagram Story Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_date:
+        description: "Date for this Story test (YYYY-MM-DD)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mana-tech-instagram-story
+  cancel-in-progress: false
+
+jobs:
+  story:
+    name: Prepare and publish independent 9:16 Instagram Story
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install Pillow
+
+      - name: Prepare source photo if today's Feed manifest is absent
+        env:
+          POST_DATE: ${{ inputs.post_date }}
+        run: |
+          if [ ! -f "posts/$POST_DATE.json" ] || [ ! -f "posts/images/$POST_DATE/post-01.jpg" ]; then
+            python instagram-publisher/commons_poster.py --date "$POST_DATE"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add "posts/$POST_DATE.json" "posts/images/$POST_DATE/post-01.jpg"
+            git commit -m "Prepare source photo for Instagram Story $POST_DATE"
+            git push origin HEAD:main
+          else
+            echo "Using existing Feed source photo for $POST_DATE."
+          fi
+
+      - name: Create separate 9:16 Story asset and manifest
+        env:
+          POST_DATE: ${{ inputs.post_date }}
+        run: |
+          if [ -f "stories/$POST_DATE.json" ]; then
+            echo "Story manifest already exists; refusing to overwrite or duplicate it."
+            exit 1
+          fi
+          python instagram-publisher/prepare_story.py --date "$POST_DATE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "stories/$POST_DATE.json" "stories/images/$POST_DATE/story-01.jpg"
+          git commit -m "Prepare independent Instagram Story image for $POST_DATE"
+          git push origin HEAD:main
+
+      - name: Verify public Story image
+        env:
+          POST_DATE: ${{ inputs.post_date }}
+        run: |
+          python - <<'PY'
+          import os
+          from urllib.request import Request, urlopen
+          url=f"https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/{os.environ['POST_DATE']}/story-01.jpg"
+          req=Request(url,headers={"User-Agent":"ManaTechTeluguAutoPilot/1.0"})
+          with urlopen(req,timeout=30) as r: data=r.read()
+          if not (data.startswith(b"\\xff\\xd8\\xff") and data.endswith(b"\\xff\\xd9")):
+              raise SystemExit("Public Story image is not a valid JPEG.")
+          print(f"Verified public Story JPEG ({len(data)} bytes).")
+          PY
+
+      - name: Publish Instagram Story only
+        env:
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          POST_DATE: ${{ inputs.post_date }}
+        run: python instagram-publisher/publish_story.py --date "$POST_DATE"
