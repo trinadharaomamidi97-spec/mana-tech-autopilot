@@ -1,11 +1,14 @@
 name: Mana Tech Telugu — Instagram Story Test
 
 on:
+  schedule:
+    - cron: "0 18 * * *"
+      timezone: "Asia/Kolkata"
   workflow_dispatch:
     inputs:
       post_date:
-        description: "Date for this Story test (YYYY-MM-DD)"
-        required: true
+        description: "Date for this Story run (YYYY-MM-DD); leave blank for today in India"
+        required: false
         type: string
 
 permissions:
@@ -21,6 +24,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Resolve Story date
+        id: date
+        env:
+          INPUT_DATE: ${{ inputs.post_date || '' }}
+        run: |
+          DATE_TO_PUBLISH="$INPUT_DATE"
+          if [ -z "$DATE_TO_PUBLISH" ]; then
+            DATE_TO_PUBLISH="$(TZ=Asia/Kolkata date +%F)"
+          fi
+          echo "post_date=$DATE_TO_PUBLISH" >> "$GITHUB_OUTPUT"
+
       - name: Check out repository
         uses: actions/checkout@v4
         with:
@@ -36,7 +50,7 @@ jobs:
 
       - name: Prepare source photo if today's Feed manifest is absent
         env:
-          POST_DATE: ${{ inputs.post_date }}
+          POST_DATE: ${{ steps.date.outputs.post_date }}
         run: |
           if [ ! -f "posts/$POST_DATE.json" ] || [ ! -f "posts/images/$POST_DATE/post-01.jpg" ]; then
             python instagram-publisher/commons_poster.py --date "$POST_DATE"
@@ -51,7 +65,7 @@ jobs:
 
       - name: Create or reuse separate 9:16 Story asset and manifest
         env:
-          POST_DATE: ${{ inputs.post_date }}
+          POST_DATE: ${{ steps.date.outputs.post_date }}
         run: |
           if [ -f "stories/$POST_DATE.json" ] && [ -f "stories/images/$POST_DATE/story-01.jpg" ]; then
             echo "Using the separately generated Story image and manifest for $POST_DATE."
@@ -70,7 +84,7 @@ jobs:
 
       - name: Verify public Story image
         env:
-          POST_DATE: ${{ inputs.post_date }}
+          POST_DATE: ${{ steps.date.outputs.post_date }}
         run: |
           python - <<'PY'
           import os
@@ -87,5 +101,5 @@ jobs:
         env:
           META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
-          POST_DATE: ${{ inputs.post_date }}
+          POST_DATE: ${{ steps.date.outputs.post_date }}
         run: python instagram-publisher/publish_story.py --date "$POST_DATE"
