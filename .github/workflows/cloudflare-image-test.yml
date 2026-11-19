@@ -1,0 +1,53 @@
+name: Cloudflare AI Image Generator — Safe Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Image subject or scene (leave blank for the Ajanta test prompt)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-image-preview
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    name: Generate preview only (no Instagram publishing)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out selected branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install --upgrade pip Pillow
+
+      - name: Generate Feed and Story image variants
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          IMAGE_PROMPT: ${{ inputs.prompt }}
+        run: |
+          if [ -n "$IMAGE_PROMPT" ]; then
+            python instagram-publisher/cloudflare_image.py --prompt "$IMAGE_PROMPT" --output-dir cloudflare-preview
+          else
+            python instagram-publisher/cloudflare_image.py --output-dir cloudflare-preview
+          fi
+
+      - name: Upload preview images
+        uses: actions/upload-artifact@v4
+        with:
+          name: mana-tech-telugu-cloudflare-image-preview
+          path: cloudflare-preview/
+          if-no-files-found: error
+          retention-days: 7
