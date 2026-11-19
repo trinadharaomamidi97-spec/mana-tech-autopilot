@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-20",
+  "posts": [
+    {
+      "id": "2026-11-20-01",
+      "status": "staged",
+      "topic": "ajanta",
+      "language": "te",
+      "title": "రాతిలో చెక్కిన అద్భుత కళా ప్రపంచం!",
+      "description": "మహారాష్ట్రలోని అజంతా గుహలు బౌద్ధ సంప్రదాయానికి చెందిన శిలా నిర్మాణాలు, చిత్రకళకు ప్రసిద్ధి. ఈ గుహలు 1983లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరాయి.",
+      "call_to_action": "అజంతా గుహల చిత్రకళ గురించి మీకు తెలుసా?\n\nచిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#AjantaCaves",
+        "#IndianArt",
+        "#BuddhistHeritage",
+        "#UNESCO",
+        "#TeluguHistory"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-20/post-01.jpg",
+      "alt_text": "AI-generated artistic reconstruction inspired by ajanta in India; no text or graphic overlay.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Ajanta Caves — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/242/",
+          "checked_at": "2026-11-20"
+        }
+      ],
+      "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
+      "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు."
+    }
+  ]
+}

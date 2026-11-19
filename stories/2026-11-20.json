@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-20",
+  "stories": [
+    {
+      "id": "2026-11-20-story-01",
+      "status": "queued",
+      "topic": "ajanta",
+      "title": "రాతిలో చెక్కిన అద్భుత కళా ప్రపంచం!",
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/2026-11-20/story-01.jpg",
+      "alt_text": "AI-generated artistic reconstruction inspired by ajanta in India.",
+      "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
+      "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు."
+    }
+  ]
+}
