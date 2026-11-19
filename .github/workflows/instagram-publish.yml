@@ -145,6 +145,18 @@ jobs:
                   source.save(image_path, "JPEG", quality=94, optimize=True, progressive=True)
 
               post["status"] = "queued"
+              post["alt_text"] = str(post.get("alt_text", "")).replace(
+                  "vertical 9:16", "portrait 4:5"
+              )
+              post["call_to_action"] = str(post.get("call_to_action", "")).replace(
+                  "cropped to a 9:16 full-screen Story frame only",
+                  "cropped to a 4:5 portrait Feed frame",
+              )
+              attribution = post.get("photo_attribution")
+              if isinstance(attribution, dict):
+                  attribution["modification"] = (
+                      "Cropped to a 4:5 portrait Feed frame; no text or graphic overlay added."
+                  )
               for key in (
                   "creation_id", "media_surface", "container_created_at",
                   "publish_started_at", "instagram_media_id", "published_at",
