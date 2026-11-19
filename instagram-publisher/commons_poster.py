@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare one clean 1080x1920 photo-only Instagram Story image.
+"""Prepare one clean 1080x1350 photo-only Instagram Feed image.
 
 No titles, logos, borders, text panels, or watermarks are added. Story text
 metadata stays in the manifest; only public-domain/CC0 sources are accepted.
@@ -186,8 +186,8 @@ def license_allowed(name: str) -> bool:
         return False
     if "no derivatives" in value or "nd" in value.split():
         return False
-    # Story media has no normal caption field. To avoid silently omitting
-    # legally required visible attribution, use only public-domain/CC0 files.
+    # Use public-domain/CC0 files so attribution requirements do not get
+    # accidentally omitted; full attribution is also included in the Feed caption.
     return value in {"public domain", "public domain mark", "cc0", "cc0 1.0"}
 
 def search_commons(topic: dict) -> dict:
@@ -256,14 +256,14 @@ def search_commons(topic: dict) -> dict:
     return candidates[0]
 
 def make_photo(photo_bytes: bytes, output_path: Path) -> None:
-    """Create a clean 1080x1920 full-screen Story crop; never draw text or graphics."""
+    """Create a clean 1080x1350 portrait Feed crop; never draw text or graphics."""
     from io import BytesIO
 
     with Image.open(BytesIO(photo_bytes)) as source:
         source = ImageOps.exif_transpose(source).convert("RGB")
         image = ImageOps.fit(
             source,
-            (1080, 1920),
+            (1080, 1350),
             method=Image.Resampling.LANCZOS,
             centering=(0.5, 0.42),
         )
@@ -272,10 +272,10 @@ def make_photo(photo_bytes: bytes, output_path: Path) -> None:
     if output_path.stat().st_size > 8 * 1024 * 1024:
         image.save(output_path, format="JPEG", quality=85, optimize=True, progressive=True)
     if output_path.stat().st_size > 8 * 1024 * 1024:
-        raise RuntimeError("Story image exceeds Meta's 8 MB image limit.")
+        raise RuntimeError("Feed image exceeds Meta's 8 MB image limit.")
     with Image.open(output_path) as check:
-        if check.size != (1080, 1920):
-            raise RuntimeError(f"Expected 1080x1920 Story image, got {check.size}.")
+        if check.size != (1080, 1350):
+            raise RuntimeError(f"Expected 1080x1350 Feed image, got {check.size}.")
         check.verify()
 
 def main() -> int:
@@ -332,7 +332,7 @@ def main() -> int:
     attribution = (
         f"📷 Photo: {photo['artist']} / Wikimedia Commons. "
         f"Source: {photo['page_url']}. License: {photo['license']} "
-        f"{photo['license_url']}. Modified: cropped to a 9:16 full-screen Story frame only; no text or graphics added. "
+        f"{photo['license_url']}. Modified: cropped to a 4:5 portrait Feed frame only; no text or graphics added. "
         f"The adapted image is shared under {poster_license}."
     )
     manifest = {
@@ -371,7 +371,7 @@ def main() -> int:
     size_kb = image_path.stat().st_size / 1024
     print(f"Created {image_path} ({size_kb:.1f} KB)")
     print(f"Created staged manifest {manifest_path}")
-    print("Created clean 1080x1920 photo-only JPEG. The workflow must verify its public URL before publishing.")
+    print("Created clean 1080x1350 photo-only JPEG. The workflow must verify its public URL before publishing.")
     return 0
 
 if __name__ == "__main__":
