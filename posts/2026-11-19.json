@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-19",
+  "posts": [
+    {
+      "id": "2026-11-19-01",
+      "status": "staged",
+      "topic": "konark",
+      "language": "te",
+      "title": "సూర్యుడి రథంలా నిర్మించిన ఆలయం!",
+      "description": "ఒడిశాలోని కోణార్క్ సూర్య దేవాలయం సూర్య భగవానుడి రథాన్ని పోలిన నిర్మాణ రూపకల్పనకు ప్రసిద్ధి. ఈ 13వ శతాబ్దపు ఆలయం 1984లో UNESCO ప్రపంచ వారసత్వ ప్రదేశంగా గుర్తింపు పొందింది.",
+      "call_to_action": "ఈ రథాకార ఆలయ నిర్మాణం మీకు ఎలా అనిపించింది?\n\n📷 Photo: Maina Tudu / Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Konark_Sun_Temple_backside.jpg. License: CC0 http://creativecommons.org/publicdomain/zero/1.0/deed.en. Modified: cropped to a 9:16 full-screen Story frame only; no text or graphics added. The adapted image is shared under CC0 1.0 / Public Domain.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#Konark",
+        "#SunTemple",
+        "#Odisha",
+        "#IndianArchitecture",
+        "#UNESCO"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-19/post-01.jpg",
+      "alt_text": "Clean, photorealistic vertical 9:16 photograph of konark; no text or graphic overlay.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Sun Temple, Konârak — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/246/",
+          "checked_at": "2026-11-19"
+        }
+      ],
+      "photo_attribution": {
+        "artist": "Maina Tudu",
+        "commons_file": "File:Konark Sun Temple backside.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Konark_Sun_Temple_backside.jpg",
+        "license": "CC0",
+        "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "modification": "Cropped to a 9:16 full-screen Story frame only; no text or graphic overlay added.",
+        "adapted_poster_license": "CC0 1.0 / Public Domain"
+      }
+    }
+  ]
+}
