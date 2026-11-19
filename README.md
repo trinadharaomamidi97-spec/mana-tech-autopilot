@@ -2,19 +2,21 @@
 
 Photo-first, cloud-based Instagram publishing for **Mana Tech Telugu**.
 
-## Target daily workflow (Asia/Kolkata)
+## Daily workflow (Asia/Kolkata)
 
-- **Image standard:** Every automated photo is a clean 1080 × 1920 (9:16) JPEG for Instagram Stories. No text, logos, borders, poster panels, or watermarks are added to the image.
-- **Caption:** Telugu title, description, call to action, source attribution, and hashtags are kept as editorial metadata; Instagram Stories do not display a normal feed caption.
-- **11:00 AM:** GitHub Actions reads the dated queue and publishes queued 9:16 photo Stories to Instagram through the official Meta API.
-- Stories are ephemeral and normally disappear after 24 hours. These image Stories do not appear as permanent feed posts or accumulate feed likes. Videos remain manual uploads by the account owner.
+- **9:00 AM — Story:** GitHub Actions prepares the day's assets and publishes the dedicated 1080 × 1920 (9:16) Story image.
+- **9:00 PM — Feed:** GitHub Actions publishes the separate 1080 × 1350 (4:5) Feed image.
+- **9:10 PM — Feed retry:** A safety run retries queued Feed posts; already-published posts are skipped.
+- Feed and Story use separate image compositions when Cloudflare Workers AI is available. Wikimedia Commons remains the fallback source if AI image generation is unavailable.
+- Images contain no title panels, text overlays, logos, borders, or watermarks. Telugu titles, descriptions, calls to action, source details, and hashtags are stored as metadata; the Feed caption is published with the Feed photo.
+- Videos remain manual uploads by the account owner.
 
-## Current implementation status
+## Publishing and safety
 
-- A real GitHub-hosted image was fetched and processed by Meta, and a test photo was manually published and verified on `@mana_tech_telugu`.
-- The daily Story publisher and 11:00 AM workflow are now in the repository.
-- The workflow can prepare one licensed-photo post automatically when no dated manifest exists; it verifies the public image URL before publishing.
-- The workflow requires the existing `META_IG_USER_ID` and `META_ACCESS_TOKEN` GitHub Actions secrets. Never commit tokens or other credentials.
+- The Feed and Story workflows share one concurrency group because both update publishing manifests on `main`. This serializes their commits and prevents concurrent pushes from racing.
+- Each workflow verifies its public raw GitHub JPEG before asking Meta to publish it.
+- Published manifest entries are skipped on retries to reduce accidental duplicate posts.
+- The workflows require the existing `META_IG_USER_ID` and `META_ACCESS_TOKEN` GitHub Actions secrets. Cloudflare image generation uses `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. Never commit tokens or other credentials.
 
 ## Public repository notice
 
