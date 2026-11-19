@@ -2,7 +2,7 @@ name: Mana Tech Telugu — Daily Instagram Feed Posts
 
 on:
   schedule:
-    - cron: "30 5 * * *"
+    - cron: "30 15 * * *"
   workflow_dispatch:
     inputs:
       post_date:
