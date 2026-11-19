@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-20-01",
-      "status": "publishing",
+      "status": "published",
       "topic": "ajanta",
       "language": "te",
       "title": "రాతిలో చెక్కిన అద్భుత కళా ప్రపంచం!",
@@ -32,7 +32,9 @@
       "creation_id": "18103300085422605",
       "media_surface": "FEED",
       "container_created_at": "2026-11-19T07:20:04+00:00",
-      "publish_started_at": "2026-11-19T07:20:06+00:00"
+      "publish_started_at": "2026-11-19T07:20:06+00:00",
+      "instagram_media_id": "18135589753854492",
+      "published_at": "2026-11-19T07:20:11+00:00"
     }
   ]
 }
