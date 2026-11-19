@@ -182,13 +182,18 @@ def strip_html(value: str) -> str:
 
 def license_allowed(name: str) -> bool:
     value = name.casefold().replace("creative commons", "cc").strip()
-    if "noncommercial" in value or "non-commercial" in value or "nc" in value.split():
+    # Never use NonCommercial or NoDerivatives files for an Instagram post.
+    if any(term in value for term in ("noncommercial", "non-commercial", "no derivatives")):
         return False
-    if "no derivatives" in value or "nd" in value.split():
+    tokens = set(re.split(r"[^a-z0-9]+", value))
+    if "nc" in tokens or "nd" in tokens:
         return False
-    # Use public-domain/CC0 files so attribution requirements do not get
-    # accidentally omitted; full attribution is also included in the Feed caption.
-    return value in {"public domain", "public domain mark", "cc0", "cc0 1.0"}
+    # Accept public-domain/CC0 and attribution licenses. The full creator,
+    # source, license URL, and crop modification are included in the caption.
+    # CC BY-SA adaptations retain the same ShareAlike license in the caption.
+    if value in {"public domain", "public domain mark", "cc0", "cc0 1.0"}:
+        return True
+    return value.startswith(("cc by ", "cc by-sa ", "cc by-sa-"))
 
 def search_commons(topic: dict) -> dict:
     params = {
