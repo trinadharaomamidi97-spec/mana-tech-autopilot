@@ -94,6 +94,82 @@ jobs:
             git push origin HEAD:main
           fi
 
+      - name: Repair legacy Story state before Feed publishing
+        env:
+          POST_DATE: ${{ steps.date.outputs.post_date }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+          from PIL import Image, ImageOps
+
+          root = Path.cwd()
+          date = os.environ["POST_DATE"]
+          manifest_path = root / "posts" / f"{date}.json"
+          if not manifest_path.is_file():
+              print(f"No Feed manifest for {date}; nothing to repair.")
+              raise SystemExit(0)
+
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          repaired = False
+          for post in manifest.get("posts", []):
+              if post.get("status") != "published" or post.get("media_surface") != "STORY":
+                  continue
+
+              image_url = str(post.get("image_url", ""))
+              expected_prefix = (
+                  "https://raw.githubusercontent.com/"
+                  "trinadharaomamidi97-spec/mana-tech-autopilot/main/"
+                  f"posts/images/{date}/"
+              )
+              if not image_url.startswith(expected_prefix):
+                  raise SystemExit(f"Refusing to repair unexpected image URL for {post.get('id')}.")
+
+              filename = image_url.rsplit("/", 1)[-1]
+              if filename != "post-01.jpg":
+                  raise SystemExit(f"Unexpected Feed image filename: {filename}")
+              image_path = root / "posts" / "images" / date / filename
+              if not image_path.is_file():
+                  raise SystemExit(f"Feed image missing; cannot safely repair {image_path}.")
+
+              with Image.open(image_path) as source:
+                  source = ImageOps.exif_transpose(source).convert("RGB")
+                  if source.size != (1080, 1350):
+                      source = ImageOps.fit(
+                          source, (1080, 1350),
+                          method=Image.Resampling.LANCZOS,
+                          centering=(0.5, 0.42),
+                      )
+                  source.save(image_path, "JPEG", quality=94, optimize=True, progressive=True)
+
+              post["status"] = "queued"
+              for key in (
+                  "creation_id", "media_surface", "container_created_at",
+                  "publish_started_at", "instagram_media_id", "published_at",
+              ):
+                  post.pop(key, None)
+              repaired = True
+              print(f"Re-queued {post['id']} as a Feed post and prepared a 1080x1350 image.")
+
+          if repaired:
+              manifest_path.write_text(
+                  json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+              subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
+              subprocess.run(
+                  ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
+                  check=True,
+              )
+              subprocess.run(["git", "add", str(manifest_path.relative_to(root)), str(image_path.relative_to(root))], check=True)
+              subprocess.run(["git", "commit", "-m", f"Prepare legacy Story asset as Feed post for {date}"], check=True)
+              subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
+          else:
+              print("No legacy Story-as-Feed state found; existing Feed queue is unchanged.")
+          PY
+
       - name: Rebuild staged JPEGs from small text chunks
         env:
           POST_DATE: ${{ steps.date.outputs.post_date }}
