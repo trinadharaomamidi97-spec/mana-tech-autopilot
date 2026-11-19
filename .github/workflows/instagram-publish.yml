@@ -2,8 +2,7 @@ name: Mana Tech Telugu — Daily Instagram Feed Posts
 
 on:
   schedule:
-    - cron: "0 11 * * *"
-      timezone: "Asia/Kolkata"
+    - cron: "30 5 * * *"
   workflow_dispatch:
     inputs:
       post_date:
