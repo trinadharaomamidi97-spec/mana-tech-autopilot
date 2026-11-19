@@ -5,6 +5,10 @@
 *.pem
 *.key
 
+# Python cache
+__pycache__/
+*.py[cod]
+
 # Dependencies and build output
 node_modules/
 dist/
