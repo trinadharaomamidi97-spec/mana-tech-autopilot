@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish up to three queued 9:16 Instagram photo Stories from a daily JSON manifest.
+"""Publish up to three queued 4:5 Instagram Feed photo posts from a daily JSON manifest.
 
 Only Python's standard library is used. State transitions are committed after
 each important step so a manual retry does not blindly publish duplicates.
@@ -204,12 +204,11 @@ def publish_post(post: dict, manifest: dict, manifest_path: Path, ig_user_id: st
         return
 
     if status == "queued":
-        # A 9:16 still image is published as an Instagram Story, not a feed photo.
-        # Stories do not have a feed caption; keep the Telugu copy in the manifest
-        # for editorial records, but do not send unsupported caption/alt_text fields.
+        # Feed photo posts support a caption with Telugu title, description, CTA,
+        # photo attribution, and hashtags.
         params = {
             "image_url": post["image_url"],
-            "media_type": "STORIES",
+            "caption": build_caption(post),
             "access_token": token,
         }
 
@@ -218,7 +217,7 @@ def publish_post(post: dict, manifest: dict, manifest_path: Path, ig_user_id: st
         if not creation_id:
             raise GraphAPIError(f"Meta did not return a media container ID for {post_id}.")
         post["creation_id"] = creation_id
-        post["media_surface"] = "STORY"
+        post["media_surface"] = "FEED"
         post["status"] = "container_ready"
         post["container_created_at"] = now_utc()
         save(manifest, manifest_path, f"Save Instagram container for {post_id}")
@@ -251,7 +250,7 @@ def publish_post(post: dict, manifest: dict, manifest_path: Path, ig_user_id: st
         post["instagram_media_id"] = media_id
         post["published_at"] = now_utc()
         save(manifest, manifest_path, f"Mark Instagram post published: {post_id}")
-        print(f"Published Story {post_id}; Instagram media ID: {media_id}")
+        print(f"Published Feed photo post {post_id}; Instagram media ID: {media_id}")
 
 
 def main() -> int:
