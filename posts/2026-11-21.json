@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-21",
+  "posts": [
+    {
+      "id": "2026-11-21-01",
+      "status": "staged",
+      "topic": "ellora",
+      "language": "te",
+      "title": "ఒకే కొండలో చెక్కిన మహా ఆలయం!",
+      "description": "ఎల్లోరా గుహల్లోని కైలాస ఆలయం ఒకే రాతి కొండను పై నుంచి కిందికి తొలిచి రూపొందించిన విశేష నిర్మాణం. ఎల్లోరా గుహ సముదాయం 1983లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరింది.",
+      "call_to_action": "ఇలాంటి రాతి నిర్మాణాన్ని చూసి ఆశ్చర్యపోతున్నారా?\n\nచిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#ElloraCaves",
+        "#KailasaTemple",
+        "#IndianArchitecture",
+        "#UNESCO",
+        "#History"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-21/post-01.jpg",
+      "alt_text": "AI-generated artistic reconstruction inspired by ellora in India; no text or graphic overlay.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Ellora Caves — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/243/",
+          "checked_at": "2026-11-21"
+        }
+      ],
+      "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
+      "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు."
+    }
+  ]
+}
