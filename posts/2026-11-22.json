@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-22-01",
-      "status": "publishing",
+      "status": "published",
       "topic": "sanchi",
       "language": "te",
       "title": "సాంచీ స్థూపం చెప్పే చరిత్ర!",
@@ -32,7 +32,9 @@
       "creation_id": "18103783751422605",
       "media_surface": "FEED",
       "container_created_at": "2026-11-21T21:00:51+00:00",
-      "publish_started_at": "2026-11-21T21:00:53+00:00"
+      "publish_started_at": "2026-11-21T21:00:53+00:00",
+      "instagram_media_id": "18475585561140818",
+      "published_at": "2026-11-21T21:00:58+00:00"
     }
   ]
 }
