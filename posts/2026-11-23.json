@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-23",
+  "posts": [
+    {
+      "id": "2026-11-23-01",
+      "status": "staged",
+      "topic": "rani-ki-vav",
+      "language": "te",
+      "title": "భూమి కింద దాగిన శిల్పాల ప్రపంచం!",
+      "description": "గుజరాత్‌లోని రాణి కి వావ్ ఒక అద్భుతమైన మెట్ల బావి. దాని గోడలపై ఉన్న శిల్పాలు, స్థాయిలుగా దిగే నిర్మాణం భారతదేశపు చారిత్రక నీటి నిర్వహణ కళను తెలియజేస్తాయి.",
+      "call_to_action": "ఇలాంటి మెట్ల బావిని ప్రత్యక్షంగా చూడాలనుకుంటున్నారా?\n\nచిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#RaniKiVav",
+        "#Stepwell",
+        "#GujaratHeritage",
+        "#IndianArchitecture",
+        "#UNESCO"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-23/post-01.jpg",
+      "alt_text": "AI-generated artistic reconstruction inspired by rani ki vav in India; no text or graphic overlay.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Rani-ki-Vav (the Queen’s Stepwell) — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/922/",
+          "checked_at": "2026-11-23"
+        }
+      ],
+      "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
+      "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు."
+    }
+  ]
+}
