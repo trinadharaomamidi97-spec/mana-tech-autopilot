@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-23-01",
-      "status": "container_ready",
+      "status": "publishing",
       "topic": "rani-ki-vav",
       "language": "te",
       "title": "భూమి కింద దాగిన శిల్పాల ప్రపంచం!",
@@ -31,7 +31,8 @@
       "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు.",
       "creation_id": "18103984145422605",
       "media_surface": "FEED",
-      "container_created_at": "2026-11-22T21:10:57+00:00"
+      "container_created_at": "2026-11-22T21:10:57+00:00",
+      "publish_started_at": "2026-11-22T21:10:59+00:00"
     }
   ]
 }
