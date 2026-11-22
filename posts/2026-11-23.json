@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-23-01",
-      "status": "publishing",
+      "status": "published",
       "topic": "rani-ki-vav",
       "language": "te",
       "title": "భూమి కింద దాగిన శిల్పాల ప్రపంచం!",
@@ -32,7 +32,9 @@
       "creation_id": "18103984145422605",
       "media_surface": "FEED",
       "container_created_at": "2026-11-22T21:10:57+00:00",
-      "publish_started_at": "2026-11-22T21:10:59+00:00"
+      "publish_started_at": "2026-11-22T21:10:59+00:00",
+      "instagram_media_id": "17980989960414187",
+      "published_at": "2026-11-22T21:11:03+00:00"
     }
   ]
 }
