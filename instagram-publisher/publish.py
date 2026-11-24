@@ -214,19 +214,24 @@ def publish_post(post: dict, manifest: dict, manifest_path: Path, ig_user_id: st
         caption = build_caption(post)
         image_urls = post.get("image_urls")
         if isinstance(image_urls, list):
-            child_ids = []
-            for index, image_url in enumerate(image_urls, start=1):
+            # Persist each child ID immediately. If a later child request fails,
+            # a retry resumes from the saved IDs instead of recreating earlier items.
+            child_ids = post.get("carousel_child_ids", [])
+            if not isinstance(child_ids, list) or len(child_ids) > len(image_urls):
+                raise ValueError(f"Post {post_id} has invalid saved carousel child state.")
+            for index in range(len(child_ids), len(image_urls)):
                 child = graph_request("POST", f"{ig_user_id}/media", {
-                    "image_url": image_url,
+                    "image_url": image_urls[index],
                     "is_carousel_item": "true",
                     "access_token": token,
                 })
                 child_id = str(child.get("id", ""))
                 if not child_id:
-                    raise GraphAPIError(f"Meta did not return carousel child {index} for {post_id}.")
+                    raise GraphAPIError(f"Meta did not return carousel child {index + 1} for {post_id}.")
                 child_ids.append(child_id)
-            post["carousel_child_ids"] = child_ids
-            save(manifest, manifest_path, f"Save Instagram carousel items for {post_id}")
+                post["carousel_child_ids"] = child_ids
+                save(manifest, manifest_path, f"Save Instagram carousel item {index + 1} for {post_id}")
+
             for child_id in child_ids:
                 if not wait_until_finished(child_id, token):
                     print(f"Carousel item {child_id} is still processing; run this date again later.")
