@@ -147,7 +147,6 @@ TOPICS = [
         "source_url": "https://whc.unesco.org/en/list/249",
         "hashtags": ["#ManaTechTelugu", "#Mahabalipuram", "#PallavaHistory", "#TamilNadu", "#UNESCO", "#IndianHeritage"],
     },
-,
     {
         "slug": "venus-long-day",
         "category": "SPACE SCIENCE",
