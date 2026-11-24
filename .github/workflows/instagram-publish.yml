@@ -285,31 +285,39 @@ jobs:
           for post in manifest.get("posts", []):
               if post.get("status") not in active:
                   continue
-              url = str(post.get("image_url", "")).strip()
-              last_error = None
-              remote = None
-              for attempt in range(8):
-                  try:
-                      request = Request(url, headers={"User-Agent": "ManaTechAutoPilot/1.0"})
-                      with urlopen(request, timeout=30) as response:
-                          remote = response.read()
-                      break
-                  except Exception as exc:
-                      last_error = exc
-                      time.sleep(5)
-              if remote is None:
-                  raise SystemExit(f"Public raw image URL is not reachable for {post.get('id')}: {last_error}")
-              if not (remote.startswith(b"\xff\xd8\xff") and remote.endswith(b"\xff\xd9")):
-                  raise SystemExit(f"Public raw URL did not return a complete JPEG for {post.get('id')}.")
-              filename = url.rsplit("/", 1)[-1]
-              local_path = root / "posts" / "images" / date / filename
-              if local_path.is_file() and local_path.read_bytes() != remote:
-                  raise SystemExit(f"Public image bytes do not match the committed file for {post.get('id')}.")
-              print(f"Verified public JPEG: {url}")
+              image_urls = post.get("image_urls") or [post.get("image_url", "")]
+              if not isinstance(image_urls, list) or not 2 <= len(image_urls) <= 10:
+                  raise SystemExit(f"Carousel post {post.get('id')} must contain 2–10 image URLs.")
+              for url in image_urls:
+                  url = str(url).strip()
+                  if not url.startswith(
+                      "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/"
+                  ):
+                      raise SystemExit(f"Unsafe public image URL for {post.get('id')}.")
+                  last_error = None
+                  remote = None
+                  for attempt in range(8):
+                      try:
+                          request = Request(url, headers={"User-Agent": "ManaTechAutoPilot/1.0"})
+                          with urlopen(request, timeout=30) as response:
+                              remote = response.read()
+                          break
+                      except Exception as exc:
+                          last_error = exc
+                          time.sleep(5)
+                  if remote is None:
+                      raise SystemExit(f"Public raw image URL is not reachable for {post.get('id')}: {last_error}")
+                  if not (remote.startswith(bytes((255, 216, 255)) ) and remote.endswith(bytes((255, 217)))):
+                      raise SystemExit(f"Public raw URL did not return a complete JPEG for {post.get('id')}.")
+                  filename = url.rsplit("/", 1)[-1]
+                  local_path = root / "posts" / "images" / date / filename
+                  if local_path.is_file() and local_path.read_bytes() != remote:
+                      raise SystemExit(f"Public image bytes do not match the committed file for {post.get('id')}.")
+                  print(f"Verified public JPEG: {url}")
+                  if post.get("status") == "staged":
+                      staged_ids.append(filename[:-4])
               if post.get("status") == "staged":
                   post["status"] = "queued"
-                  staged_ids.append(filename[:-4])
-
           if staged_ids:
               manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
               incoming = root / "incoming" / date
