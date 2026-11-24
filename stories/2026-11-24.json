@@ -3,13 +3,15 @@
   "stories": [
     {
       "id": "2026-11-24-story-01",
-      "status": "queued",
+      "status": "published",
       "topic": "mahabalipuram",
       "title": "సముద్ర తీరాన పల్లవుల శిల్ప వైభవం!",
       "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/2026-11-24/story-01.jpg",
       "alt_text": "AI-generated artistic reconstruction inspired by mahabalipuram in India.",
       "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
-      "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు."
+      "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు.",
+      "instagram_media_id": "18050832323820218",
+      "published_at": "2026-11-24T14:11:08.543080+00:00"
     }
   ]
 }
