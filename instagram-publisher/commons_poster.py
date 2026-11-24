@@ -147,7 +147,66 @@ TOPICS = [
         "source_url": "https://whc.unesco.org/en/list/249",
         "hashtags": ["#ManaTechTelugu", "#Mahabalipuram", "#PallavaHistory", "#TamilNadu", "#UNESCO", "#IndianHeritage"],
     },
-]
+    {
+        "slug": "venus-long-day",
+        "category": "SPACE SCIENCE",
+        "commons_query": "Venus planet NASA",
+        "title": "వీనస్‌పై ఒక రోజు… ఒక ఏడాది కంటే పెద్దది!",
+        "description": (
+            "వీనస్ తన అక్షంపై చాలా నెమ్మదిగా తిరుగుతుంది. "
+            "అక్కడి ఒక భ్రమణ దినం 243 భూమి రోజులు; ఒక సంవత్సరం మాత్రం 225 భూమి రోజులు."
+        ),
+        "cta": "వీనస్‌పై సూర్యోదయం ఎలా ఉంటుందో ఊహించగలరా?",
+        "alt_text": "వీనస్ గ్రహం గురించి నాలుగు స్లైడ్ల తెలుగు విద్యా ఇన్ఫోగ్రాఫిక్.",
+        "source_title": "Venus Facts — NASA Science",
+        "source_url": "https://science.nasa.gov/venus/venus-facts/",
+        "hashtags": ["#ManaTechTelugu", "#Venus", "#SpaceScience", "#NASA", "#TeluguFacts"],
+    },
+    {
+        "slug": "black-holes",
+        "category": "ASTRONOMY",
+        "commons_query": "black hole space illustration NASA",
+        "title": "కాంతి కూడా తప్పించుకోలేని అంతరిక్ష రహస్యం!",
+        "description": (
+            "బ్లాక్ హోల్ అనేది పదార్థం అత్యంత చిన్న ప్రాంతంలో కేంద్రీకృతమైన ఖగోళ వస్తువు. "
+            "దాని ఈవెంట్ హారైజన్ లోపల నుంచి కాంతి కూడా బయటకు రాలేదు."
+        ),
+        "cta": "బ్లాక్ హోల్ గురించి మీకు ఏ సందేహం ఉంది?",
+        "alt_text": "బ్లాక్ హోల్స్ గురించి నాలుగు స్లైడ్ల తెలుగు అంతరిక్ష ఇన్ఫోగ్రాఫిక్.",
+        "source_title": "Black Holes — NASA Science",
+        "source_url": "https://science.nasa.gov/universe/black-holes/",
+        "hashtags": ["#ManaTechTelugu", "#BlackHoles", "#Astronomy", "#NASA", "#SpaceFacts"],
+    },
+    {
+        "slug": "deep-sea-bioluminescence",
+        "category": "OCEAN SCIENCE",
+        "commons_query": "bioluminescent deep sea animals",
+        "title": "సముద్రపు చీకటిలో వెలిగే జీవులు!",
+        "description": (
+            "బయోల్యూమినెసెన్స్ అంటే జీవులు రసాయన చర్య ద్వారా తమంతట తాము కాంతిని ఉత్పత్తి చేయడం. "
+            "లోతైన సముద్రంలో కొన్ని జీవులు ఆ కాంతిని ఆహారం కోసం, రక్షణ కోసం లేదా సమాచారానికి ఉపయోగిస్తాయి."
+        ),
+        "cta": "చీకటిలో వెలిగే ఏ సముద్ర జీవి మీకు ఆసక్తికరంగా అనిపించింది?",
+        "alt_text": "లోతైన సముద్రంలో కాంతిని ఉత్పత్తి చేసే జీవులపై తెలుగు విద్యా ఇన్ఫోగ్రాఫిక్.",
+        "source_title": "What is Bioluminescence? — NOAA Ocean Service",
+        "source_url": "https://oceanservice.noaa.gov/facts/biolum.html",
+        "hashtags": ["#ManaTechTelugu", "#Bioluminescence", "#DeepSea", "#OceanScience", "#NatureFacts"],
+    },
+    {
+        "slug": "octopus-three-hearts",
+        "category": "ANIMAL FACTS",
+        "commons_query": "octopus underwater animal",
+        "title": "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయని తెలుసా?",
+        "description": (
+            "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయి. "
+            "రెండు గుండెలు రక్తాన్ని గిల్ల్స్‌కు పంపుతాయి; మూడో గుండె ఆక్సిజన్ పొందిన రక్తాన్ని శరీరమంతా పంపుతుంది."
+        ),
+        "cta": "మూడు గుండెలున్న ఈ జీవి గురించి ఇంకేం తెలుసుకోవాలనుకుంటున్నారు?",
+        "alt_text": "ఆక్టోపస్ మూడు గుండెల గురించి తెలుగు జంతు విజ్ఞాన ఇన్ఫోగ్రాఫిక్.",
+        "source_title": "Love is in the Air, and Sea — NOAA",
+        "source_url": "https://www.noaa.gov/stories/love-is-in-air-and-sea-5-facts-about-affections-of-marine-creatures",
+        "hashtags": ["#ManaTechTelugu", "#Octopus", "#AnimalFacts", "#OceanLife", "#TeluguFacts"],
+    }]
 
 def http_get(url: str, timeout: int = 45, attempts: int = 5) -> bytes:
     """Fetch Wikimedia API/media with bounded retries for temporary throttling."""
