@@ -1,0 +1,29 @@
+name: Carousel feature branch checks
+
+on:
+  push:
+    branches:
+      - feature/educational-infographic-carousel
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Pillow and Telugu font
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-core
+          python -m pip install Pillow
+      - name: Compile Python modules
+        run: python -m compileall -q instagram-publisher tests
+      - name: Run offline carousel tests
+        env:
+          PYTHONPATH: instagram-publisher
+        run: python -m unittest discover -s tests -v
