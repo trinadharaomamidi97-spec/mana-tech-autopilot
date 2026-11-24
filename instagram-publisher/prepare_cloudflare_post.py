@@ -168,7 +168,8 @@ def main() -> int:
     if any(p.exists() for p in (feed_manifest, feed_dir, story_manifest, story_image)):
         raise RuntimeError(f"Assets already exist for {date_text}; refusing to overwrite or risk duplicate publishing.")
 
-    topic = TOPICS[(post_date - BASE_DATE).days % len(TOPICS)]
+    topic_index = ((post_date - BASE_DATE).days * 5) % len(TOPICS)
+    topic = TOPICS[topic_index]
     print(f"Selected topic: {topic['slug']} — {topic['title']}")
     account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip()
     token = os.getenv("CLOUDFLARE_API_TOKEN", "").strip()
