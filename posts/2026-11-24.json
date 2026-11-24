@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-24",
+  "posts": [
+    {
+      "id": "2026-11-24-01",
+      "status": "staged",
+      "topic": "mahabalipuram",
+      "language": "te",
+      "title": "సముద్ర తీరాన పల్లవుల శిల్ప వైభవం!",
+      "description": "తమిళనాడులోని మహాబలిపురం పల్లవుల కాలానికి చెందిన రాతి ఆలయాలు, శిల్పాలకు ప్రసిద్ధి. ఇక్కడి స్మారక కట్టడాల సమూహం 1984లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరింది.",
+      "call_to_action": "మహాబలిపురం శిల్పాల్లో మీకు నచ్చింది ఏది?\n\nచిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు.",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#Mahabalipuram",
+        "#PallavaHistory",
+        "#TamilNadu",
+        "#UNESCO",
+        "#IndianHeritage"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-24/post-01.jpg",
+      "alt_text": "AI-generated artistic reconstruction inspired by mahabalipuram in India; no text or graphic overlay.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Group of Monuments at Mahabalipuram — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/249",
+          "checked_at": "2026-11-24"
+        }
+      ],
+      "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
+      "image_disclaimer": "చిత్రం AI ద్వారా రూపొందించిన కళాత్మక పునర్నిర్మాణం మాత్రమే; ఇది అసలు చారిత్రక ఫోటో కాదు."
+    }
+  ]
+}
