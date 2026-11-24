@@ -203,9 +203,9 @@ def publish_post(post: dict, manifest: dict, manifest_path: Path, ig_user_id: st
     post_id = post["id"]
     status = post["status"]
 
-    if status in {"draft", "published", "failed", "publishing"}:
-        if status == "publishing":
-            print(f"MANUAL CHECK REQUIRED: {post_id} is marked publishing; not resubmitting.")
+    if status in {"draft", "published", "failed", "publishing", "carousel_container_creating"}:
+        if status in {"publishing", "carousel_container_creating"}:
+            print(f"MANUAL CHECK REQUIRED: {post_id} is in {status}; not resubmitting.")
         else:
             print(f"Skipping {post_id}: status={status}")
         return
@@ -236,6 +236,11 @@ def publish_post(post: dict, manifest: dict, manifest_path: Path, ig_user_id: st
                 if not wait_until_finished(child_id, token):
                     print(f"Carousel item {child_id} is still processing; run this date again later.")
                     return
+            # If Meta accepts the request but the response is lost, do not
+            # blindly create a second parent carousel container on a later run.
+            post["status"] = "carousel_container_creating"
+            post["carousel_container_started_at"] = now_utc()
+            save(manifest, manifest_path, f"Mark carousel container creation started for {post_id}")
             container = graph_request("POST", f"{ig_user_id}/media", {
                 "media_type": "CAROUSEL",
                 "children": ",".join(child_ids),
@@ -324,13 +329,13 @@ def main() -> int:
     for post in posts:
         validate_post(post)
 
-    queued = [p for p in posts if p.get("status") in {"queued", "container_ready", "publishing"}]
+    queued = [p for p in posts if p.get("status") in {"queued", "container_ready", "publishing", "carousel_container_creating"}]
     if not queued:
         print("No queued posts to publish for this date.")
         return 0
 
     for post in posts:
-        if post.get("status") in {"queued", "container_ready", "draft", "published", "failed", "publishing"}:
+        if post.get("status") in {"queued", "container_ready", "draft", "published", "failed", "publishing", "carousel_container_creating"}:
             publish_post(post, manifest, manifest_path, ig_user_id, token)
         else:
             raise ValueError(f"Post {post.get('id')} has unsupported status {post.get('status')}.")
