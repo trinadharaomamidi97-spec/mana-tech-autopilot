@@ -125,11 +125,18 @@ def validate_post(post: dict) -> None:
     if missing:
         raise ValueError(f"Post is missing required fields: {', '.join(missing)}")
 
-    image_url = str(post["image_url"]).strip()
-    if not image_url.startswith(ALLOWED_IMAGE_PREFIX):
-        raise ValueError(
-            f"Post {post['id']} image_url must point to this repository's public raw GitHub content."
-        )
+    image_urls = post.get("image_urls")
+    if image_urls is not None:
+        if not isinstance(image_urls, list) or not 2 <= len(image_urls) <= 10:
+            raise ValueError(f"Carousel post {post['id']} needs 2–10 image_urls.")
+        if any(not isinstance(url, str) or not url.startswith(ALLOWED_IMAGE_PREFIX) for url in image_urls):
+            raise ValueError(f"Carousel post {post['id']} contains an unsafe image URL.")
+    else:
+        image_url = str(post["image_url"]).strip()
+        if not image_url.startswith(ALLOWED_IMAGE_PREFIX):
+            raise ValueError(
+                f"Post {post['id']} image_url must point to this repository's public raw GitHub content."
+            )
 
     if post.get("is_factual") is True:
         sources = post.get("sources")
@@ -204,15 +211,38 @@ def publish_post(post: dict, manifest: dict, manifest_path: Path, ig_user_id: st
         return
 
     if status == "queued":
-        # Feed photo posts support a caption with Telugu title, description, CTA,
-        # photo attribution, and hashtags.
-        params = {
-            "image_url": post["image_url"],
-            "caption": build_caption(post),
-            "access_token": token,
-        }
-
-        container = graph_request("POST", f"{ig_user_id}/media", params)
+        caption = build_caption(post)
+        image_urls = post.get("image_urls")
+        if isinstance(image_urls, list):
+            child_ids = []
+            for index, image_url in enumerate(image_urls, start=1):
+                child = graph_request("POST", f"{ig_user_id}/media", {
+                    "image_url": image_url,
+                    "is_carousel_item": "true",
+                    "access_token": token,
+                })
+                child_id = str(child.get("id", ""))
+                if not child_id:
+                    raise GraphAPIError(f"Meta did not return carousel child {index} for {post_id}.")
+                child_ids.append(child_id)
+            post["carousel_child_ids"] = child_ids
+            save(manifest, manifest_path, f"Save Instagram carousel items for {post_id}")
+            for child_id in child_ids:
+                if not wait_until_finished(child_id, token):
+                    print(f"Carousel item {child_id} is still processing; run this date again later.")
+                    return
+            container = graph_request("POST", f"{ig_user_id}/media", {
+                "media_type": "CAROUSEL",
+                "children": ",".join(child_ids),
+                "caption": caption,
+                "access_token": token,
+            })
+        else:
+            container = graph_request("POST", f"{ig_user_id}/media", {
+                "image_url": post["image_url"],
+                "caption": caption,
+                "access_token": token,
+            })
         creation_id = str(container.get("id", ""))
         if not creation_id:
             raise GraphAPIError(f"Meta did not return a media container ID for {post_id}.")
