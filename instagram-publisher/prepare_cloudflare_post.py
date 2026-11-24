@@ -16,7 +16,7 @@ from datetime import date
 from pathlib import Path
 from typing import Iterable
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 from commons_poster import RAW_PREFIX, TOPICS
 from cloudflare_image import cloudflare_generate, save_variants
 
@@ -106,7 +106,7 @@ def render_infographic(base_bytes: bytes, output_path: Path, topic: dict,
     from io import BytesIO
 
     with Image.open(BytesIO(base_bytes)) as source:
-        image = source.convert("RGB").resize((1080, 1350), Image.Resampling.LANCZOS)
+        image = ImageOps.fit(source.convert("RGB"), (1080, 1350), method=Image.Resampling.LANCZOS, centering=(0.5, 0.48))
     # Dark translucent lower panel preserves the AI artwork while keeping Telugu legible.
     panel = Image.new("RGBA", image.size, (0, 0, 0, 0))
     overlay = ImageDraw.Draw(panel)
