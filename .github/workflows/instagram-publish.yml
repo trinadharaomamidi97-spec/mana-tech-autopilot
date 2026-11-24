@@ -58,6 +58,36 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
+          MANIFEST="posts/$POST_DATE.json"
+          IMAGE_DIR="posts/images/$POST_DATE"
+          STORY_MANIFEST="stories/$POST_DATE.json"
+          STORY_IMAGE="stories/images/$POST_DATE/story-01.jpg"
+
+          expected=(
+            "$MANIFEST"
+            "$IMAGE_DIR/post-01.jpg"
+            "$IMAGE_DIR/post-02.jpg"
+            "$IMAGE_DIR/post-03.jpg"
+            "$IMAGE_DIR/post-04.jpg"
+            "$STORY_MANIFEST"
+            "$STORY_IMAGE"
+          )
+          present=0
+          complete=0
+          for path in "${expected[@]}"; do
+            if [ -s "$path" ]; then
+              present=$((present + 1))
+            fi
+          done
+          if [ "$present" -eq "${#expected[@]}" ]; then
+            echo "All Feed carousel and Story assets already exist for $POST_DATE; preserving them for the safety retry."
+            exit 0
+          fi
+          if [ "$present" -ne 0 ] || [ -e "$IMAGE_DIR" ] || [ -e "$(dirname "$STORY_IMAGE")" ]; then
+            echo "Partial assets already exist for $POST_DATE. Refusing to regenerate or overwrite; manual inspection is required." >&2
+            exit 1
+          fi
+
           python instagram-publisher/prepare_cloudflare_post.py --date "$POST_DATE"
 
       - name: Commit four AI carousel slides and Story asset
