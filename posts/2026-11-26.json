@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-26-01",
-      "status": "publishing",
+      "status": "published",
       "topic": "black-holes",
       "language": "te",
       "title": "కాంతి కూడా తప్పించుకోలేని అంతరిక్ష రహస్యం!",
@@ -45,7 +45,9 @@
       "creation_id": "18104551847422605",
       "media_surface": "FEED",
       "container_created_at": "2026-11-25T23:45:58+00:00",
-      "publish_started_at": "2026-11-25T23:45:59+00:00"
+      "publish_started_at": "2026-11-25T23:45:59+00:00",
+      "instagram_media_id": "18102676853556233",
+      "published_at": "2026-11-25T23:46:21+00:00"
     }
   ]
 }
