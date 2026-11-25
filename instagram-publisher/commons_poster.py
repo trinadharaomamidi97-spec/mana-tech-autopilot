@@ -28,185 +28,232 @@ USER_AGENT = "ManaTechTeluguAutoPilot/1.0 (Wikimedia Commons image reuse with at
 # The date selects one topic, so the same topic is not repeated on consecutive days.
 TOPICS = [
     {
-        "slug": "brihadisvara",
-        "category": "CHOLA HISTORY",
-        "commons_query": "Brihadisvara Temple Thanjavur",
-        "title": "చోళుల వైభవానికి సజీవ సాక్ష్యం!",
-        "description": (
-            "తంజావూరులోని బృహదీశ్వర ఆలయం రాజరాజ చోళుడు నిర్మించిన ప్రసిద్ధ చోళ దేవాలయం. "
-            "ఇది UNESCO గుర్తించిన Great Living Chola Temples సమూహంలో భాగం; ఈ వారసత్వ ప్రదేశం 1987లో జాబితాలో చేరింది."
-        ),
-        "cta": "చోళుల శిల్పకళలో మీకు నచ్చిన అంశం ఏది? కామెంట్ చేయండి.",
-        "alt_text": "తంజావూరులోని బృహదీశ్వర ఆలయ రాతి నిర్మాణాల ఫోటోపై తెలుగు చరిత్ర శీర్షిక, వివరణ ప్యానెల్ మరియు Mana Tech Telugu గుర్తుతో రూపొందించిన పోస్టర్.",
-        "source_title": "Great Living Chola Temples — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/250/",
-        "hashtags": ["#ManaTechTelugu", "#CholaHistory", "#BrihadisvaraTemple", "#Thanjavur", "#UNESCO", "#IndianHeritage", "#TeluguHistory"],
+        "slug": "axolotl-regeneration",
+        "category": "COLORFUL CREATURES",
+        "title": "తన శరీర భాగాలను తిరిగి పెంచుకునే జీవి!",
+        "description": "ఆక్సలోటల్ అనే జలచర సాలమాండర్ కోల్పోయిన కాళ్లు, తోకతో పాటు కొన్ని ఇతర కణజాలాలను తిరిగి పెంచుకోగలదు. శరీర పునరుత్పత్తిని అర్థం చేసుకోవడానికి శాస్త్రవేత్తలు ఈ జీవిని అధ్యయనం చేస్తున్నారు.",
+        "cta": "ఈ అద్భుతమైన జీవి గురించి మీకు తెలిసిన విషయం కామెంట్ చేయండి.",
+        "source_title": "Axolotls and Regeneration — Smithsonian's National Zoo",
+        "source_url": "https://nationalzoo.si.edu/animals/axolotl",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Axolotl",
+            "#AmazingCreatures",
+            "#Wildlife",
+            "#ScienceFacts"
+        ]
     },
     {
-        "slug": "hampi",
-        "category": "VIJAYANAGARA HISTORY",
-        "commons_query": "Hampi Vittala Temple stone chariot",
-        "title": "హంపి రాతి రథం వెనుక అద్భుత కథ!",
-        "description": (
-            "కర్ణాటకలోని హంపి విజయనగర సామ్రాజ్య రాజధాని అవశేషాలకు ప్రసిద్ధి. "
-            "విఠ్ఠల ఆలయ సముదాయంలోని రాతి రథం హంపి శిల్పకళకు గుర్తుగా నిలిచింది; హంపి 1986లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరింది."
-        ),
-        "cta": "హంపిలో మీరు చూడాలనుకునే నిర్మాణం ఏది?",
-        "alt_text": "హంపిలోని విఠ్ఠల ఆలయ రాతి రథం ఫోటోతో రూపొందించిన తెలుగు వారసత్వ పోస్టర్.",
-        "source_title": "Group of Monuments at Hampi — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/241/",
-        "hashtags": ["#ManaTechTelugu", "#Hampi", "#Vijayanagara", "#IndianHistory", "#UNESCOWorldHeritage", "#TeluguFacts"],
+        "slug": "flamingo-colourful-life",
+        "category": "WILDLIFE",
+        "title": "ఫ్లెమింగోల గులాబీ రంగు వెనుక రహస్యం!",
+        "description": "ఫ్లెమింగోల ఈకల గులాబీ లేదా నారింజ రంగు వాటి ఆహారంలోని కెరోటినాయిడ్ వర్ణద్రవ్యాల వల్ల వస్తుంది. ఇవి నీటిలోని చిన్న జీవులు, ఆల్గే వంటి ఆహారాన్ని వడపోసి తింటాయి.",
+        "cta": "ఫ్లెమింగోల రంగు గురించి మీకు ముందే తెలుసా?",
+        "source_title": "Flamingo — San Diego Zoo Wildlife Alliance",
+        "source_url": "https://animals.sandiegozoo.org/animals/flamingo",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Flamingo",
+            "#WildlifeFacts",
+            "#Nature"
+        ]
     },
     {
-        "slug": "konark",
-        "category": "ANCIENT INDIA",
-        "commons_query": "Konark Sun Temple Odisha",
-        "title": "సూర్యుడి రథంలా నిర్మించిన ఆలయం!",
-        "description": (
-            "ఒడిశాలోని కోణార్క్ సూర్య దేవాలయం సూర్య భగవానుడి రథాన్ని పోలిన నిర్మాణ రూపకల్పనకు ప్రసిద్ధి. "
-            "ఈ 13వ శతాబ్దపు ఆలయం 1984లో UNESCO ప్రపంచ వారసత్వ ప్రదేశంగా గుర్తింపు పొందింది."
-        ),
-        "cta": "ఈ రథాకార ఆలయ నిర్మాణం మీకు ఎలా అనిపించింది?",
-        "alt_text": "ఒడిశాలోని కోణార్క్ సూర్య దేవాలయ రాతి నిర్మాణం ఫోటోతో రూపొందించిన తెలుగు పోస్టర్.",
-        "source_title": "Sun Temple, Konârak — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/246/",
-        "hashtags": ["#ManaTechTelugu", "#Konark", "#SunTemple", "#Odisha", "#IndianArchitecture", "#UNESCO"],
+        "slug": "octopus-three-hearts",
+        "category": "OCEAN CREATURES",
+        "title": "మూడు గుండెలతో సముద్రంలో జీవించే ఆక్టోపస్!",
+        "description": "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయి. రెండు గుండెలు రక్తాన్ని గిల్ల్స్‌కు పంపుతాయి; మూడో గుండె ఆక్సిజన్ పొందిన రక్తాన్ని శరీరమంతా పంపుతుంది.",
+        "cta": "ఆక్టోపస్ జీవనశైలి గురించి ఇంకేం తెలుసుకోవాలనుకుంటున్నారు?",
+        "source_title": "Octopus Facts — NOAA",
+        "source_url": "https://oceanservice.noaa.gov/facts/octopus.html",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Octopus",
+            "#OceanLife",
+            "#CreatureFacts"
+        ]
     },
     {
-        "slug": "ajanta",
-        "category": "INDIAN ART HISTORY",
-        "commons_query": "Ajanta Caves Maharashtra",
-        "title": "రాతిలో చెక్కిన అద్భుత కళా ప్రపంచం!",
-        "description": (
-            "మహారాష్ట్రలోని అజంతా గుహలు బౌద్ధ సంప్రదాయానికి చెందిన శిలా నిర్మాణాలు, చిత్రకళకు ప్రసిద్ధి. "
-            "ఈ గుహలు 1983లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరాయి."
-        ),
-        "cta": "అజంతా గుహల చిత్రకళ గురించి మీకు తెలుసా?",
-        "alt_text": "మహారాష్ట్రలోని అజంతా గుహల ముఖభాగం లేదా శిలా నిర్మాణం ఫోటోతో రూపొందించిన తెలుగు పోస్టర్.",
-        "source_title": "Ajanta Caves — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/242/",
-        "hashtags": ["#ManaTechTelugu", "#AjantaCaves", "#IndianArt", "#BuddhistHeritage", "#UNESCO", "#TeluguHistory"],
+        "slug": "deep-sea-bioluminescence",
+        "category": "UNDERWATER WORLD",
+        "title": "చీకటి సముద్రంలో స్వయంగా వెలిగే జీవులు!",
+        "description": "బయోల్యూమినెసెన్స్ అనేది జీవులు రసాయన చర్యల ద్వారా కాంతిని ఉత్పత్తి చేసే ప్రక్రియ. లోతైన సముద్రంలోని కొన్ని జీవులు ఆ కాంతిని ఆహారం, రక్షణ లేదా సంకేతాల కోసం ఉపయోగిస్తాయి.",
+        "cta": "మీకు అత్యంత ఆశ్చర్యంగా అనిపించిన సముద్ర జీవి ఏది?",
+        "source_title": "What is Bioluminescence? — NOAA Ocean Service",
+        "source_url": "https://oceanservice.noaa.gov/facts/biolum.html",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Bioluminescence",
+            "#DeepSea",
+            "#OceanScience"
+        ]
     },
     {
-        "slug": "ellora",
-        "category": "INDIAN ARCHITECTURE",
-        "commons_query": "Ellora Caves Kailasa temple",
-        "title": "ఒకే కొండలో చెక్కిన మహా ఆలయం!",
-        "description": (
-            "ఎల్లోరా గుహల్లోని కైలాస ఆలయం ఒకే రాతి కొండను పై నుంచి కిందికి తొలిచి రూపొందించిన విశేష నిర్మాణం. "
-            "ఎల్లోరా గుహ సముదాయం 1983లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరింది."
-        ),
-        "cta": "ఇలాంటి రాతి నిర్మాణాన్ని చూసి ఆశ్చర్యపోతున్నారా?",
-        "alt_text": "ఎల్లోరాలోని కైలాస ఆలయ శిలా నిర్మాణం ఫోటోతో రూపొందించిన తెలుగు చరిత్ర పోస్టర్.",
-        "source_title": "Ellora Caves — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/243/",
-        "hashtags": ["#ManaTechTelugu", "#ElloraCaves", "#KailasaTemple", "#IndianArchitecture", "#UNESCO", "#History"],
+        "slug": "mantis-shrimp-colours",
+        "category": "COLOURFUL OCEAN LIFE",
+        "title": "సముద్రంలో రంగుల మెరుపు — మాంటిస్ ష్రింప్!",
+        "description": "మాంటిస్ ష్రింప్‌లు అత్యంత వైవిధ్యమైన రంగులు కలిగిన సముద్ర క్రస్టేసియన్లు. వాటి కళ్లలో కాంతిని గుర్తించే ప్రత్యేక నిర్మాణాలు ఉండటంతో అవి శాస్త్రవేత్తలకు ఆసక్తికరమైన అధ్యయన అంశంగా మారాయి.",
+        "cta": "ఈ రంగురంగుల సముద్ర జీవిని దగ్గరగా చూడాలనుకుంటున్నారా?",
+        "source_title": "Mantis Shrimp — Smithsonian Ocean",
+        "source_url": "https://ocean.si.edu/ocean-life/invertebrates/mantis-shrimp",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#MantisShrimp",
+            "#OceanLife",
+            "#ColourfulCreatures"
+        ]
     },
     {
-        "slug": "sanchi",
-        "category": "BUDDHIST HERITAGE",
-        "commons_query": "Sanchi Great Stupa India",
-        "title": "సాంచీ స్థూపం చెప్పే చరిత్ర!",
-        "description": (
-            "మధ్యప్రదేశ్‌లోని సాంచీ బౌద్ధ స్మారక కట్టడాలకు ప్రసిద్ధి. "
-            "అక్కడి మహా స్థూపం భారతదేశంలోని ప్రాచీన బౌద్ధ వారసత్వాన్ని చూపిస్తుంది; సాంచీ 1989లో UNESCO జాబితాలో చేరింది."
-        ),
-        "cta": "సాంచీ స్థూపం గురించి ఇంకేం తెలుసుకోవాలనుకుంటున్నారు?",
-        "alt_text": "మధ్యప్రదేశ్‌లోని సాంచీ మహా స్థూపం ఫోటోతో రూపొందించిన తెలుగు పోస్టర్.",
-        "source_title": "Buddhist Monuments at Sanchi — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/524/",
-        "hashtags": ["#ManaTechTelugu", "#Sanchi", "#BuddhistHeritage", "#MadhyaPradesh", "#UNESCO", "#IndianHistory"],
+        "slug": "hummingbird-flight",
+        "category": "BIRD LIFE",
+        "title": "గాలిలో నిలిచినట్టు ఎగిరే హమ్మింగ్‌బర్డ్!",
+        "description": "హమ్మింగ్‌బర్డ్‌లు తమ రెక్కలను వేగంగా కొట్టడం వల్ల గాలిలో ఒకే చోట నిలిచినట్టు ఉండగలవు. పువ్వుల నుంచి మకరందం సేకరించేటప్పుడు ఈ ప్రత్యేక ఎగిరే నైపుణ్యం ఉపయోగపడుతుంది.",
+        "cta": "హమ్మింగ్‌బర్డ్ ఎగిరే విధానం మీకు ఎలా అనిపించింది?",
+        "source_title": "Hummingbirds — Smithsonian's National Zoo",
+        "source_url": "https://nationalzoo.si.edu/animals/hummingbird",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Hummingbird",
+            "#Birds",
+            "#NatureFacts"
+        ]
     },
     {
-        "slug": "rani-ki-vav",
-        "category": "ANCIENT ENGINEERING",
-        "commons_query": "Rani ki Vav Patan Gujarat",
-        "title": "భూమి కింద దాగిన శిల్పాల ప్రపంచం!",
-        "description": (
-            "గుజరాత్‌లోని రాణి కి వావ్ ఒక అద్భుతమైన మెట్ల బావి. "
-            "దాని గోడలపై ఉన్న శిల్పాలు, స్థాయిలుగా దిగే నిర్మాణం భారతదేశపు చారిత్రక నీటి నిర్వహణ కళను తెలియజేస్తాయి."
-        ),
-        "cta": "ఇలాంటి మెట్ల బావిని ప్రత్యక్షంగా చూడాలనుకుంటున్నారా?",
-        "alt_text": "గుజరాత్‌లోని రాణి కి వావ్ మెట్ల బావి శిల్పాలు కనిపించే ఫోటోతో రూపొందించిన తెలుగు పోస్టర్.",
-        "source_title": "Rani-ki-Vav (the Queen’s Stepwell) — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/922/",
-        "hashtags": ["#ManaTechTelugu", "#RaniKiVav", "#Stepwell", "#GujaratHeritage", "#IndianArchitecture", "#UNESCO"],
-    },
-    {
-        "slug": "mahabalipuram",
-        "category": "PALLAVA HISTORY",
-        "commons_query": "Mahabalipuram Shore Temple monuments",
-        "title": "సముద్ర తీరాన పల్లవుల శిల్ప వైభవం!",
-        "description": (
-            "తమిళనాడులోని మహాబలిపురం పల్లవుల కాలానికి చెందిన రాతి ఆలయాలు, శిల్పాలకు ప్రసిద్ధి. "
-            "ఇక్కడి స్మారక కట్టడాల సమూహం 1984లో UNESCO ప్రపంచ వారసత్వ జాబితాలో చేరింది."
-        ),
-        "cta": "మహాబలిపురం శిల్పాల్లో మీకు నచ్చింది ఏది?",
-        "alt_text": "తమిళనాడులోని మహాబలిపురం సముద్రతీర ఆలయ లేదా రాతి స్మారక కట్టడం ఫోటోతో రూపొందించిన తెలుగు పోస్టర్.",
-        "source_title": "Group of Monuments at Mahabalipuram — UNESCO World Heritage Centre",
-        "source_url": "https://whc.unesco.org/en/list/249",
-        "hashtags": ["#ManaTechTelugu", "#Mahabalipuram", "#PallavaHistory", "#TamilNadu", "#UNESCO", "#IndianHeritage"],
+        "slug": "aurora-colours",
+        "category": "NATURAL WONDERS",
+        "title": "ఆకాశంలో రంగుల తెరలా మెరిసే అరోరా!",
+        "description": "సూర్యుడి నుంచి వచ్చే ఆవేశిత కణాలు భూమి అయస్కాంత క్షేత్రం వెంట వాతావరణంలోని వాయువులతో చర్య జరిపినప్పుడు అరోరా కాంతులు ఏర్పడతాయి. వేర్వేరు వాయువులు వేర్వేరు రంగుల కాంతిని ఉత్పత్తి చేస్తాయి.",
+        "cta": "ఈ రంగుల ఆకాశాన్ని ప్రత్యక్షంగా చూడాలని ఉందా?",
+        "source_title": "Auroras — NASA Science",
+        "source_url": "https://science.nasa.gov/sun/auroras/",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Aurora",
+            "#Nature",
+            "#SpaceScience"
+        ]
     },
     {
         "slug": "venus-long-day",
         "category": "SPACE SCIENCE",
-        "commons_query": "Venus planet NASA",
         "title": "వీనస్‌పై ఒక రోజు… ఒక ఏడాది కంటే పెద్దది!",
-        "description": (
-            "వీనస్ తన అక్షంపై చాలా నెమ్మదిగా తిరుగుతుంది. "
-            "అక్కడి ఒక భ్రమణ దినం 243 భూమి రోజులు; ఒక సంవత్సరం మాత్రం 225 భూమి రోజులు."
-        ),
+        "description": "వీనస్ తన అక్షంపై చాలా నెమ్మదిగా తిరుగుతుంది. అక్కడి ఒక భ్రమణ దినం 243 భూమి రోజులు; ఒక సంవత్సరం మాత్రం 225 భూమి రోజులు.",
         "cta": "వీనస్‌పై సూర్యోదయం ఎలా ఉంటుందో ఊహించగలరా?",
-        "alt_text": "వీనస్ గ్రహం గురించి నాలుగు స్లైడ్ల తెలుగు విద్యా ఇన్ఫోగ్రాఫిక్.",
         "source_title": "Venus Facts — NASA Science",
         "source_url": "https://science.nasa.gov/venus/venus-facts/",
-        "hashtags": ["#ManaTechTelugu", "#Venus", "#SpaceScience", "#NASA", "#TeluguFacts"],
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Venus",
+            "#SpaceScience",
+            "#NASA"
+        ]
     },
     {
         "slug": "black-holes",
-        "category": "ASTRONOMY",
-        "commons_query": "black hole space illustration NASA",
+        "category": "SPACE MYSTERIES",
         "title": "కాంతి కూడా తప్పించుకోలేని అంతరిక్ష రహస్యం!",
-        "description": (
-            "బ్లాక్ హోల్ అనేది పదార్థం అత్యంత చిన్న ప్రాంతంలో కేంద్రీకృతమైన ఖగోళ వస్తువు. "
-            "దాని ఈవెంట్ హారైజన్ లోపల నుంచి కాంతి కూడా బయటకు రాలేదు."
-        ),
+        "description": "బ్లాక్ హోల్ అనేది పదార్థం అత్యంత చిన్న ప్రాంతంలో కేంద్రీకృతమైన ఖగోళ వస్తువు. దాని ఈవెంట్ హారైజన్ లోపల నుంచి కాంతి కూడా బయటకు రాలేదు.",
         "cta": "బ్లాక్ హోల్ గురించి మీకు ఏ సందేహం ఉంది?",
-        "alt_text": "బ్లాక్ హోల్స్ గురించి నాలుగు స్లైడ్ల తెలుగు అంతరిక్ష ఇన్ఫోగ్రాఫిక్.",
         "source_title": "Black Holes — NASA Science",
         "source_url": "https://science.nasa.gov/universe/black-holes/",
-        "hashtags": ["#ManaTechTelugu", "#BlackHoles", "#Astronomy", "#NASA", "#SpaceFacts"],
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#BlackHoles",
+            "#Astronomy",
+            "#NASA"
+        ]
     },
     {
-        "slug": "deep-sea-bioluminescence",
-        "category": "OCEAN SCIENCE",
-        "commons_query": "bioluminescent deep sea animals",
-        "title": "సముద్రపు చీకటిలో వెలిగే జీవులు!",
-        "description": (
-            "బయోల్యూమినెసెన్స్ అంటే జీవులు రసాయన చర్య ద్వారా తమంతట తాము కాంతిని ఉత్పత్తి చేయడం. "
-            "లోతైన సముద్రంలో కొన్ని జీవులు ఆ కాంతిని ఆహారం కోసం, రక్షణ కోసం లేదా సమాచారానికి ఉపయోగిస్తాయి."
-        ),
-        "cta": "చీకటిలో వెలిగే ఏ సముద్ర జీవి మీకు ఆసక్తికరంగా అనిపించింది?",
-        "alt_text": "లోతైన సముద్రంలో కాంతిని ఉత్పత్తి చేసే జీవులపై తెలుగు విద్యా ఇన్ఫోగ్రాఫిక్.",
-        "source_title": "What is Bioluminescence? — NOAA Ocean Service",
-        "source_url": "https://oceanservice.noaa.gov/facts/biolum.html",
-        "hashtags": ["#ManaTechTelugu", "#Bioluminescence", "#DeepSea", "#OceanScience", "#NatureFacts"],
+        "slug": "coral-reef-colour",
+        "category": "OCEAN ECOSYSTEMS",
+        "title": "సముద్ర అడుగున రంగుల నగరంలా ఉండే కోరల్ రీఫ్!",
+        "description": "కోరల్ రీఫ్‌లు అనేక సముద్ర జీవులకు ఆహారం, ఆశ్రయం అందించే సంక్లిష్ట పర్యావరణ వ్యవస్థలు. పగడపు పాలిప్స్‌లో నివసించే సూక్ష్మ ఆల్గేలు వాటి రంగులకు, శక్తి అవసరాలకు సహకరిస్తాయి.",
+        "cta": "కోరల్ రీఫ్‌లో మీకు కనిపించిన రంగు ఏది?",
+        "source_title": "Coral Reefs — NOAA",
+        "source_url": "https://oceanservice.noaa.gov/education/tutorial_corals/",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#CoralReef",
+            "#OceanLife",
+            "#Nature"
+        ]
     },
     {
-        "slug": "octopus-three-hearts",
-        "category": "ANIMAL FACTS",
-        "commons_query": "octopus underwater animal",
-        "title": "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయని తెలుసా?",
-        "description": (
-            "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయి. "
-            "రెండు గుండెలు రక్తాన్ని గిల్ల్స్‌కు పంపుతాయి; మూడో గుండె ఆక్సిజన్ పొందిన రక్తాన్ని శరీరమంతా పంపుతుంది."
-        ),
-        "cta": "మూడు గుండెలున్న ఈ జీవి గురించి ఇంకేం తెలుసుకోవాలనుకుంటున్నారు?",
-        "alt_text": "ఆక్టోపస్ మూడు గుండెల గురించి తెలుగు జంతు విజ్ఞాన ఇన్ఫోగ్రాఫిక్.",
-        "source_title": "Love is in the Air, and Sea — NOAA",
-        "source_url": "https://www.noaa.gov/stories/love-is-in-air-and-sea-5-facts-about-affections-of-marine-creatures",
-        "hashtags": ["#ManaTechTelugu", "#Octopus", "#AnimalFacts", "#OceanLife", "#TeluguFacts"],
-    }]
+        "slug": "chameleon-colour-change",
+        "category": "ANIMAL ADAPTATIONS",
+        "title": "రంగులు మార్చే ఊసరవెల్లి జీవన రహస్యం!",
+        "description": "ఊసరవెల్లులు చర్మంలోని ప్రత్యేక కణ నిర్మాణాలను మార్చడం ద్వారా రంగు, నమూనాలను మార్చగలవు. ఈ మార్పులు కమ్యూనికేషన్, ఉష్ణ నియంత్రణ వంటి పనులకు ఉపయోగపడతాయి.",
+        "cta": "ఊసరవెల్లి రంగు మారడాన్ని ఎప్పుడైనా గమనించారా?",
+        "source_title": "Chameleons — National Geographic",
+        "source_url": "https://www.nationalgeographic.com/animals/reptiles/facts/chameleons",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Chameleon",
+            "#AnimalFacts",
+            "#Wildlife"
+        ]
+    },
+    {
+        "slug": "giant-panda-lifestyle",
+        "category": "ANIMAL LIFESTYLE",
+        "title": "రోజులో ఎక్కువ సమయం వెదురు తింటూ గడిపే పాండా!",
+        "description": "జెయింట్ పాండాలు రోజులో చాలా గంటలు వెదురు తింటూ గడుపుతాయి. వాటి ఆహారంలో వెదురు ప్రధాన భాగం కావడంతో అవి తరచుగా తింటూ ఉండాలి.",
+        "cta": "పాండాల రోజువారీ జీవితం గురించి మీకు ఏది ఆసక్తికరం?",
+        "source_title": "Giant Panda — Smithsonian's National Zoo",
+        "source_url": "https://nationalzoo.si.edu/animals/giant-panda",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Panda",
+            "#AnimalLifestyle",
+            "#Wildlife"
+        ]
+    },
+    {
+        "slug": "octopus-camouflage",
+        "category": "CREATURE SUPERPOWERS",
+        "title": "క్షణాల్లో పరిసరాల్లో కలిసిపోయే ఆక్టోపస్!",
+        "description": "ఆక్టోపస్ చర్మంలోని క్రోమాటోఫోర్ కణాలు రంగు మార్పుకు సహాయపడతాయి. కొన్ని జాతులు చర్మపు ఆకృతిని కూడా మార్చి రాళ్లు లేదా పగడాల మధ్య దాగగలవు.",
+        "cta": "ఆక్టోపస్ మాయమయ్యే నైపుణ్యం అద్భుతం కదా?",
+        "source_title": "Octopus Camouflage — Smithsonian Ocean",
+        "source_url": "https://ocean.si.edu/ocean-life/invertebrates/octopuses",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Octopus",
+            "#Camouflage",
+            "#OceanLife"
+        ]
+    },
+    {
+        "slug": "fireflies-glow",
+        "category": "NATURE MAGIC",
+        "title": "రాత్రివేళ వెలిగే మిణుగురుల చిన్న ప్రపంచం!",
+        "description": "మిణుగురులు తమ శరీరంలోని రసాయన చర్య ద్వారా చల్లని కాంతిని ఉత్పత్తి చేస్తాయి. అనేక జాతులు జతను ఆకర్షించడానికి ప్రత్యేక కాంతి సంకేతాలను ఉపయోగిస్తాయి.",
+        "cta": "మీరు చివరిసారి మిణుగురులను ఎక్కడ చూశారు?",
+        "source_title": "Fireflies — National Geographic",
+        "source_url": "https://www.nationalgeographic.com/animals/invertebrates/facts/fireflies",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Fireflies",
+            "#NatureMagic",
+            "#Insects"
+        ]
+    },
+    {
+        "slug": "tardigrade-micro-world",
+        "category": "TINY CREATURES",
+        "title": "అత్యంత కఠిన పరిస్థితులను తట్టుకునే సూక్ష్మ జీవి!",
+        "description": "టార్డిగ్రేడ్‌లు అనుకూల పరిస్థితులు లేనప్పుడు తమ శరీర చర్యలను తీవ్రంగా తగ్గించే స్థితిలోకి వెళ్లగలవు. ఈ సూక్ష్మ జంతువులు అనేక పర్యావరణ ఒత్తిడులను తట్టుకునే సామర్థ్యంతో ప్రసిద్ధి చెందాయి.",
+        "cta": "ఇంత చిన్న జీవి ఇంతటి సామర్థ్యం కలిగి ఉండటం ఆశ్చర్యం కదా?",
+        "source_title": "Tardigrades — Smithsonian Magazine",
+        "source_url": "https://www.smithsonianmag.com/science-nature/tardigrades-180963777/",
+        "hashtags": [
+            "#ManaTechTelugu",
+            "#Tardigrade",
+            "#MicroWorld",
+            "#ScienceFacts"
+        ]
+    }
+]
 
 def http_get(url: str, timeout: int = 45, attempts: int = 5) -> bytes:
     """Fetch Wikimedia API/media with bounded retries for temporary throttling."""
