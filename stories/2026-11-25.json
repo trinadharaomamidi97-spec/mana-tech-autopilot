@@ -3,13 +3,15 @@
   "stories": [
     {
       "id": "2026-11-25-story-01",
-      "status": "queued",
+      "status": "published",
       "topic": "ellora",
       "title": "ఒకే కొండలో చెక్కిన మహా ఆలయం!",
       "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/2026-11-25/story-01.jpg",
       "alt_text": "AI-generated artistic Story image about ellora in India.",
       "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
-      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి."
+      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి.",
+      "instagram_media_id": "17969785374234629",
+      "published_at": "2026-11-25T13:24:08.261431+00:00"
     }
   ]
 }
