@@ -16,7 +16,7 @@ from datetime import date
 from pathlib import Path
 from typing import Iterable
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageOps
 from commons_poster import RAW_PREFIX, TOPICS
 from cloudflare_image import cloudflare_generate, save_variants
 
@@ -24,128 +24,39 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE_DATE = date(2026, 11, 17)
 REPO = "trinadharaomamidi97-spec/mana-tech-autopilot"
 FEED_SLIDES = 4
-TELUGU_FONT_CANDIDATES = (
-    "/usr/share/fonts/truetype/noto/NotoSansTelugu-Regular.ttf",
-    "/usr/share/fonts/truetype/noto/NotoSansTeluguUI-Regular.ttf",
-    "/usr/share/fonts/truetype/noto/NotoSansTelugu-VF.ttf",
-    "/usr/share/fonts/truetype/lohit-telugu/Lohit-Telugu.ttf",
-)
-
-
-def find_telugu_font() -> str:
-    for candidate in TELUGU_FONT_CANDIDATES:
-        if Path(candidate).is_file():
-            return candidate
-    raise RuntimeError(
-        "Telugu font not installed. The workflow must install fonts-noto-core before rendering."
-    )
-
-
-def split_description(description: str) -> list[str]:
-    parts = [part.strip() for part in description.replace("।", ".").split(".") if part.strip()]
-    if len(parts) >= 2:
-        return parts[:2]
-    return [description.strip(), "ఈ విశేషం భారతదేశ చరిత్ర మరియు వారసత్వాన్ని మరింత ఆసక్తికరంగా చూపిస్తుంది."]
-
-
-def slide_copy(topic: dict) -> list[tuple[str, str]]:
-    facts = split_description(topic["description"])
-    return [
-        (topic["title"], "ఈరోజు ప్రత్యేక కథనం"),
-        ("ఎక్కడ ఉంది?", facts[0]),
-        ("దీని ప్రత్యేకత ఏమిటి?", facts[1]),
-        ("మీకు తెలుసా?", topic["cta"]),
-    ]
-
-
-def make_prompt(topic: dict, slide_number: int, heading: str, body: str) -> str:
+def make_prompt(topic: dict, slide_number: int) -> str:
     subject = topic["slug"].replace("-", " ")
-    visual_directions = (
-        "wide establishing view with dramatic scale and a clear focal subject",
-        "closer documentary view emphasizing location, landscape and context",
-        "detailed close-up showing craftsmanship, structure or the key feature",
-        "fresh cinematic angle with a memorable visual summary and open negative space",
+    directions = (
+        "hero portrait showing the creature or subject in its natural environment",
+        "wide habitat view showing the world and lifestyle around the subject",
+        "dynamic documentary moment showing natural movement, feeding, exploring or behavior",
+        "intimate macro detail with vivid natural colours, textures and expressive features",
     )
-    direction = visual_directions[slide_number - 1]
     return (
-        f"Create a premium photorealistic educational editorial image about {subject} in India. "
-        f"Slide {slide_number} of a four-part visual explainer. Visual direction: {direction}. "
-        f"Accurately illustrate this context: {topic['description']} "
-        "Use a visually rich realistic 3D documentary illustration, crisp details, natural cinematic "
-        "lighting, layered depth, vivid but tasteful blue, gold and warm neutral accents. "
-        "Keep the main subject clearly visible in the upper and middle area; leave some darker, "
-        "uncluttered space near the lower quarter for a later text panel. Each slide must use a "
-        "noticeably different viewpoint and composition, not a duplicate crop. Vertical 4:5 "
-        "composition, 1080x1350. No text, letters, numbers, labels, logos, watermarks, borders, "
-        "collage, poster design, infographic text, or UI."
+        f"Create a breathtaking, premium photorealistic wildlife and nature documentary photograph of {subject}. "
+        f"Visual story frame {slide_number} of 4: {directions[slide_number - 1]}. "
+        f"Accurately depict this subject and context: {topic['description']} "
+        "Make the image richly colourful, lifelike, vibrant and visually immersive, with natural cinematic lighting, "
+        "beautiful environmental detail, realistic anatomy and a strong clear focal subject. "
+        "Show the creature's real lifestyle and habitat, not a fantasy character. "
+        "Full-bleed edge-to-edge photography only. Absolutely no text, Telugu letters, English letters, numbers, "
+        "captions, labels, typography, text boxes, panels, bars, borders, badges, counters, logos, watermarks, "
+        "collages, poster layouts, infographic elements or UI. "
+        "Do not leave blank space for text. Vertical 4:5 composition, 1080x1350."
     )
 
 
-def load_font(path: str, size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(path, size=size)
-
-
-def wrap_text(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
-    words = text.split()
-    lines: list[str] = []
-    current = ""
-    for word in words:
-        candidate = f"{current} {word}".strip()
-        if current and draw.textbbox((0, 0), candidate, font=font)[2] > max_width:
-            lines.append(current)
-            current = word
-        else:
-            current = candidate
-    if current:
-        lines.append(current)
-    return lines
-
-
-def render_infographic(base_bytes: bytes, output_path: Path, topic: dict,
-                       slide_number: int, heading: str, body: str, font_path: str) -> None:
+def save_photo_only(base_bytes: bytes, output_path: Path) -> None:
     from io import BytesIO
-
     with Image.open(BytesIO(base_bytes)) as source:
-        image = ImageOps.fit(source.convert("RGB"), (1080, 1350), method=Image.Resampling.LANCZOS, centering=(0.5, 0.48))
-    # Dark translucent lower panel preserves the AI artwork while keeping Telugu legible.
-    panel = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    overlay = ImageDraw.Draw(panel)
-    overlay.rounded_rectangle((38, 820, 1042, 1312), radius=34, fill=(5, 18, 38, 224))
-    overlay.rounded_rectangle((64, 850, 1016, 860), radius=5, fill=(255, 190, 65, 255))
-    image = Image.alpha_composite(image.convert("RGBA"), panel)
-    draw = ImageDraw.Draw(image)
-
-    small_font = load_font(font_path, 27)
-    heading_font = load_font(font_path, 56 if len(heading) < 28 else 48)
-    body_font = load_font(font_path, 39)
-    tag = "MANA TECH TELUGU  •  KNOWLEDGE SERIES"
-    draw.text((72, 884), tag, font=small_font, fill=(255, 211, 112, 255), stroke_width=0)
-
-    heading_lines = wrap_text(draw, heading, heading_font, 900)
-    y = 930
-    for line in heading_lines[:2]:
-        draw.text((72, y), line, font=heading_font, fill=(255, 255, 255, 255),
-                  stroke_width=1, stroke_fill=(0, 0, 0, 100))
-        y += 70
-
-    body_lines = wrap_text(draw, body, body_font, 900)
-    y += 8
-    for line in body_lines[:3]:
-        draw.text((72, y), line, font=body_font, fill=(226, 237, 250, 255))
-        y += 54
-
-    footer_font = load_font(font_path, 25)
-    draw.text((72, 1264), "స్వైప్ చేసి మరిన్ని విశేషాలు తెలుసుకోండి", font=footer_font,
-              fill=(255, 211, 112, 255))
-    counter = f"{slide_number}/4"
-    counter_font = load_font(font_path, 26)
-    box = draw.textbbox((0, 0), counter, font=counter_font)
-    draw.rounded_rectangle((930, 1260, 1008, 1300), radius=18, fill=(255, 190, 65, 255))
-    draw.text((969 - (box[2] - box[0]) / 2, 1266), counter, font=counter_font,
-              fill=(10, 24, 45, 255))
-
+        image = ImageOps.fit(
+            source.convert("RGB"), (1080, 1350),
+            method=Image.Resampling.LANCZOS, centering=(0.5, 0.48)
+        )
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    image.convert("RGB").save(output_path, "JPEG", quality=91, optimize=True, progressive=True)
+    image.save(output_path, "JPEG", quality=93, optimize=True, progressive=True)
+    if output_path.stat().st_size > 8 * 1024 * 1024:
+        image.save(output_path, "JPEG", quality=86, optimize=True, progressive=True)
     if output_path.stat().st_size > 8 * 1024 * 1024:
         raise RuntimeError(f"Instagram carousel image exceeds 8 MB: {output_path.name}")
     with Image.open(output_path) as check:
@@ -168,26 +79,22 @@ def main() -> int:
     if any(p.exists() for p in (feed_manifest, feed_dir, story_manifest, story_image)):
         raise RuntimeError(f"Assets already exist for {date_text}; refusing to overwrite or risk duplicate publishing.")
 
-    topic_index = ((post_date - BASE_DATE).days * 5) % len(TOPICS)
+    topic_index = (post_date - BASE_DATE).days % len(TOPICS)
     topic = TOPICS[topic_index]
     print(f"Selected topic: {topic['slug']} — {topic['title']}")
     account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip()
     token = os.getenv("CLOUDFLARE_API_TOKEN", "").strip()
     if not account_id or not token:
         raise RuntimeError("Cloudflare account/token GitHub Actions secrets are missing.")
-    font_path = find_telugu_font()
-    slide_text = slide_copy(topic)
 
     with tempfile.TemporaryDirectory(prefix="mana-tech-ai-") as tmp:
         temp_dir = Path(tmp)
         image_urls: list[str] = []
-        for number, (heading, body) in enumerate(slide_text, start=1):
-            print(f"Generating unique AI infographic slide {number}/{FEED_SLIDES}...")
-            generated = cloudflare_generate(
-                make_prompt(topic, number, heading, body), account_id, token
-            )
+        for number in range(1, FEED_SLIDES + 1):
+            print(f"Generating unique photo-only carousel slide {number}/{FEED_SLIDES}...")
+            generated = cloudflare_generate(make_prompt(topic, number), account_id, token)
             output = feed_dir / f"post-{number:02d}.jpg"
-            render_infographic(generated, output, topic, number, heading, body, font_path)
+            save_photo_only(generated, output)
             image_urls.append(
                 RAW_PREFIX + f"posts/images/{date_text}/post-{number:02d}.jpg"
             )
@@ -218,14 +125,14 @@ def main() -> int:
         "hashtags": topic["hashtags"],
         "image_url": image_urls[0],
         "image_urls": image_urls,
-        "alt_text": f"Four-slide Telugu educational infographic carousel about {topic['slug'].replace('-', ' ')} in India.",
+        "alt_text": f"Four photo-only visual story frames about {topic['slug'].replace('-', ' ')}.",
         "is_factual": True,
         "sources": [{
             "title": topic["source_title"],
             "url": topic["source_url"],
             "checked_at": date_text,
         }],
-        "image_origin": "Four Cloudflare Workers AI generated images with locally rendered Telugu infographic text",
+        "image_origin": "Four separate full-bleed photo-only Cloudflare Workers AI images; no text or graphics",
         "image_disclaimer": ai_note,
         "carousel_slide_count": FEED_SLIDES,
     }
@@ -258,7 +165,7 @@ def main() -> int:
             if handle.read(3) != b"\xff\xd8\xff":
                 raise RuntimeError(f"Generated asset is not a JPEG: {path}")
 
-    print(f"Prepared {FEED_SLIDES} Feed carousel slides under {feed_dir}")
+    print(f"Prepared {FEED_SLIDES} clean photo-only Feed carousel slides under {feed_dir}")
     print(f"Prepared separate Story image: {story_image}")
     print(f"Prepared Feed manifest: {feed_manifest}")
     print(f"Prepared Story manifest: {story_manifest}")
