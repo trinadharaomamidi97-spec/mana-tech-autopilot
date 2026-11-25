@@ -34,7 +34,10 @@
       ],
       "image_origin": "Four Cloudflare Workers AI generated images with locally rendered Telugu infographic text",
       "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి.",
-      "carousel_slide_count": 4
+      "carousel_slide_count": 4,
+      "carousel_child_ids": [
+        "18104551754422605"
+      ]
     }
   ]
 }
