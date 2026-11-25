@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-26-01",
-      "status": "queued",
+      "status": "carousel_container_creating",
       "topic": "black-holes",
       "language": "te",
       "title": "కాంతి కూడా తప్పించుకోలేని అంతరిక్ష రహస్యం!",
@@ -40,7 +40,8 @@
         "18104551778422605",
         "18104551796422605",
         "18104551814422605"
-      ]
+      ],
+      "carousel_container_started_at": "2026-11-25T23:45:54+00:00"
     }
   ]
 }
