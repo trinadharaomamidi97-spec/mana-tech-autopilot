@@ -12,33 +12,27 @@ from commons_poster import TOPICS
 
 
 class CarouselGenerationTests(unittest.TestCase):
-    def test_four_distinct_slide_copy_blocks(self):
-        topic = TOPICS[((date(2026, 11, 24) - generator.BASE_DATE).days * 5) % len(TOPICS)]
-        blocks = generator.slide_copy(topic)
-        self.assertEqual(len(blocks), 4)
-        self.assertTrue(all(heading and body for heading, body in blocks))
-        prompts = [
-            generator.make_prompt(topic, index, heading, body)
-            for index, (heading, body) in enumerate(blocks, start=1)
-        ]
+    def test_four_unique_photo_only_prompts(self):
+        topic = TOPICS[(date(2026, 11, 24) - generator.BASE_DATE).days % len(TOPICS)]
+        prompts = [generator.make_prompt(topic, index) for index in range(1, 5)]
         self.assertEqual(len(set(prompts)), 4)
+        self.assertTrue(all("no text" in prompt.lower() for prompt in prompts))
+        self.assertTrue(all("text boxes" in prompt.lower() for prompt in prompts))
 
-    def test_topic_rotation_includes_non_temple_topics(self):
+    def test_topic_rotation_excludes_temple_repetition(self):
         categories = {item["category"] for item in TOPICS}
+        self.assertGreaterEqual(len(TOPICS), 12)
+        self.assertTrue(all("TEMPLE" not in category and "HERITAGE" not in category for category in categories))
+        self.assertIn("COLORFUL CREATURES", categories)
+        self.assertIn("ANIMAL LIFESTYLE", categories)
         self.assertIn("SPACE SCIENCE", categories)
-        self.assertIn("OCEAN SCIENCE", categories)
-        self.assertIn("ANIMAL FACTS", categories)
 
-    def test_rendered_slide_is_valid_feed_jpeg(self):
-        font_path = generator.find_telugu_font()
+    def test_photo_only_slide_is_valid_feed_jpeg(self):
         source = BytesIO()
         Image.new("RGB", (1080, 1920), (45, 85, 125)).save(source, format="JPEG")
         with tempfile.TemporaryDirectory() as folder:
             output = Path(folder) / "post-01.jpg"
-            generator.render_infographic(
-                source.getvalue(), output, TOPICS[0], 1,
-                "తెలుగు శీర్షిక", "ఇది ఒక పరీక్ష వివరణ.", font_path,
-            )
+            generator.save_photo_only(source.getvalue(), output)
             with Image.open(output) as image:
                 self.assertEqual(image.size, (1080, 1350))
                 self.assertEqual(image.format, "JPEG")
