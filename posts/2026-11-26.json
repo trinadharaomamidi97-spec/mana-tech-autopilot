@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-26",
+  "posts": [
+    {
+      "id": "2026-11-26-01",
+      "status": "staged",
+      "topic": "black-holes",
+      "language": "te",
+      "title": "కాంతి కూడా తప్పించుకోలేని అంతరిక్ష రహస్యం!",
+      "description": "బ్లాక్ హోల్ అనేది పదార్థం అత్యంత చిన్న ప్రాంతంలో కేంద్రీకృతమైన ఖగోళ వస్తువు. దాని ఈవెంట్ హారైజన్ లోపల నుంచి కాంతి కూడా బయటకు రాలేదు.",
+      "call_to_action": "బ్లాక్ హోల్ గురించి మీకు ఏ సందేహం ఉంది?",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#BlackHoles",
+        "#Astronomy",
+        "#NASA",
+        "#SpaceFacts"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-26/post-01.jpg",
+      "image_urls": [
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-26/post-01.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-26/post-02.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-26/post-03.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-26/post-04.jpg"
+      ],
+      "alt_text": "Four-slide Telugu educational infographic carousel about black holes in India.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Black Holes — NASA Science",
+          "url": "https://science.nasa.gov/universe/black-holes/",
+          "checked_at": "2026-11-26"
+        }
+      ],
+      "image_origin": "Four Cloudflare Workers AI generated images with locally rendered Telugu infographic text",
+      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి.",
+      "carousel_slide_count": 4
+    }
+  ]
+}

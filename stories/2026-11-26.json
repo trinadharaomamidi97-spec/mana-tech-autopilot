@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-26",
+  "stories": [
+    {
+      "id": "2026-11-26-story-01",
+      "status": "queued",
+      "topic": "black-holes",
+      "title": "కాంతి కూడా తప్పించుకోలేని అంతరిక్ష రహస్యం!",
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/2026-11-26/story-01.jpg",
+      "alt_text": "AI-generated artistic Story image about black holes in India.",
+      "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
+      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి."
+    }
+  ]
+}
