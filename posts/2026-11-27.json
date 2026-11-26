@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-27-01",
-      "status": "publishing",
+      "status": "published",
       "topic": "konark",
       "language": "te",
       "title": "సూర్యుడి రథంలా నిర్మించిన ఆలయం!",
@@ -46,7 +46,9 @@
       "creation_id": "18104735138422605",
       "media_surface": "FEED",
       "container_created_at": "2026-11-26T23:59:30+00:00",
-      "publish_started_at": "2026-11-26T23:59:32+00:00"
+      "publish_started_at": "2026-11-26T23:59:32+00:00",
+      "instagram_media_id": "18075245837602939",
+      "published_at": "2026-11-26T23:59:38+00:00"
     }
   ]
 }
