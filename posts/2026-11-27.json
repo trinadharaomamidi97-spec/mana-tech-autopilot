@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-27-01",
-      "status": "queued",
+      "status": "carousel_container_creating",
       "topic": "konark",
       "language": "te",
       "title": "సూర్యుడి రథంలా నిర్మించిన ఆలయం!",
@@ -41,7 +41,8 @@
         "18104735063422605",
         "18104735096422605",
         "18104735114422605"
-      ]
+      ],
+      "carousel_container_started_at": "2026-11-26T23:59:25+00:00"
     }
   ]
 }
