@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-27",
+  "posts": [
+    {
+      "id": "2026-11-27-01",
+      "status": "staged",
+      "topic": "konark",
+      "language": "te",
+      "title": "సూర్యుడి రథంలా నిర్మించిన ఆలయం!",
+      "description": "ఒడిశాలోని కోణార్క్ సూర్య దేవాలయం సూర్య భగవానుడి రథాన్ని పోలిన నిర్మాణ రూపకల్పనకు ప్రసిద్ధి. ఈ 13వ శతాబ్దపు ఆలయం 1984లో UNESCO ప్రపంచ వారసత్వ ప్రదేశంగా గుర్తింపు పొందింది.",
+      "call_to_action": "ఈ రథాకార ఆలయ నిర్మాణం మీకు ఎలా అనిపించింది?",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#Konark",
+        "#SunTemple",
+        "#Odisha",
+        "#IndianArchitecture",
+        "#UNESCO"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-27/post-01.jpg",
+      "image_urls": [
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-27/post-01.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-27/post-02.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-27/post-03.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-27/post-04.jpg"
+      ],
+      "alt_text": "Four-slide Telugu educational infographic carousel about konark in India.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Sun Temple, Konârak — UNESCO World Heritage Centre",
+          "url": "https://whc.unesco.org/en/list/246/",
+          "checked_at": "2026-11-27"
+        }
+      ],
+      "image_origin": "Four Cloudflare Workers AI generated images with locally rendered Telugu infographic text",
+      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి.",
+      "carousel_slide_count": 4
+    }
+  ]
+}
