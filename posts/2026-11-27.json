@@ -3,7 +3,7 @@
   "posts": [
     {
       "id": "2026-11-27-01",
-      "status": "carousel_container_creating",
+      "status": "container_ready",
       "topic": "konark",
       "language": "te",
       "title": "సూర్యుడి రథంలా నిర్మించిన ఆలయం!",
@@ -42,7 +42,10 @@
         "18104735096422605",
         "18104735114422605"
       ],
-      "carousel_container_started_at": "2026-11-26T23:59:25+00:00"
+      "carousel_container_started_at": "2026-11-26T23:59:25+00:00",
+      "creation_id": "18104735138422605",
+      "media_surface": "FEED",
+      "container_created_at": "2026-11-26T23:59:30+00:00"
     }
   ]
 }
