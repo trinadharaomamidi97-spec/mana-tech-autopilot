@@ -24,16 +24,13 @@ API_ROOT = "https://api.cloudflare.com/client/v4/accounts"
 MAX_RESPONSE_BYTES = 30 * 1024 * 1024
 
 DEFAULT_PROMPT = (
-    "Create a premium cinematic, photorealistic visual reconstruction inspired by "
-    "the ancient Ajanta rock-cut caves in Maharashtra, India. Show monumental "
-    "Buddhist rock-cut architecture carved into a rugged horseshoe-shaped cliff, "
-    "subtle ancient stone textures, natural Indian landscape, warm early-morning "
-    "sunlight, atmospheric depth, realistic documentary-style photography, "
-    "careful architectural detail, visually striking composition. This is an "
-    "AI-created artistic reconstruction, not a claim to be an authentic archival "
-    "photograph. Vertical 9:16 composition, important architecture centered with "
-    "safe space near top and bottom. Absolutely no text, letters, captions, logos, "
-    "watermarks, borders, collage, poster design, people in foreground, or UI."
+    "Create a breathtaking, colourful, photorealistic underwater scene featuring "
+    "a graceful bioluminescent jellyfish drifting through a vibrant deep-sea world. "
+    "Show luminous blue, violet and turquoise light, delicate transparent textures, "
+    "tiny glowing marine organisms and rich natural depth. Cinematic wildlife "
+    "photography, crisp detail, immersive composition. Vertical 9:16. Absolutely "
+    "no text, letters, captions, logos, watermarks, borders, panels, boxes, "
+    "poster design, infographic, or graphic overlays."
 )
 
 
