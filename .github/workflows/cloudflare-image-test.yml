@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       prompt:
-        description: "Image subject or scene (leave blank for the Ajanta test prompt)"
+        description: "Image subject or scene (leave blank for a colourful underwater nature scene)"
         required: false
         type: string
 
