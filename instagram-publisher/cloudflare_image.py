@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate a clean photo-style Instagram image with Cloudflare Workers AI.
 
-This is an additive alternative to commons_poster.py. It does not read or
-modify the Wikimedia workflow, manifests, or publishing state.
+This module generates standalone AI image previews and is not connected to
+legacy Wikimedia image sourcing or publishing state.
 """
 from __future__ import annotations
 
