@@ -3,13 +3,15 @@
   "stories": [
     {
       "id": "2026-11-27-story-01",
-      "status": "queued",
+      "status": "published",
       "topic": "konark",
       "title": "సూర్యుడి రథంలా నిర్మించిన ఆలయం!",
       "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/2026-11-27/story-01.jpg",
       "alt_text": "AI-generated artistic Story image about konark in India.",
       "image_origin": "Cloudflare Workers AI generated artistic reconstruction",
-      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి."
+      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి.",
+      "instagram_media_id": "17962033500018403",
+      "published_at": "2026-11-27T13:00:03.114678+00:00"
     }
   ]
 }
