@@ -94,7 +94,8 @@ jobs:
                 echo "::warning::Cloudflare image generation failed; checking for partial output before fallback."
               fi
             else
-              echo "::warning::Cloudflare credentials are unavailable; using Wikimedia Commons fallback."
+              echo "::error::Cloudflare credentials are required; legacy Wikimedia/temple fallback is disabled."
+              exit 1
             fi
 
             if [ "$generated" -eq 0 ]; then
@@ -102,9 +103,8 @@ jobs:
                 echo "::error::Image generation left partial files; refusing to overwrite them."
                 exit 1
               fi
-              python instagram-publisher/commons_poster.py --date "$POST_DATE"
-              python instagram-publisher/prepare_story.py --date "$POST_DATE"
-              echo "Wikimedia Commons fallback prepared the Feed source and a compatible Story frame."
+              echo "::error::AI image generation failed. No legacy image fallback will be used."
+              exit 1
             fi
           fi
 
