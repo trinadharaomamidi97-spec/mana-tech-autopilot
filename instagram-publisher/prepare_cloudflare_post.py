@@ -23,13 +23,6 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE_DATE = date(2026, 11, 17)
 REPO = "trinadharaomamidi97-spec/mana-tech-autopilot"
 FEED_SLIDES = 4
-TELUGU_FONT_CANDIDATES = (
-    "/usr/share/fonts/truetype/noto/NotoSansTelugu-Regular.ttf",
-    "/usr/share/fonts/truetype/noto/NotoSansTeluguUI-Regular.ttf",
-    "/usr/share/fonts/truetype/noto/NotoSansTelugu-VF.ttf",
-    "/usr/share/fonts/truetype/lohit-telugu/Lohit-Telugu.ttf",
-)
-
 
 
 def _legacy_topic(slug: str) -> dict:
@@ -231,7 +224,7 @@ def main() -> int:
         "hashtags": topic["hashtags"],
         "image_url": image_urls[0],
         "image_urls": image_urls,
-        "alt_text": f"Four-image photo-only carousel about {topic['slug'].replace('-', ' ')} in India.",
+        "alt_text": f"Four-image photo-only carousel about {topic['slug'].replace('-', ' ')}.",
         "is_factual": True,
         "sources": [{
             "title": topic["source_title"],
