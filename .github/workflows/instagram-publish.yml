@@ -52,7 +52,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install Pillow
 
-      - name: Generate four AI infographic slides and separate Story image
+      - name: Run photo-only image and topic-rotation tests
+        env:
+          PYTHONPATH: instagram-publisher
+        run: python -m unittest discover -s tests -v
+
+      - name: Generate four clean AI carousel images and separate Story image
         env:
           POST_DATE: ${{ steps.date.outputs.post_date }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -115,7 +120,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No new AI assets to commit."
           else
-            git commit -m "Prepare four-slide AI infographic carousel for $POST_DATE"
+            git commit -m "Prepare four-image photo-only carousel for $POST_DATE"
             git push origin HEAD:main
           fi
 
