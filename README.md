@@ -7,8 +7,9 @@ Photo-first, cloud-based Instagram publishing for **Mana Tech Telugu**.
 - **9:00 AM — Story:** GitHub Actions prepares the day's assets and publishes the dedicated 1080 × 1920 (9:16) Story image.
 - **9:00 PM — Feed:** GitHub Actions publishes the separate 1080 × 1350 (4:5) Feed image.
 - **9:10 PM — Feed retry:** A safety run retries queued Feed posts; already-published posts are skipped.
-- Feed and Story use separate image compositions when Cloudflare Workers AI is available. Wikimedia Commons remains the fallback source if AI image generation is unavailable.
-- Images contain no title panels, text overlays, logos, borders, or watermarks. Telugu titles, descriptions, calls to action, source details, and hashtags are stored as metadata; the Feed caption is published with the Feed photo.
+- Feed uses a four-image AI-generated carousel; Story uses a separate vertical AI image. If Cloudflare generation fails or credentials are missing, the workflow stops safely—there is no Wikimedia or temple-image fallback.
+- The AI topic rotation covers wildlife, colourful creatures, ocean life, nature, space science, and world curiosities. Temple/heritage topics are excluded from this daily AI rotation.
+- Images are clean photo-style artwork only: no text, captions, typography, logos, watermarks, borders, dark panels, boxes, banners, or poster/infographic layouts. Telugu titles, descriptions, calls to action, source details, and hashtags remain in the Instagram caption/metadata.
 - Videos remain manual uploads by the account owner.
 
 ## Publishing and safety
