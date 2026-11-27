@@ -16,7 +16,7 @@ from datetime import date
 from pathlib import Path
 from typing import Iterable
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageOps
 from commons_poster import RAW_PREFIX, TOPICS
 from cloudflare_image import cloudflare_generate, save_variants
 
@@ -32,120 +32,135 @@ TELUGU_FONT_CANDIDATES = (
 )
 
 
-def find_telugu_font() -> str:
-    for candidate in TELUGU_FONT_CANDIDATES:
-        if Path(candidate).is_file():
-            return candidate
-    raise RuntimeError(
-        "Telugu font not installed. The workflow must install fonts-noto-core before rendering."
-    )
+
+def _legacy_topic(slug: str) -> dict:
+    return next(item for item in TOPICS if item["slug"] == slug)
 
 
-def split_description(description: str) -> list[str]:
-    parts = [part.strip() for part in description.replace("।", ".").split(".") if part.strip()]
-    if len(parts) >= 2:
-        return parts[:2]
-    return [description.strip(), "ఈ విశేషం భారతదేశ చరిత్ర మరియు వారసత్వాన్ని మరింత ఆసక్తికరంగా చూపిస్తుంది."]
+# Only science, wildlife, nature and world-curiosity topics are eligible here.
+# Temple and heritage entries in the legacy Commons list are intentionally excluded.
+TOPIC_ROTATION = [
+    _legacy_topic("octopus-three-hearts"),
+    _legacy_topic("deep-sea-bioluminescence"),
+    _legacy_topic("venus-long-day"),
+    _legacy_topic("black-holes"),
+    {
+        "slug": "axolotl-regeneration", "category": "ANIMAL BIOLOGY",
+        "title": "తన శరీర భాగాలను తిరిగి పెంచుకునే జీవి!",
+        "description": "ఆక్సొలాటిల్ అనే సాలమాండర్ తన కాళ్లు, తోకతో పాటు కొన్ని ఇతర శరీర భాగాలను కూడా తిరిగి పెంచుకోగలదు. ఈ ప్రత్యేక సామర్థ్యాన్ని శాస్త్రవేత్తలు కణజాల పునరుత్పత్తిని అర్థం చేసుకోవడానికి అధ్యయనం చేస్తున్నారు.",
+        "cta": "ఈ జీవి గురించి మీకు ఆశ్చర్యంగా అనిపించిన విషయం ఏది?",
+        "source_title": "Axolotl — Smithsonian's National Zoo",
+        "source_url": "https://nationalzoo.si.edu/animals/axolotl",
+        "hashtags": ["#ManaTechTelugu", "#Axolotl", "#AnimalFacts", "#Wildlife", "#Science"],
+    },
+    {
+        "slug": "aurora-lights", "category": "SPACE & NATURE",
+        "title": "ఆకాశంలో రంగుల కాంతుల నాట్యం!",
+        "description": "అరోరా కాంతులు సూర్యుడి నుంచి వచ్చిన విద్యుత్ ఆవేశిత కణాలు భూమి వాతావరణంలోని వాయువులతో పరస్పరం చర్య చేసినప్పుడు ఏర్పడతాయి. ఈ ప్రక్రియ వల్ల ధ్రువ ప్రాంతాల ఆకాశంలో ఆకుపచ్చ, గులాబీ, ఊదా వంటి రంగులు కనిపించవచ్చు.",
+        "cta": "ఈ రంగుల ఆకాశాన్ని ప్రత్యక్షంగా చూడాలనుకుంటున్నారా?",
+        "source_title": "Auroras — NASA Science",
+        "source_url": "https://science.nasa.gov/sun/auroras/",
+        "hashtags": ["#ManaTechTelugu", "#Aurora", "#NorthernLights", "#SpaceScience", "#Nature"],
+    },
+    {
+        "slug": "honeybee-waggle-dance", "category": "ANIMAL BEHAVIOUR",
+        "title": "తేనెటీగలు నాట్యంతో దారి చెబుతాయి!",
+        "description": "ఆహారం ఉన్న ప్రదేశం దిశ, దూరం గురించి తేనెటీగలు తమ గూడు సహచరాలకు వాగుల్ డాన్స్ ద్వారా సంకేతాలు ఇస్తాయి. నాట్యంలో శరీరాన్ని కదిలించే తీరు ఆహార వనరుల స్థానాన్ని తెలియజేయడంలో సహాయపడుతుంది.",
+        "cta": "ఇలాంటి సమాచార వ్యవస్థను ఊహించగలరా?",
+        "source_title": "Bee Communication — USDA Agricultural Research Service",
+        "source_url": "https://www.ars.usda.gov/",
+        "hashtags": ["#ManaTechTelugu", "#HoneyBees", "#AnimalBehaviour", "#NatureFacts", "#Science"],
+    },
+    {
+        "slug": "coral-reef-life", "category": "OCEAN LIFE",
+        "title": "సముద్రంలో రంగుల నగరాలు!",
+        "description": "పగడపు దిబ్బలు అనేక సముద్ర జీవులకు ఆహారం, ఆశ్రయం అందించే సంక్లిష్ట పర్యావరణ వ్యవస్థలు. పగడాలు చిన్న జంతువులు; వాటిలో నివసించే సూక్ష్మ శైవలాలతో ఉన్న సంబంధం వాటి జీవనానికి ముఖ్యమైనది.",
+        "cta": "పగడపు దిబ్బల్లో మీకు కనిపించాలనుకునే జీవి ఏది?",
+        "source_title": "Corals and Coral Reefs — NOAA",
+        "source_url": "https://oceanservice.noaa.gov/education/tutorial_corals/",
+        "hashtags": ["#ManaTechTelugu", "#CoralReefs", "#OceanLife", "#MarineScience", "#Nature"],
+    },
+    {
+        "slug": "monarch-butterfly-migration", "category": "WILDLIFE",
+        "title": "వేల కిలోమీటర్లు ప్రయాణించే సీతాకోకచిలుక!",
+        "description": "మోనార్క్ సీతాకోకచిలుకలు ఉత్తర అమెరికాలోని ప్రాంతాల నుంచి మెక్సికోలోని శీతాకాల నివాస ప్రాంతాలకు దీర్ఘదూర వలస ప్రయాణం చేస్తాయి. ఈ ప్రయాణంలో అనేక తరాల సీతాకోకచిలుకలు భాగమవుతాయి.",
+        "cta": "ఇంత చిన్న జీవి చేసే ప్రయాణం ఆశ్చర్యంగా ఉందా?",
+        "source_title": "Monarch Butterfly — U.S. Fish & Wildlife Service",
+        "source_url": "https://www.fws.gov/species/monarch-butterfly-danaus-plexippus",
+        "hashtags": ["#ManaTechTelugu", "#MonarchButterfly", "#Migration", "#Wildlife", "#NatureFacts"],
+    },
+    {
+        "slug": "saturn-rings", "category": "PLANETARY SCIENCE",
+        "title": "మంచు ముక్కలతో ఏర్పడిన గ్రహపు వలయాలు!",
+        "description": "శని గ్రహపు వలయాలు అనేక చిన్న మంచు, రాతి ముక్కలతో ఏర్పడ్డాయి. అవి గ్రహం చుట్టూ వేర్వేరు కక్ష్యల్లో తిరుగుతూ విస్తారమైన వలయాల్లా కనిపిస్తాయి.",
+        "cta": "శని వలయాలను దగ్గరగా చూడగలిగితే ఎలా ఉంటుంది?",
+        "source_title": "Saturn — NASA Science",
+        "source_url": "https://science.nasa.gov/saturn/",
+        "hashtags": ["#ManaTechTelugu", "#Saturn", "#PlanetScience", "#NASA", "#SpaceFacts"],
+    },
+    {
+        "slug": "tardigrade", "category": "MICRO WORLD",
+        "title": "అతి చిన్నదైనా అద్భుతమైన జీవి!",
+        "description": "టార్డిగ్రేడ్‌లు సూక్ష్మ పరిమాణం గల ఎనిమిది కాళ్ల జీవులు. కొన్ని జాతులు అననుకూల పరిస్థితుల్లో తమ జీవక్రియను తీవ్రంగా తగ్గించి తాత్కాలికంగా తట్టుకునే స్థితిలోకి వెళ్లగలవు.",
+        "cta": "ఇంత చిన్న జీవి గురించి ముందెప్పుడైనా విన్నారా?",
+        "source_title": "Tardigrades — NASA Astrobiology",
+        "source_url": "https://astrobiology.nasa.gov/",
+        "hashtags": ["#ManaTechTelugu", "#Tardigrade", "#MicroWorld", "#Biology", "#ScienceFacts"],
+    },
+]
+
+
+def select_topic(post_date: date) -> dict:
+    """Rotate through curated non-temple topics without adjacent repeats."""
+    day_index = (post_date - BASE_DATE).days
+    return TOPIC_ROTATION[day_index % len(TOPIC_ROTATION)]
 
 
 def slide_copy(topic: dict) -> list[tuple[str, str]]:
-    facts = split_description(topic["description"])
+    parts = [part.strip() for part in topic["description"].replace("।", ".").split(".") if part.strip()]
+    facts = (parts + [topic["cta"], topic["description"]])[:3]
     return [
-        (topic["title"], "ఈరోజు ప్రత్యేక కథనం"),
-        ("ఎక్కడ ఉంది?", facts[0]),
-        ("దీని ప్రత్యేకత ఏమిటి?", facts[1]),
-        ("మీకు తెలుసా?", topic["cta"]),
+        (topic["title"], facts[0]),
+        ("ఇంకో ఆసక్తికర విషయం", facts[1]),
+        ("ఇది ఎందుకు ప్రత్యేకం?", facts[2]),
+        ("మీ అభిప్రాయం?", topic["cta"]),
     ]
 
 
-def make_prompt(topic: dict, slide_number: int, heading: str, body: str) -> str:
+def make_prompt(topic: dict, slide_number: int, heading: str = "", body: str = "") -> str:
     subject = topic["slug"].replace("-", " ")
-    visual_directions = (
-        "wide establishing view with dramatic scale and a clear focal subject",
-        "closer documentary view emphasizing location, landscape and context",
-        "detailed close-up showing craftsmanship, structure or the key feature",
-        "fresh cinematic angle with a memorable visual summary and open negative space",
+    directions = (
+        "an expansive cinematic hero shot with one unmistakable focal subject",
+        "a lively environmental scene showing the subject in its natural setting",
+        "an intricate macro close-up revealing vivid texture, colour and fine detail",
+        "a surprising dynamic angle with rich depth and a visually memorable moment",
     )
-    direction = visual_directions[slide_number - 1]
     return (
-        f"Create a premium photorealistic educational editorial image about {subject} in India. "
-        f"Slide {slide_number} of a four-part visual explainer. Visual direction: {direction}. "
-        f"Accurately illustrate this context: {topic['description']} "
-        "Use a visually rich realistic 3D documentary illustration, crisp details, natural cinematic "
-        "lighting, layered depth, vivid but tasteful blue, gold and warm neutral accents. "
-        "Keep the main subject clearly visible in the upper and middle area; leave some darker, "
-        "uncluttered space near the lower quarter for a later text panel. Each slide must use a "
-        "noticeably different viewpoint and composition, not a duplicate crop. Vertical 4:5 "
-        "composition, 1080x1350. No text, letters, numbers, labels, logos, watermarks, borders, "
-        "collage, poster design, infographic text, or UI."
+        f"Create a stunning premium photorealistic cinematic image about {subject}. "
+        f"Image {slide_number} of a four-image Instagram carousel. "
+        f"Visual direction: {directions[slide_number - 1]}. "
+        f"Factual context: {topic['description']} "
+        "Use vibrant natural colours, beautiful lighting, realistic materials, rich detail, "
+        "strong composition and an immersive environment. Make the subject large, clear and "
+        "visually compelling; fill the entire frame with the scene. Portrait 4:5, 1080x1350. "
+        "ABSOLUTELY NO text, letters, words, numbers, captions, typography, titles, labels, "
+        "logos, watermarks, borders, frames, panels, boxes, banners, text gradients, graphic "
+        "design, infographic, poster layout, UI, or empty space reserved for text. "
+        "The output must be a clean standalone photograph/artistic visual only."
     )
 
 
-def load_font(path: str, size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(path, size=size)
-
-
-def wrap_text(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
-    words = text.split()
-    lines: list[str] = []
-    current = ""
-    for word in words:
-        candidate = f"{current} {word}".strip()
-        if current and draw.textbbox((0, 0), candidate, font=font)[2] > max_width:
-            lines.append(current)
-            current = word
-        else:
-            current = candidate
-    if current:
-        lines.append(current)
-    return lines
-
-
-def render_infographic(base_bytes: bytes, output_path: Path, topic: dict,
-                       slide_number: int, heading: str, body: str, font_path: str) -> None:
+def render_clean_image(base_bytes: bytes, output_path: Path) -> None:
+    """Save AI artwork only; never draw text, panels or graphic overlays."""
     from io import BytesIO
 
     with Image.open(BytesIO(base_bytes)) as source:
-        image = ImageOps.fit(source.convert("RGB"), (1080, 1350), method=Image.Resampling.LANCZOS, centering=(0.5, 0.48))
-    # Dark translucent lower panel preserves the AI artwork while keeping Telugu legible.
-    panel = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    overlay = ImageDraw.Draw(panel)
-    overlay.rounded_rectangle((38, 820, 1042, 1312), radius=34, fill=(5, 18, 38, 224))
-    overlay.rounded_rectangle((64, 850, 1016, 860), radius=5, fill=(255, 190, 65, 255))
-    image = Image.alpha_composite(image.convert("RGBA"), panel)
-    draw = ImageDraw.Draw(image)
-
-    small_font = load_font(font_path, 27)
-    heading_font = load_font(font_path, 56 if len(heading) < 28 else 48)
-    body_font = load_font(font_path, 39)
-    tag = "MANA TECH TELUGU  •  KNOWLEDGE SERIES"
-    draw.text((72, 884), tag, font=small_font, fill=(255, 211, 112, 255), stroke_width=0)
-
-    heading_lines = wrap_text(draw, heading, heading_font, 900)
-    y = 930
-    for line in heading_lines[:2]:
-        draw.text((72, y), line, font=heading_font, fill=(255, 255, 255, 255),
-                  stroke_width=1, stroke_fill=(0, 0, 0, 100))
-        y += 70
-
-    body_lines = wrap_text(draw, body, body_font, 900)
-    y += 8
-    for line in body_lines[:3]:
-        draw.text((72, y), line, font=body_font, fill=(226, 237, 250, 255))
-        y += 54
-
-    footer_font = load_font(font_path, 25)
-    draw.text((72, 1264), "స్వైప్ చేసి మరిన్ని విశేషాలు తెలుసుకోండి", font=footer_font,
-              fill=(255, 211, 112, 255))
-    counter = f"{slide_number}/4"
-    counter_font = load_font(font_path, 26)
-    box = draw.textbbox((0, 0), counter, font=counter_font)
-    draw.rounded_rectangle((930, 1260, 1008, 1300), radius=18, fill=(255, 190, 65, 255))
-    draw.text((969 - (box[2] - box[0]) / 2, 1266), counter, font=counter_font,
-              fill=(10, 24, 45, 255))
-
+        image = ImageOps.fit(
+            source.convert("RGB"), (1080, 1350),
+            method=Image.Resampling.LANCZOS, centering=(0.5, 0.5),
+        )
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    image.convert("RGB").save(output_path, "JPEG", quality=91, optimize=True, progressive=True)
+    image.save(output_path, "JPEG", quality=94, optimize=True, progressive=True)
     if output_path.stat().st_size > 8 * 1024 * 1024:
         raise RuntimeError(f"Instagram carousel image exceeds 8 MB: {output_path.name}")
     with Image.open(output_path) as check:
@@ -168,26 +183,24 @@ def main() -> int:
     if any(p.exists() for p in (feed_manifest, feed_dir, story_manifest, story_image)):
         raise RuntimeError(f"Assets already exist for {date_text}; refusing to overwrite or risk duplicate publishing.")
 
-    topic_index = ((post_date - BASE_DATE).days * 5) % len(TOPICS)
-    topic = TOPICS[topic_index]
+    topic = select_topic(post_date)
     print(f"Selected topic: {topic['slug']} — {topic['title']}")
     account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip()
     token = os.getenv("CLOUDFLARE_API_TOKEN", "").strip()
     if not account_id or not token:
         raise RuntimeError("Cloudflare account/token GitHub Actions secrets are missing.")
-    font_path = find_telugu_font()
     slide_text = slide_copy(topic)
 
     with tempfile.TemporaryDirectory(prefix="mana-tech-ai-") as tmp:
         temp_dir = Path(tmp)
         image_urls: list[str] = []
         for number, (heading, body) in enumerate(slide_text, start=1):
-            print(f"Generating unique AI infographic slide {number}/{FEED_SLIDES}...")
+            print(f"Generating clean photo-only slide {number}/{FEED_SLIDES}...")
             generated = cloudflare_generate(
                 make_prompt(topic, number, heading, body), account_id, token
             )
             output = feed_dir / f"post-{number:02d}.jpg"
-            render_infographic(generated, output, topic, number, heading, body, font_path)
+            render_clean_image(generated, output)
             image_urls.append(
                 RAW_PREFIX + f"posts/images/{date_text}/post-{number:02d}.jpg"
             )
@@ -195,10 +208,11 @@ def main() -> int:
         # Keep the existing Story workflow independent: one dedicated AI Story image.
         print("Generating the separate Story image...")
         story_bytes = cloudflare_generate(
-            "Create a cinematic vertical 9:16 photorealistic visual about "
+            "Create a vibrant cinematic vertical 9:16 photorealistic image about "
             + topic["slug"].replace("-", " ")
-            + " in India. Use a distinct immersive composition, rich natural lighting, "
-              "realistic details and no text, labels, logos, watermarks or poster graphics.",
+            + ". Fill the frame with a colourful scene and clear focal subject. "
+              "No text, letters, captions, logos, watermarks, panels, boxes, borders, "
+              "poster design, infographic or graphic overlays. Clean image only.",
             account_id, token,
         )
         story_dir = temp_dir / "story"
@@ -218,14 +232,14 @@ def main() -> int:
         "hashtags": topic["hashtags"],
         "image_url": image_urls[0],
         "image_urls": image_urls,
-        "alt_text": f"Four-slide Telugu educational infographic carousel about {topic['slug'].replace('-', ' ')} in India.",
+        "alt_text": f"Four-image photo-only carousel about {topic['slug'].replace('-', ' ')} in India.",
         "is_factual": True,
         "sources": [{
             "title": topic["source_title"],
             "url": topic["source_url"],
             "checked_at": date_text,
         }],
-        "image_origin": "Four Cloudflare Workers AI generated images with locally rendered Telugu infographic text",
+        "image_origin": "Four clean Cloudflare Workers AI generated images with no text or graphic overlays",
         "image_disclaimer": ai_note,
         "carousel_slide_count": FEED_SLIDES,
     }
