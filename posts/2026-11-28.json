@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-28",
+  "posts": [
+    {
+      "id": "2026-11-28-01",
+      "status": "staged",
+      "topic": "octopus-three-hearts",
+      "language": "te",
+      "title": "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయని తెలుసా?",
+      "description": "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయి. రెండు గుండెలు రక్తాన్ని గిల్ల్స్‌కు పంపుతాయి; మూడో గుండె ఆక్సిజన్ పొందిన రక్తాన్ని శరీరమంతా పంపుతుంది.",
+      "call_to_action": "మూడు గుండెలున్న ఈ జీవి గురించి ఇంకేం తెలుసుకోవాలనుకుంటున్నారు?",
+      "hashtags": [
+        "#ManaTechTelugu",
+        "#Octopus",
+        "#AnimalFacts",
+        "#OceanLife",
+        "#TeluguFacts"
+      ],
+      "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-28/post-01.jpg",
+      "image_urls": [
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-28/post-01.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-28/post-02.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-28/post-03.jpg",
+        "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/posts/images/2026-11-28/post-04.jpg"
+      ],
+      "alt_text": "Four-image photo-only carousel about octopus three hearts.",
+      "is_factual": true,
+      "sources": [
+        {
+          "title": "Love is in the Air, and Sea — NOAA",
+          "url": "https://www.noaa.gov/stories/love-is-in-air-and-sea-5-facts-about-affections-of-marine-creatures",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "image_origin": "Four clean Cloudflare Workers AI generated images with no text or graphic overlays",
+      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి.",
+      "carousel_slide_count": 4
+    }
+  ]
+}
