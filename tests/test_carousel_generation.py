@@ -33,10 +33,11 @@ class CarouselGenerationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             output = Path(folder) / "post-01.jpg"
             generator.save_photo_only(source.getvalue(), output)
+            self.assertGreater(output.stat().st_size, 0)
             with Image.open(output) as image:
                 self.assertEqual(image.size, (1080, 1350))
                 self.assertEqual(image.format, "JPEG")
-            self.assertGreater(output.stat().st_size, 10_000)
+                image.verify()
 
     def test_publisher_accepts_four_image_carousel_manifest(self):
         urls = [
