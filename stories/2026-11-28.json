@@ -3,13 +3,15 @@
   "stories": [
     {
       "id": "2026-11-28-story-01",
-      "status": "queued",
+      "status": "published",
       "topic": "octopus-three-hearts",
       "title": "ఆక్టోపస్‌కు మూడు గుండెలు ఉంటాయని తెలుసా?",
       "image_url": "https://raw.githubusercontent.com/trinadharaomamidi97-spec/mana-tech-autopilot/main/stories/images/2026-11-28/story-01.jpg",
       "alt_text": "AI-generated artistic Story image about octopus three hearts in India.",
       "image_origin": "Cloudflare Workers AI generated photo-only Story image",
-      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి."
+      "image_disclaimer": "చిత్రాలు AI ద్వారా రూపొందించిన కళాత్మక దృశ్యాలు; సమాచార వివరాలకు మూలాన్ని చూడండి.",
+      "instagram_media_id": "18485737192113311",
+      "published_at": "2026-11-28T12:13:58.551392+00:00"
     }
   ]
 }
